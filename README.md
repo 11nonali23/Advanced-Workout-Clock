@@ -16,7 +16,7 @@ The front end is done with material features and styles for Android.
 
 The app supports swipe and drag with RecyclerView and it has a NestedScrollView in the timer acivities tab. 
 
-## ack-End
+## Back-End
 
 The back-end was thought to use MVP pattern. However, since the app is created with viewpgaer and fragments, it's not a good idea to attach a 
 stateless (on Destroy) Presenter to a stateful (on Destroy) Fragment. A solution to make the code readable and testable will be find soon.
