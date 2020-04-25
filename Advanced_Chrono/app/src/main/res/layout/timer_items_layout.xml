@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:descendantFocusability="blocksDescendants"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+
+    <com.example.advanced_chrono2.view.CustomNestedScrollView
+        android:id="@+id/nested_scw"
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="0"
+        android:elevation="10dp"
+        tools:context=".MainActivity"
+        android:background="#FFF">
+
+        <LinearLayout
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            android:descendantFocusability="blocksDescendants"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/activity_recycle"
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/max_container_height"
+                android:background="#FFF"
+                android:elevation="0dp"
+                android:padding="4dp"/>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/activity_item_recycler"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="4dp"
+                android:elevation="10dp"
+                android:scrollbars="vertical"
+                android:background="@drawable/top_rounded_rect"/>
+
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:elevation="10dp"
+                android:background="#FF9800">
+
+                <com.google.android.material.floatingactionbutton.FloatingActionButton
+                    xmlns:app="http://schemas.android.com/apk/res-auto"
+                    android:id="@+id/timer_items_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="bottom|right"
+                    android:layout_margin="10dp"
+                    app:fabCustomSize="40dp"
+                    android:backgroundTint="@color/blood"
+                    android:src="@drawable/ic_add_white"
+                    app:borderWidth="0dp"/>
+
+            </FrameLayout>
+
+        </LinearLayout>
+
+    </com.example.advanced_chrono2.view.CustomNestedScrollView>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:elevation="10dp"
+        android:background="#FF9800"/>
+
+</LinearLayout>

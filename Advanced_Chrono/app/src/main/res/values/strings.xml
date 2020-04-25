@@ -1,0 +1,26 @@
+<resources>
+    <string name="chrono_tab_indicator">Savable Chrono</string>
+    <string name="timer_tab_indicator">Timer Activities</string>
+    <string name="data_tab_indicator">Personal Data</string>
+    <string name="app_name">Advanced_Chrono2</string>
+    <string name="test_yourself">Test Yourself</string>
+    <string name="workout_timer">Workout Timer</string>
+    <string name="rubick_mode">Rubik\'s cube mode</string>
+    <string name="settings">settings</string>
+    <string name="activity_indicator">Activity</string>
+    <string name="save_request">Save</string>
+    <string name="save_on_pause_request">save always on reset</string>
+    <string name="rest_circle_indicator">Rest</string>
+    <string name="workout_circle_indicator">Workout</string>
+    <string name="timer_label">timer_activity</string>
+    <string name="Timer_activity_name_hint">Insert a name (ex. body workout)</string>
+    <string name="workout_time_indicator">Workout Time</string>
+    <string name="rest_time_indicator">Rest Time</string>
+    <string name="min_hint">min</string>
+    <string name="sec_hint">sec</string>
+    <string name="save_activity_button_text">Save Activity</string>
+    <string name="addNewItem">Add Item</string>
+    <string name="workout_indicator">workout</string>
+    <string name="rest_indicator">rest</string>
+    <string name="remaining_indicator">Remaining</string>
+</resources>

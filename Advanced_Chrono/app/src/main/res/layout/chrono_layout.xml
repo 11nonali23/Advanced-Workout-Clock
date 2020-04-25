@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="75dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:elevation="0dp"
+        android:orientation="horizontal">
+
+        <Spinner
+            android:id="@+id/chrono_spinner"
+            style="@style/Widget.AppCompat.DropDownItem.Spinner"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:layout_margin="20dp"
+            android:gravity="center"
+            android:paddingLeft="10dp"
+            android:textAlignment="center" />
+
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:backgroundTint="@color/white"
+            android:src="@drawable/ic_add"/>
+
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:backgroundTint="@color/white"
+            android:src="@drawable/ic_delete"/>
+
+    </LinearLayout>
+
+    <Chronometer
+        android:id="@+id/chronometer_"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginBottom="180dp"
+        android:textSize="40sp"/>
+
+    <me.zhanghai.android.materialprogressbar.MaterialProgressBar
+        android:id="@+id/progress_circular_chrono"
+        style="@style/Widget.MaterialProgressBar.ProgressBar"
+        android:layout_width="280dp"
+        android:layout_height="280dp"
+        android:max="60"
+        android:minWidth="280dp"
+        android:minHeight="280dp"
+        android:progress="60"
+        app:layout_anchor="@+id/chronometer_"
+        app:layout_anchorGravity="center"
+        app:mpb_progressTint="#EF6C00" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_gravity="bottom|center"
+        android:layout_marginLeft="40dp"
+        android:layout_marginRight="40dp"
+        android:layout_marginBottom="10dp">
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/chrono_pause"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:backgroundTint="#FFF"
+            android:elevation="10dp"
+            android:textSize="50sp"
+            android:theme="@style/Theme.MaterialComponents"
+            app:iconGravity="textEnd"
+            app:cornerRadius="20dp"
+            app:icon="@drawable/ic_pause"
+            app:iconTint="@color/deep_orange"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="20dp"
+            app:layout_anchorGravity="center">
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/chrono_start"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginRight="10dp"
+                android:backgroundTint="@color/white"
+                android:textSize="30sp"
+                android:theme="@style/Theme.MaterialComponents"
+                app:cornerRadius="6dp"
+                app:iconGravity="textEnd"
+                app:icon="@drawable/ic_play_arrow"
+                app:iconTint="@color/deep_orange"/>
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/chrono_reset"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginLeft="10dp"
+                android:backgroundTint="@color/white"
+                android:textColor="@color/white"
+                android:textSize="30sp"
+                android:theme="@style/Theme.MaterialComponents"
+                app:cornerRadius="6dp"
+                app:iconGravity="textEnd"
+                app:icon="@drawable/ic_stop"
+                app:iconTint="@color/deep_orange"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/save_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="20dp"
+            app:layout_anchorGravity="center">
+
+            <com.google.android.material.button.MaterialButton
+                style="@style/Widget.MaterialComponents.ExtendedFloatingActionButton.Icon"
+                android:id="@+id/chrono_save_btn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.7"
+                android:backgroundTint="@color/accent_yellow"
+                android:textColor="@color/black"
+                android:textSize="12sp"
+                android:text="@string/save_request"
+                android:theme="@style/Theme.MaterialComponents"
+                app:cornerRadius="6dp"
+                app:icon="@drawable/ic_check_black"
+                app:iconGravity="textEnd"/>
+
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.6"
+                android:layout_marginLeft="50dp"
+                android:layout_marginBottom="25dp"
+                android:textSize="15sp"
+                android:text="@string/save_on_pause_request"
+                android:textColor="@color/black"/>
+
+            <com.google.android.material.checkbox.MaterialCheckBox
+                android:id="@+id/chrono_check"
+                style="@style/Widget.AppCompat.CompoundButton.CheckBox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginTop="5dp"
+                android:textColor="@color/white"
+                android:theme="@style/Theme.MaterialComponents"
+                app:cornerRadius="6dp"
+                android:buttonTint="@color/deep_orange"/>
+
+        </LinearLayout>
+
+
+    </LinearLayout>
+
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

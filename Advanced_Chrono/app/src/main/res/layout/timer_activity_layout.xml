@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="@dimen/card_max_item"
+    android:layout_height="@dimen/activity_card_height"
+    android:layout_marginLeft="10dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    app:cardCornerRadius="20dp"
+    android:layout_margin="10dp"
+    android:backgroundTint="@color/blood">
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="10dp"
+        android:orientation="vertical">
+
+
+        <TextView
+            android:id="@+id/text_activity"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_weight="0.5"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
+            android:text="Line 1"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:textColor="@color/white"
+            android:layout_alignParentTop="true"
+            android:layout_toEndOf="@id/image"/>
+
+        <ImageView
+            android:id="@+id/image_activity"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_gravity="center"/>
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/start_timerActivity_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="0"
+            android:layout_gravity="center_horizontal"
+            app:fabCustomSize="40dp"
+            android:elevation="0dp"
+            android:layout_marginBottom="8dp"
+            android:backgroundTint="@color/white"
+            android:src="@drawable/ic_play_arrow"
+            android:clickable="true"/>
+
+    </LinearLayout>
+
+
+</androidx.cardview.widget.CardView>

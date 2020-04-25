@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_weight="1"
+            android:layout_margin="20dp"
+            android:gravity="center"
+            android:text="@string/workout_time_indicator"
+            android:textSize="20sp"
+            android:textColor="@color/black"/>
+
+        <View
+            android:layout_width="2dp"
+            android:layout_height="70dp"
+            android:layout_marginTop="20dp"
+            android:background="@color/deep_orange" />
+
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_weight="1"
+            android:layout_margin="20dp"
+            android:gravity="center"
+            android:text="@string/rest_time_indicator"
+            android:textSize="20sp"
+            android:textColor="@color/black"/>
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <EditText
+            android:id="@+id/workout_minutes"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:hint="@string/min_hint"
+            android:textSize="20sp"
+            android:textColor="@color/black"
+            android:focusable="true"
+            android:clickable="true"
+            android:importantForAutofill="no"
+            android:inputType="number"
+            android:nextFocusRight="@id/workout_seconds"/>
+
+        <EditText
+            android:id="@+id/workout_seconds"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:hint="@string/sec_hint"
+            android:textSize="20sp"
+            android:textColor="@color/black"
+            android:focusable="true"
+            android:clickable="true"
+            android:importantForAutofill="no"
+            android:inputType="number"
+            android:nextFocusRight="@id/rest_minutes"/>
+
+        <View
+            android:layout_width="2dp"
+            android:layout_height="70dp"
+            android:layout_marginBottom="8dp"
+            android:background="@color/deep_orange" />
+
+
+        <EditText
+            android:id="@+id/rest_minutes"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:hint="@string/min_hint"
+            android:textSize="20sp"
+            android:textColor="@color/black"
+            android:focusable="true"
+            android:clickable="true"
+            android:importantForAutofill="no"
+            android:inputType="number"
+            android:nextFocusRight="@id/rest_seconds"/>
+
+        <EditText
+            android:id="@+id/rest_seconds"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:hint="@string/sec_hint"
+            android:textSize="20sp"
+            android:textColor="@color/black"
+            android:focusable="true"
+            android:clickable="true"
+            android:inputType="number"/>
+
+
+    </LinearLayout>
+
+</LinearLayout>
