@@ -1,6 +1,6 @@
 # Advanced Workout Clock
 
-This Android Application is meant to offer a user a clock with some features to make any mind of workout or timed activity more efficent.
+This Android Application is meant to generate a clock with some features to make any kind of timed activity more efficent, and to plot the resulting data.
 
 ## Features of the app
 
@@ -8,7 +8,7 @@ This Android Application is meant to offer a user a clock with some features to 
 
 * The user can create an activity for the timer and schedule one or more timers that are also divided into work and rest.
 
-* I will plot the datastored for chronometer and for timer into some graphs. The graphs types are not chosen yet.
+* I will plot the data stored for chronometer and for timer into some graphs. The graphs types are not chosen yet.
 
 ## Front-End
 
