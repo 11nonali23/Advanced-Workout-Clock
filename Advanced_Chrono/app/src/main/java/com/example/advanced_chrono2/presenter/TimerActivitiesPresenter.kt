@@ -35,7 +35,7 @@ class TimerActivitiesPresenter(val fragment: TimerActivitiesContract.ITimerActiv
     )
     {
 
-        //Checking if at least one value is not empty
+        //Checking if at least one value is not empty for seconds e minutes
         if(workoutMinutesText.isEmpty() && workoutSecondsText.isEmpty())
         {
             fragment.displayResult(emptyFieldMessage)

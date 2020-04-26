@@ -14,7 +14,8 @@ import java.util.*
 //This adapter is used to manage the items of the activities taht can be swiped to be deleted and also moved around them
 
 //Interface for behaviour on item swiped and dragged
-interface ItemTouchHelperAdapter {
+interface ItemTouchHelperAdapter
+{
     fun onItemMove(fromPosition: Int, toPosition: Int)
     fun onItemDismiss(position: Int)
 }

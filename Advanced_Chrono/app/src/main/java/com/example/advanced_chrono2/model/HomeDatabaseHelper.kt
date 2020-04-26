@@ -5,8 +5,8 @@ package com.example.advanced_chrono2.model
 //Fake database. One true will be added sooon
 object HomeDatabaseHelper {
 
-    val activities: ArrayList<ActivityData> = ArrayList()
-    val activitiesName: ArrayList<String> = ArrayList()   //List of activity names to pass to the activity
+    private val activities: ArrayList<ActivityData> = ArrayList()
+    private val activitiesName: ArrayList<String> = ArrayList()   //List of activity names to pass to the activity
 
     init {
         activities.add(ActivityData("Cubo Rubik", ArrayList()))

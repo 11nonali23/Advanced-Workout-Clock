@@ -37,7 +37,7 @@ class TimerActivitiesFragment : Fragment(), TimerActivitiesContract.ITimerActivi
             TimerActivitiesContract.ITimerActivitiesPresenter = TimerActivitiesPresenter(this)
 
     private lateinit var activityItemList: RecyclerView
-    private lateinit var activityList: RecyclerView //NEW <=======
+    private lateinit var activityList: RecyclerView
 
     private lateinit var timerItemAdapter: SwipableItemsAdapter
     private lateinit var activityItemAdapter: ActivityHorizontalAdapter
@@ -68,7 +68,6 @@ class TimerActivitiesFragment : Fragment(), TimerActivitiesContract.ITimerActivi
 
         timerActivitiesPresenter.onViewCreated()
 
-        //TODO add items to db and to view
         timer_items_button.setOnClickListener {
             showAddTimerItemDialog()
         }

@@ -143,6 +143,7 @@
                 android:textSize="12sp"
                 android:text="@string/save_request"
                 android:theme="@style/Theme.MaterialComponents"
+                android:clickable="false"
                 app:cornerRadius="6dp"
                 app:icon="@drawable/ic_check_black"
                 app:iconGravity="textEnd"/>
