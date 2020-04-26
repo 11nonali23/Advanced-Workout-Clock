@@ -28,3 +28,5 @@ The back end uses MVP pattern in order the seprate the logic from the model and 
 
 Since I attach a presenter to a fragment, the presenter need to be almost stateless beacuse they are on different layers of architecture and lifecycle.
 The only un-stateless parts of the presenter are connected to the db.
+
+![MVP sequence_diagram](images/MVP_sequence.png)
