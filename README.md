@@ -16,11 +16,11 @@ The front end is done with material features and styles for Android.
 
 The app supports swipe and drag with RecyclerView and it has a NestedScrollView in the timer acivities tab. 
 
-![chronometer front end](images/chrono_front_end.png)
+![chronometer front end](images/chrono_front_end.png) ![timer front end](images/timer_front_end.png)
 
 ![timer activities front end](images/timerActivities_fron_end.png)
 
-![timer front end] (images/timer_front_end.png)
+
 
 ## Back-End
 
