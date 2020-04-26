@@ -18,5 +18,7 @@ The app supports swipe and drag with RecyclerView and it has a NestedScrollView 
 
 ## Back-End
 
-The back-end was thought to use MVP pattern. However, since the app is created with viewpgaer and fragments, it's not a good idea to attach a 
-stateless (on Destroy) Presenter to a stateful (on Destroy) Fragment. A solution to make the code readable and testable will be find soon.
+The back end uses MVP pattern in order the seprate the logic from the model and the view and to every part testable and highly flexible.
+
+Since I attach a presenter to a fragment, the presenter need to be almost stateless beacuse they are on different layers of architecture and lifecycle.
+The only un-stateless parts of the presenter are connected to the db.
