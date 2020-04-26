@@ -1,4 +1,4 @@
-package com.example.advanced_chrono2.adapters
+package com.example.advanced_chrono2.view.adapters
 
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
@@ -10,17 +10,9 @@ import com.example.advanced_chrono2.view.fragments.HomeChronometerFragment
 
 class ViewPagerAdapter(fa: FragmentActivity)  : FragmentStateAdapter(fa)
 {
-    //I want to use the adapter to know wether there are some new data to plot or not
-    companion object
-    {
-        private const val pages = 3
-        private var areNewUpdatesAvailable = false
-    }
+    companion object { private const val pages = 3 }
 
-    override fun getItemCount(): Int
-    {
-        return pages
-    }
+    override fun getItemCount(): Int  {return pages }
 
     override fun createFragment(position: Int): Fragment
     {

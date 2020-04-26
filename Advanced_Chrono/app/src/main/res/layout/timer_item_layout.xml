@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.example.advanced_chrono2.view.CustomCardView
+<com.example.advanced_chrono2.view.customViews.CustomCardView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -65,4 +65,4 @@
 
     </LinearLayout>
 
-</com.example.advanced_chrono2.view.CustomCardView>
+</com.example.advanced_chrono2.view.customViews.CustomCardView>

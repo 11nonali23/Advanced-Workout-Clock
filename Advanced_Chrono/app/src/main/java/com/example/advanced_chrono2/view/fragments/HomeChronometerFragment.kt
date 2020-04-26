@@ -11,11 +11,9 @@ import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.EditText
 import android.widget.Toast
-import androidx.core.content.ContextCompat
 import com.example.advanced_chrono2.R
-import com.example.advanced_chrono2.model.ActivityData
+import com.example.advanced_chrono2.contract.HomeChronometerContract
 import com.example.advanced_chrono2.presenter.HomePresenter
-import com.example.advanced_chrono2.presenter.IHomePresenter
 import kotlinx.android.synthetic.main.chrono_layout.*
 
 //ToDo implement the save button (only when you have the database)
@@ -27,9 +25,9 @@ import kotlinx.android.synthetic.main.chrono_layout.*
  */
 
 
-class HomeChronometerFragment : Fragment(), IHomeView
+class HomeChronometerFragment : Fragment(), HomeChronometerContract.IHomeChronometerView
 {
-    private val homePresenter: IHomePresenter = HomePresenter(this)
+    private val homePresenter: HomeChronometerContract.IHomePresenter = HomePresenter(this)
 
     //ADAPTERS
     private lateinit var spinnerAdapter: ArrayAdapter<String>

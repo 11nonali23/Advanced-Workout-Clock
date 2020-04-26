@@ -14,24 +14,27 @@ import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.advanced_chrono2.R
-import com.example.advanced_chrono2.adapters.ActivityHorizontalAdapter
-import com.example.advanced_chrono2.adapters.ItemMovementHelper
-import com.example.advanced_chrono2.adapters.SwipableItemsAdapter
-import com.example.advanced_chrono2.model.TimerActivityData
+import com.example.advanced_chrono2.view.adapters.ActivityHorizontalAdapter
+import com.example.advanced_chrono2.view.adapters.ItemMovementHelper
+import com.example.advanced_chrono2.view.adapters.SwipableItemsAdapter
+import com.example.advanced_chrono2.contract.TimerActivitiesContract
 import com.example.advanced_chrono2.model.TimerItemData
-import kotlinx.android.synthetic.main.add_timer_item_layout.*
+import com.example.advanced_chrono2.presenter.TimerActivitiesPresenter
 import kotlinx.android.synthetic.main.timer_items_layout.*
 
 
 //Provvisorio per lista di attività
 
-class TimerActivitiesFragment : Fragment()
+class TimerActivitiesFragment : Fragment(), TimerActivitiesContract.ITimerActivitiesView
 {
     companion object
-    {private const val TAG = "TIMER FRAGMENT CICLE"; private const val itemLogo = R.drawable.ic_timer_black }
+    {
+        private const val TAG = "TIMER FRAGMENT CICLE"
+        const val itemLogo = R.drawable.ic_timer_black
+    }
 
-    private val timerItems = ArrayList<TimerItemData>()
-    private val activityItems =  ArrayList<TimerActivityData>()
+    private val timerActivitiesPresenter:
+            TimerActivitiesContract.ITimerActivitiesPresenter = TimerActivitiesPresenter(this)
 
     private lateinit var activityItemList: RecyclerView
     private lateinit var activityList: RecyclerView //NEW <=======
@@ -49,7 +52,7 @@ class TimerActivitiesFragment : Fragment()
         Log.d(TAG, "FRAGMENT TIMER CREATED")
     }
 
-    //when creating the view inflating the chronometer layout
+    //when creating the view inflating the timer layout
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -59,75 +62,82 @@ class TimerActivitiesFragment : Fragment()
         return inflater.inflate(R.layout.timer_items_layout, container, false)
     }
 
-    //here I will init all my components
+
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
-        buildRecyclerView()
-
-        createItemList()
-        createActivityList()
-
-
+        timerActivitiesPresenter.onViewCreated()
 
         //TODO add items to db and to view
-        timer_items_button.setOnClickListener {view
-
-            val dialogBuilder = AlertDialog.Builder(this.context, R.style.AlertDialogCustom)
-            val dialogView = layoutInflater.inflate(R.layout.add_timer_item_layout, null)
-            dialogBuilder.setView(dialogView)
-
-            dialogBuilder.setPositiveButton("SAVE ACTIVITY") { _, _ ->
-                Toast.makeText(this.context, "ADDED", Toast.LENGTH_LONG).show()
-
-
-                val workoutSecondsText = dialogView.findViewById<EditText>(R.id.workout_minutes).toString()
-                val workoutSeconds: Long =
-                    workoutSecondsText.toLong() * 60
-
-                val restSeconds: Long =
-                    rest_minutes.text.toString().toLong() * 60 + rest_seconds.text.toString().toLong()
-
-                //TODO aggiungere anche al database
-                val newItem = TimerItemData(itemLogo, workoutSeconds, restSeconds)
-                timerItems.add(newItem)
-                timerItemAdapter.notifyDataSetChanged()
-            }
-
-            dialogBuilder.setNegativeButton("CANCEL") { dialogInterface, _ ->
-                dialogInterface.dismiss()
-            }
-            dialogBuilder.show()
+        timer_items_button.setOnClickListener {
+            showAddTimerItemDialog()
         }
     }
 
-    //FUNZIONI PROVVISORIE
 
-    private fun buildRecyclerView()
+
+    //INTERFACE FUNCTIONS------------------------------------------------------------------------------------------
+
+    override fun setUpView(activities: List<String>, timerItems: List<TimerItemData>)
     {
-        timerItems.add(TimerItemData(itemLogo, 20, 5))
-        timerItems.add(TimerItemData(itemLogo, 30, 15))
-        timerItems.add(TimerItemData(itemLogo, 40, 25))
-        timerItems.add(TimerItemData(itemLogo, 50, 35))
-        timerItems.add(TimerItemData(itemLogo, 60, 45))
-        timerItems.add(TimerItemData(itemLogo, 70, 55))
-
-
-        activityItems.add(TimerActivityData("Activity 1"))
-        activityItems.add(TimerActivityData("Activity 2"))
-        activityItems.add(TimerActivityData("Activity 3"))
-        activityItems.add(TimerActivityData("Activity 4"))
-        activityItems.add(TimerActivityData("Activity 5"))
-
+        createActivityList(activities)
+        createItemList(timerItems)
+        setListsMoventBehaviour()
     }
 
-    private fun createItemList()
+    override fun updateActivitiesView()
+    {
+        activityItemAdapter.notifyDataSetChanged()
+    }
+
+    override fun updateTimerItemsView()
+    {
+        timerItemAdapter.notifyDataSetChanged()
+    }
+
+    //END INTERFACE FUNCTIONS------------------------------------------------------------------------------------------
+
+
+    //HELPER FUNCTIONS---------------------------------------------------------------------------------------------------
+    private fun createActivityList(activities: List<String>)
+    {
+        this.activityList = activity_recycle
+
+        activityList.setHasFixedSize(true)
+
+        activityList.layoutManager = LinearLayoutManager(this.context, LinearLayoutManager.HORIZONTAL, false)
+
+        activityItemAdapter = ActivityHorizontalAdapter(activities as ArrayList<String>)
+        activityList.adapter = activityItemAdapter
+
+        setActivityListDecoration()
+    }
+
+    private fun setActivityListDecoration()
+    {
+        //setting a dynamic center for horizontal activity
+        activityList.addItemDecoration(object : RecyclerView.ItemDecoration() {
+            override fun getItemOffsets(
+                outRect: Rect,
+                view: View,
+                parent: RecyclerView,
+                state: RecyclerView.State
+            ) {
+                val cardHeight = 200
+                val containerHeight = resources.getDimensionPixelOffset(R.dimen.max_container_height)
+                var topBottomPadding = (containerHeight/2 - cardHeight)/2
+                outRect.set(10, topBottomPadding,10,topBottomPadding)
+            }
+        })
+    }
+
+    private fun createItemList(timerItems: List<TimerItemData>)
     {
         activityItemList = activity_item_recycler
 
         activityItemList.setHasFixedSize(true)
 
-        timerItemAdapter = SwipableItemsAdapter(timerItems)
+        timerItemAdapter = SwipableItemsAdapter(timerItems as ArrayList<TimerItemData>)
 
         activityItemList.layoutManager = LinearLayoutManager(this.context)
         activityItemList.adapter = timerItemAdapter
@@ -143,11 +153,9 @@ class TimerActivitiesFragment : Fragment()
                 outRect.set(20, 0,20,0)
             }
         })
-
-        setActivityListMoventBehaviour()
     }
 
-    private fun setActivityListMoventBehaviour()
+    private fun setListsMoventBehaviour()
     {
         //itemMovementHelper defines behaviour of recyclerView on user inputs
         itemHelperOnSwipe =
@@ -164,30 +172,32 @@ class TimerActivitiesFragment : Fragment()
         itemTouchHelper.attachToRecyclerView(activityItemList)
     }
 
-    private fun createActivityList()
+    private fun showAddTimerItemDialog()
     {
-        activityList = activity_recycle
+        val dialogBuilder = AlertDialog.Builder(this.context, R.style.AlertDialogCustom)
+        val dialogView = layoutInflater.inflate(R.layout.add_timer_item_layout, null)
+        dialogBuilder.setView(dialogView)
 
-        activityList.setHasFixedSize(true)
+        dialogBuilder.setPositiveButton("SAVE ACTIVITY") { _, _ ->
+            Toast.makeText(this.context, "ADDED", Toast.LENGTH_LONG).show()
 
-        activityList.layoutManager = LinearLayoutManager(this.context, LinearLayoutManager.HORIZONTAL, false)
 
-        activityItemAdapter = ActivityHorizontalAdapter(activityItems)
-        activityList.adapter = activityItemAdapter
+            val workoutSecondsText = dialogView.findViewById<EditText>(R.id.workout_minutes).toString()
+            val workoutSeconds: Long =
+                workoutSecondsText.toLong() * 60
 
-        //setting a dynamic center for horizontal activity
-        activityList.addItemDecoration(object : RecyclerView.ItemDecoration() {
-            override fun getItemOffsets(
-                outRect: Rect,
-                view: View,
-                parent: RecyclerView,
-                state: RecyclerView.State
-            ) {
-                val cardHeight = 200
-                val containerHeight = resources.getDimensionPixelOffset(R.dimen.max_container_height)
-                var topBottomPadding = (containerHeight/2 - cardHeight)/2
-                outRect.set(10, topBottomPadding,10,topBottomPadding)
-            }
-        })
+            val restSecondsText = dialogView.findViewById<EditText>(R.id.workout_minutes).toString()
+            val restSeconds: Long =
+                restSecondsText.toLong() * 60
+
+            //TODO aggiungere tramite presenter
+            timerActivitiesPresenter.addNewTimerItem(workoutSeconds, restSeconds)
+        }
+
+        dialogBuilder.setNegativeButton("CANCEL") { dialogInterface, _ ->
+            dialogInterface.dismiss()
+        }
+        dialogBuilder.show()
     }
+    //END HELPER FUNCTIONS---------------------------------------------------------------------------------------------------
 }

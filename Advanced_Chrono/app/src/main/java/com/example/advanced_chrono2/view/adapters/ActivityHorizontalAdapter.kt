@@ -1,4 +1,4 @@
-package com.example.advanced_chrono2.adapters
+package com.example.advanced_chrono2.view.adapters
 
 import android.content.Intent
 import android.util.Log
@@ -8,16 +8,14 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.example.advanced_chrono2.model.TimerItemData
 import com.example.advanced_chrono2.R
 import com.example.advanced_chrono2.TimerActivity
-import com.example.advanced_chrono2.model.TimerActivityData
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 
 //This adapter is used to control the horizontal activities of the timer
 
-class ActivityHorizontalAdapter (private val itemList: ArrayList<TimerActivityData>) : RecyclerView.Adapter<ActivityHorizontalAdapter.SwipableItemsHorizontalViewHolder>()
+class ActivityHorizontalAdapter (private val itemList: ArrayList<String>) : RecyclerView.Adapter<ActivityHorizontalAdapter.SwipableItemsHorizontalViewHolder>()
 {
 
     inner class SwipableItemsHorizontalViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView), View.OnClickListener
@@ -66,7 +64,6 @@ class ActivityHorizontalAdapter (private val itemList: ArrayList<TimerActivityDa
 
     override fun onBindViewHolder(holder: SwipableItemsHorizontalViewHolder, position: Int)
     {
-        var curr = itemList.get(position)
-        holder.textView.text = curr.name
+        holder.textView.text = itemList[position]
     }
 }

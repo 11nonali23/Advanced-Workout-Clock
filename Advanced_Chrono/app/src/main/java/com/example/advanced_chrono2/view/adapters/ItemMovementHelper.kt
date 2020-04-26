@@ -1,9 +1,8 @@
-package com.example.advanced_chrono2.adapters
+package com.example.advanced_chrono2.view.adapters
 
 import android.graphics.Color
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
-import com.example.advanced_chrono2.adapters.SwipableItemsAdapter
 
 //This class helps the timer items in Timer Fragment to be swipable left and right and ti be draggable up and down
 

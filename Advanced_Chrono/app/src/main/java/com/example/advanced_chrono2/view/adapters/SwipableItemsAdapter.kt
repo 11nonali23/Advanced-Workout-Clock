@@ -1,4 +1,4 @@
-package com.example.advanced_chrono2.adapters
+package com.example.advanced_chrono2.view.adapters
 
 
 import android.view.*

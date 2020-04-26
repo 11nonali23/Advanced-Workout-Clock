@@ -1,7 +1,9 @@
 package com.example.advanced_chrono2.model
 
 /* This class is a singleton one ---> https://blog.mindorks.com/how-to-create-a-singleton-class-in-kotlin*/
-object DatabaseHelper {
+
+//Fake database. One true will be added sooon
+object HomeDatabaseHelper {
 
     val activities: ArrayList<ActivityData> = ArrayList()
     val activitiesName: ArrayList<String> = ArrayList()   //List of activity names to pass to the activity
@@ -17,10 +19,12 @@ object DatabaseHelper {
         activities.forEach { activitiesName.add(it.name) }
     }
 
-    fun addActivity(activityData: ActivityData)
+    fun addActivity(activityData: ActivityData): Boolean
     {
         activities.add(activityData)
         activitiesName.add(activityData.name)
+
+        return true
     }
 
     // The model filter ActivityData items to give view only the name

@@ -5,7 +5,7 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.WindowManager
 import androidx.viewpager2.widget.ViewPager2
-import com.example.advanced_chrono2.adapters.ViewPagerAdapter
+import com.example.advanced_chrono2.view.adapters.ViewPagerAdapter
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import kotlinx.android.synthetic.main.activity_main.*

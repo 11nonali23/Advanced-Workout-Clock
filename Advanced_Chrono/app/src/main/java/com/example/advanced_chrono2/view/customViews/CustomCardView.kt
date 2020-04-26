@@ -1,4 +1,4 @@
-package com.example.advanced_chrono2.view
+package com.example.advanced_chrono2.view.customViews
 
 import android.content.Context
 import android.util.AttributeSet
