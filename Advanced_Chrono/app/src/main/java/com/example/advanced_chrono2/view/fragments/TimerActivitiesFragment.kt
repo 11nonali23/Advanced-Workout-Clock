@@ -95,6 +95,8 @@ class TimerActivitiesFragment : Fragment(), TimerActivitiesContract.ITimerActivi
         timerItemAdapter.notifyDataSetChanged()
     }
 
+    override fun displayResult(message: String) = Toast.makeText(this.context, message, Toast.LENGTH_LONG).show()
+
     //END INTERFACE FUNCTIONS------------------------------------------------------------------------------------------
 
 
@@ -181,17 +183,14 @@ class TimerActivitiesFragment : Fragment(), TimerActivitiesContract.ITimerActivi
         dialogBuilder.setPositiveButton("SAVE ACTIVITY") { _, _ ->
             Toast.makeText(this.context, "ADDED", Toast.LENGTH_LONG).show()
 
+            val workoutMinutesText = dialogView.findViewById<EditText>(R.id.workout_minutes).text.toString()
+            val workoutSecondsText = dialogView.findViewById<EditText>(R.id.workout_seconds).text.toString()
+            val restMinutesText = dialogView.findViewById<EditText>(R.id.rest_minutes).text.toString()
+            val restSecondsText = dialogView.findViewById<EditText>(R.id.rest_seconds).text.toString()
 
-            val workoutSecondsText = dialogView.findViewById<EditText>(R.id.workout_minutes).toString()
-            val workoutSeconds: Long =
-                workoutSecondsText.toLong() * 60
-
-            val restSecondsText = dialogView.findViewById<EditText>(R.id.workout_minutes).toString()
-            val restSeconds: Long =
-                restSecondsText.toLong() * 60
 
             //TODO aggiungere tramite presenter
-            timerActivitiesPresenter.addNewTimerItem(workoutSeconds, restSeconds)
+            timerActivitiesPresenter.addNewTimerItem(workoutMinutesText, workoutSecondsText, restMinutesText, restSecondsText)
         }
 
         dialogBuilder.setNegativeButton("CANCEL") { dialogInterface, _ ->

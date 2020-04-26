@@ -40,4 +40,11 @@ object TimerActivitiesDatabaseHelper {
     {
         return activities.get(position).timerItems
     }
+
+    //TODO real db need position
+    fun addTimerItem(timerItemData: TimerItemData): Boolean
+    {
+        timerItems.add(timerItemData)
+        return true
+    }
 }

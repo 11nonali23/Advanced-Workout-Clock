@@ -14,7 +14,10 @@ interface TimerActivitiesContract
         fun onViewCreated()
 
         //ToDO it wil also need the position in the real app
-        fun addNewTimerItem(workoutSeconds: Long, restSeconds: Long)
+        fun addNewTimerItem(workoutMinutesText: String,
+                            workoutSecondsText: String,
+                            restMinutesText: String,
+                            restSecondsText: String)
 
         fun deleteItem()
     }
@@ -26,6 +29,8 @@ interface TimerActivitiesContract
         fun updateActivitiesView()
 
         fun updateTimerItemsView()
+
+        fun displayResult(message: String)
 
     }
 }
