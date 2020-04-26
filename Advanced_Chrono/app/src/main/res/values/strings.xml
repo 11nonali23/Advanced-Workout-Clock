@@ -23,4 +23,5 @@
     <string name="workout_indicator">workout</string>
     <string name="rest_indicator">rest</string>
     <string name="remaining_indicator">Remaining</string>
+    <string name="chrono_insert_hint">Insert name (ex: Rubik\'s cube)</string>
 </resources>
