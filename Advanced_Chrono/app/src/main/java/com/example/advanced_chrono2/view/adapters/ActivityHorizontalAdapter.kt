@@ -1,12 +1,12 @@
 package com.example.advanced_chrono2.view.adapters
 
 import android.content.Intent
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.advanced_chrono2.R
 import com.example.advanced_chrono2.TimerActivity
@@ -15,14 +15,15 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 //This adapter is used to control the horizontal activities of the timer
 
-class ActivityHorizontalAdapter (private val itemList: ArrayList<String>) : RecyclerView.Adapter<ActivityHorizontalAdapter.SwipableItemsHorizontalViewHolder>()
+class ActivityHorizontalAdapter (private val itemList: ArrayList<String>) : RecyclerView.Adapter<ActivityHorizontalAdapter.HorizontalItemsViewHolder>()
 {
 
-    inner class SwipableItemsHorizontalViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView), View.OnClickListener
+    inner class HorizontalItemsViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView), View.OnClickListener
     {
         var imageView: ImageView
         var textView: TextView
         val fab = itemView.findViewById<FloatingActionButton>(R.id.start_timerActivity_button)
+        val card = itemView.findViewById<CardView>(R.id.activityCard)
 
         init
         {
@@ -30,6 +31,7 @@ class ActivityHorizontalAdapter (private val itemList: ArrayList<String>) : Recy
             this.textView = itemView.findViewById(R.id.text_activity)
             itemView.setOnClickListener(this)
             fab.setOnClickListener(this)
+            card.setOnClickListener(this)
 
         }
 
@@ -39,22 +41,21 @@ class ActivityHorizontalAdapter (private val itemList: ArrayList<String>) : Recy
             //TODO implement an explicit intent for timer activity passing the data of the current position item
             if (v?.id == fab.id)
             {
-                Log.e("FABSEARCH", "FOUND :). POSITION $layoutPosition")
-
                 val intent = Intent(v.context, TimerActivity::class.java)
-
                 v.context.startActivity(intent)
             }
-            else
-                Log.e("FABSEARCH","NOT FOUND :)")
+            else if (v?.id == card.id)
+                v.isSelected = !v.isSelected
+
+
         }
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SwipableItemsHorizontalViewHolder
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): HorizontalItemsViewHolder
     {
         var v = LayoutInflater.from(parent.context).inflate(R.layout.timer_activity_layout,parent,false)
 
-        return SwipableItemsHorizontalViewHolder(v)
+        return HorizontalItemsViewHolder(v)
     }
 
     override fun getItemCount(): Int
@@ -62,7 +63,7 @@ class ActivityHorizontalAdapter (private val itemList: ArrayList<String>) : Recy
         return itemList.size
     }
 
-    override fun onBindViewHolder(holder: SwipableItemsHorizontalViewHolder, position: Int)
+    override fun onBindViewHolder(holder: HorizontalItemsViewHolder, position: Int)
     {
         holder.textView.text = itemList[position]
     }

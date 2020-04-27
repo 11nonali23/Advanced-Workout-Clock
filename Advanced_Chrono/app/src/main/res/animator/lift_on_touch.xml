@@ -1,22 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <set>
     <selector xmlns:android="http://schemas.android.com/apk/res/android">
-        <item android:state_enabled="true" android:state_pressed="true">
+        <item android:state_selected="true">
             <set>
-                <objectAnimator android:duration="@android:integer/config_longAnimTime"
-                    android:propertyName="translationZ"
+                <objectAnimator android:duration="@android:integer/config_shortAnimTime"
+                    android:propertyName="y"
                     android:valueTo="20dp"
                     android:valueType="floatType"/>
             </set>
         </item>
-        <item>
+
+        <item android:state_selected="false">
             <set>
-                <objectAnimator
-                    android:duration="@android:integer/config_longAnimTime"
-                    android:propertyName="translationZ"
-                    android:valueTo="0"
-                    android:valueType="floatType" />
+                <objectAnimator android:duration="@android:integer/config_shortAnimTime"
+                    android:propertyName="y"
+                    android:valueTo="40dp"
+                    android:valueType="floatType"/>
             </set>
         </item>
     </selector>
 </set>
+
