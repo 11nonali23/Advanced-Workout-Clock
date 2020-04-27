@@ -4,10 +4,8 @@ import android.app.AlertDialog
 import android.os.Bundle
 import android.os.SystemClock
 import android.util.Log
+import android.view.*
 import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.EditText
 import android.widget.Toast
@@ -64,6 +62,13 @@ class HomeChronometerFragment : Fragment(), HomeChronometerContract.IHomeChronom
     {
         super.onCreate(savedInstanceState)
         Log.d(TAG, "FRAGMENT HOME CREATED")
+        setHasOptionsMenu(true)
+    }
+
+    //Setting the options menu
+    override fun onCreateOptionsMenu(menu: Menu, menuInflater: MenuInflater)
+    {
+        menuInflater.inflate(R.menu.home_menu, menu)
     }
 
     //After the activity is created i have to set-up the components for the chronometer

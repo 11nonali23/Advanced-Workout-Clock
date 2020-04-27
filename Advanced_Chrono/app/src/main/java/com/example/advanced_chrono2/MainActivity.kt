@@ -44,16 +44,6 @@ class MainActivity : AppCompatActivity() {
                 2 -> tab.text = resources.getString(R.string.data_tab_indicator)
             }
         }.attach()
-
-
-        //TODO mettere a posto correttamente
-        window?.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN)
     }
 
-    //Setting the options menu
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean
-    {
-        menuInflater.inflate(R.menu.home_menu, menu)
-        return true
-    }
 }
