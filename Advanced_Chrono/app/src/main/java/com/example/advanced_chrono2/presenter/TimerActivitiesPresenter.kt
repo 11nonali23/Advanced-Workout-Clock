@@ -13,7 +13,7 @@ class TimerActivitiesPresenter(val fragment: TimerActivitiesContract.ITimerActiv
     companion object
     {
         private const val numberFormatExceptionMessage = "Error: only numbers are accepted"
-        private const val emptyFieldMessage = "Error. Use at least one field for rest e workout"
+        private const val emptyFieldMessage = "Error. Use at least one field for both rest e workout"
         private const val internalErroMessage = "Sorry, internal error"
     }
 
@@ -59,7 +59,7 @@ class TimerActivitiesPresenter(val fragment: TimerActivitiesContract.ITimerActiv
             restMinutesInSeconds = if (restMinutesText.isNotEmpty()) restMinutesText.toLong() * 60  else 0L
             restSeconds = if(restSecondsText.isNotEmpty()) restSecondsText.toLong() else 0L
         }
-        catch (nexc: NumberFormatException){
+        catch (exc: NumberFormatException){
             fragment.displayResult(numberFormatExceptionMessage)
             return
         }

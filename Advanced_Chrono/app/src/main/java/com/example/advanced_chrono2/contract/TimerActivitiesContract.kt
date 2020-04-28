@@ -11,6 +11,7 @@ interface TimerActivitiesContract
 
     interface ITimerActivitiesPresenter
     {
+        //first steps to do when a view is created
         fun onViewCreated()
 
         //ToDO it wil also need the position in the real app
@@ -19,6 +20,7 @@ interface TimerActivitiesContract
                             restMinutesText: String,
                             restSecondsText: String)
 
+        //TODO need to understand what parameter pass
         fun deleteItem()
     }
 
@@ -34,6 +36,5 @@ interface TimerActivitiesContract
         fun updateTimerItemsView()
 
         fun displayResult(message: String)
-
     }
 }

@@ -29,6 +29,12 @@ class TimerItemsAdapter(private val timerList: ArrayList<TimerItemData>)
 
 {
 
+    companion object
+    {
+        private const val MIN_SYMBOL = "\'"
+        private const val SEC_SYMBOL = "\'\'"
+    }
+
     private lateinit var itemTouchHelper: ItemTouchHelper
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SwipableItemsViewHolder
@@ -48,8 +54,23 @@ class TimerItemsAdapter(private val timerList: ArrayList<TimerItemData>)
 
         holder.imageView.setImageResource(curr.imageResource)
 
-        holder.workoutTextView.text = "workout: ${curr.workoutSeconds}"
-        holder.restTextView.text = "rest: ${curr.restSeconds}"
+        //setting timer item view text with minutes (if seconds > 60) and seconds
+        //if seconds > 60: minutes = seconds/60, seconds = seconds%60
+        //MINUTES
+        if(curr.workoutSeconds > 60)
+            holder.workoutTextView.text = "work ${curr.workoutSeconds/60}$MIN_SYMBOL ${curr.workoutSeconds%60}$SEC_SYMBOL"
+        else if (curr.workoutSeconds == 60L)
+            holder.workoutTextView.text = "work 1$MIN_SYMBOL"
+        else
+            holder.workoutTextView.text = "work ${curr.workoutSeconds}$SEC_SYMBOL"
+
+        //SECONDS
+        if(curr.restSeconds >= 60)
+            holder.restTextView.text = "rest ${curr.restSeconds/60}$MIN_SYMBOL ${curr.restSeconds%60}$SEC_SYMBOL"
+        else if (curr.restSeconds == 60L)
+            holder.restTextView.text = "rest 1$MIN_SYMBOL"
+        else
+            holder.restTextView.text = "rest ${curr.restSeconds}$SEC_SYMBOL"
     }
 
 
