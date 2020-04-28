@@ -1,15 +1,16 @@
-package com.example.advanced_chrono2.view.adapters
+package com.example.advanced_chrono2.view.custom_adapters
 
 import android.graphics.Color
+import android.util.Log
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 
 //This class helps the timer items in Timer Fragment to be swipable left and right and ti be draggable up and down
 
-class ItemMovementHelper(
+class SwipeDragCallbackHelper(
     dragDirs: Int,
     swipeDirs: Int,
-    private val adapter: SwipableItemsAdapter
+    private val adapter: TimerItemsAdapter
 
 ) : ItemTouchHelper.SimpleCallback(dragDirs, swipeDirs)
 
@@ -66,6 +67,7 @@ class ItemMovementHelper(
         target: RecyclerView.ViewHolder
     ): Boolean
     {
+        Log.e("CALLBACK", "I WILL HANDLE MOVEMENT")
         adapter.onItemMove(viewHolder.layoutPosition, target.layoutPosition)
         return true
     }

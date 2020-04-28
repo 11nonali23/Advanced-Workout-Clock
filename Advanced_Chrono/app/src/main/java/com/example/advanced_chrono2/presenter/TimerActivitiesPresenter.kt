@@ -2,6 +2,7 @@ package com.example.advanced_chrono2.presenter
 
 import com.example.advanced_chrono2.contract.TimerActivitiesContract
 import com.example.advanced_chrono2.model.TimerActivitiesDatabaseHelper
+import com.example.advanced_chrono2.model.TimerActivityData
 import com.example.advanced_chrono2.model.TimerItemData
 import com.example.advanced_chrono2.view.fragments.TimerActivitiesFragment
 import java.lang.NumberFormatException
@@ -16,15 +17,12 @@ class TimerActivitiesPresenter(val fragment: TimerActivitiesContract.ITimerActiv
         private const val internalErroMessage = "Sorry, internal error"
     }
 
-    private val activitiesName: ArrayList<String> =
-        TimerActivitiesDatabaseHelper.getAllActivitiesName() as ArrayList<String>  //List of activity names to pass to the activity
-
-    private val timerActivities: ArrayList<TimerItemData> =
-        TimerActivitiesDatabaseHelper.getTimerItemData(0)
+    private val activities: ArrayList<TimerActivityData> =
+        TimerActivitiesDatabaseHelper.getAllActivities()  //List of activity names to pass to the activity
 
     override fun onViewCreated()
     {
-        fragment.setUpView(activitiesName, timerActivities)
+        fragment.setUpView(activities)
     }
 
     override fun addNewTimerItem(
@@ -68,7 +66,7 @@ class TimerActivitiesPresenter(val fragment: TimerActivitiesContract.ITimerActiv
 
 
         val newTimerItemData =
-            TimerItemData(TimerActivitiesFragment.itemLogo,
+            TimerItemData(TimerActivitiesContract.ITimerActivitiesView.itemLogo,
                 workoutMinutesInSeconds + workoutSeconds,
                 restMinutesInSeconds + restSeconds)
 

@@ -1,6 +1,7 @@
-package com.example.advanced_chrono2.view.adapters
+package com.example.advanced_chrono2.view.custom_adapters
 
 
+import android.util.Log
 import android.view.*
 import android.widget.ImageView
 import android.widget.TextView
@@ -10,8 +11,10 @@ import androidx.recyclerview.widget.RecyclerView.Adapter
 import com.example.advanced_chrono2.R
 import com.example.advanced_chrono2.model.TimerItemData
 import java.util.*
+import kotlin.collections.ArrayList
 
-//This adapter is used to manage the items of the activities taht can be swiped to be deleted and also moved around them
+/*This adapter is used to manage the items of the activities.
+ They can be swiped to be deleted and also dragged into another position*/
 
 //Interface for behaviour on item swiped and dragged
 interface ItemTouchHelperAdapter
@@ -20,19 +23,17 @@ interface ItemTouchHelperAdapter
     fun onItemDismiss(position: Int)
 }
 
-class SwipableItemsAdapter() : Adapter<SwipableItemsAdapter.SwipableItemsViewHolder>(), ItemTouchHelperAdapter
-{
-    private lateinit var timerList: ArrayList<TimerItemData>
-    private lateinit var itemTouchHelper: ItemTouchHelper      //the item touch helper will be itemMovementHelper
+class TimerItemsAdapter(private val timerList: ArrayList<TimerItemData>)
 
-    constructor(exampleList: ArrayList<TimerItemData>): this()
-    {
-        this.timerList = exampleList
-    }
+    : Adapter<TimerItemsAdapter.SwipableItemsViewHolder>(), ItemTouchHelperAdapter
+
+{
+
+    private lateinit var itemTouchHelper: ItemTouchHelper
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SwipableItemsViewHolder
     {
-        var v = LayoutInflater.from(parent.context).inflate(R.layout.timer_item_layout ,parent,false)
+        val v = LayoutInflater.from(parent.context).inflate(R.layout.timer_item_layout ,parent,false)
         return SwipableItemsViewHolder(v)
     }
 
@@ -43,7 +44,7 @@ class SwipableItemsAdapter() : Adapter<SwipableItemsAdapter.SwipableItemsViewHol
 
     override fun onBindViewHolder(holder: SwipableItemsViewHolder, position: Int)
     {
-        var curr = timerList.get(position)
+        val curr = timerList.get(position)
 
         holder.imageView.setImageResource(curr.imageResource)
 
@@ -52,19 +53,27 @@ class SwipableItemsAdapter() : Adapter<SwipableItemsAdapter.SwipableItemsViewHol
     }
 
 
-    fun setTouchHelper(itemTouchHelper: ItemTouchHelper)
+    //GETTER AND SETTER
+    //This method is used to tell the Adapter which item touch helper is attached to him.
+    //I can' t make this a field beacuse the touch helper needs the adapter to call his metods
+    fun setItemTouchHelper(itemTouchHelper: ItemTouchHelper)
     {
         this.itemTouchHelper = itemTouchHelper
     }
 
+    //This method will be used every time the user changes the selected activity
+
+    fun setTimerList(newTimerList: ArrayList<TimerItemData>)
+    {
+        //this.timerList = newTimerList
+    }
+
+    //INTERFACE FUNCTIONS-----------------------------------------------------------------------------------------------
     override fun onItemMove(fromPosition: Int, toPosition: Int)
     {
-        if (fromPosition < toPosition)
-            for (i in fromPosition until toPosition)
-                Collections.swap(timerList, i, i + 1)
-        else
-            for (i in fromPosition downTo toPosition + 1)
-                Collections.swap(timerList, i, i - 1)
+        Log.e("TIMER ITEM ADAPTER", "from : $fromPosition , to: $toPosition")
+
+        Collections.swap(this.timerList, fromPosition, toPosition)
 
         notifyItemMoved(fromPosition, toPosition)
     }
@@ -74,7 +83,7 @@ class SwipableItemsAdapter() : Adapter<SwipableItemsAdapter.SwipableItemsViewHol
         timerList.removeAt(position)
         notifyItemRemoved(position)
     }
-
+    //END INTERFACE FUNCTIONS-----------------------------------------------------------------------------------------------
 
     inner class SwipableItemsViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView), View.OnTouchListener,GestureDetector.OnGestureListener
     {
@@ -137,6 +146,7 @@ class SwipableItemsAdapter() : Adapter<SwipableItemsAdapter.SwipableItemsViewHol
         override fun onTouch(v: View?, event: MotionEvent?): Boolean
         {
             mGestureDetector?.onTouchEvent(event)
+            v?.performClick()
             return true
         }
     }

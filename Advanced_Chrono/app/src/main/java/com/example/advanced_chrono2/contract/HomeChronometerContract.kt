@@ -7,11 +7,11 @@ interface HomeChronometerContract
 
     interface IHomeChronometerView
     {
-        fun displayResult(result: String)
-
         fun setUpSpinnerView(activitiesName: List<String>)
 
         fun updateActivitiesList()
+
+        fun displayResult(result: String)
 
     }
 

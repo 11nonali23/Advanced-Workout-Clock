@@ -1,4 +1,4 @@
-package com.example.advanced_chrono2.view.adapters
+package com.example.advanced_chrono2.view.custom_adapters
 
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
@@ -10,9 +10,9 @@ import com.example.advanced_chrono2.view.fragments.HomeChronometerFragment
 
 class ViewPagerAdapter(fa: FragmentActivity)  : FragmentStateAdapter(fa)
 {
-    companion object { private const val pages = 3 }
+    companion object { private const val PAGES = 3 }
 
-    override fun getItemCount(): Int  {return pages }
+    override fun getItemCount(): Int  = PAGES
 
     override fun createFragment(position: Int): Fragment
     {

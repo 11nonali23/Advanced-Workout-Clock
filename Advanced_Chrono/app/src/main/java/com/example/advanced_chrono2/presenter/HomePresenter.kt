@@ -1,7 +1,7 @@
 package com.example.advanced_chrono2.presenter
 
 import com.example.advanced_chrono2.contract.HomeChronometerContract
-import com.example.advanced_chrono2.model.ActivityData
+import com.example.advanced_chrono2.model.ChronoActivityData
 import com.example.advanced_chrono2.model.HomeDatabaseHelper
 
 class HomePresenter(val fragment: HomeChronometerContract.IHomeChronometerView) : HomeChronometerContract.IHomePresenter
@@ -21,7 +21,7 @@ class HomePresenter(val fragment: HomeChronometerContract.IHomeChronometerView) 
     {
         if (activityName.isNotEmpty())
         {
-            val newActivityData = ActivityData(activityName, ArrayList())
+            val newActivityData = ChronoActivityData(activityName, ArrayList())
 
             if(HomeDatabaseHelper.addActivity(newActivityData))
             {

@@ -12,13 +12,14 @@ import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.advanced_chrono2.R
-import com.example.advanced_chrono2.view.adapters.ActivityHorizontalAdapter
-import com.example.advanced_chrono2.view.adapters.ItemMovementHelper
-import com.example.advanced_chrono2.view.adapters.SwipableItemsAdapter
+import com.example.advanced_chrono2.view.custom_adapters.TimerActivitiesAdapter
+import com.example.advanced_chrono2.view.custom_adapters.SwipeDragCallbackHelper
 import com.example.advanced_chrono2.contract.TimerActivitiesContract
+import com.example.advanced_chrono2.model.TimerActivityData
 import com.example.advanced_chrono2.model.TimerItemData
 import com.example.advanced_chrono2.presenter.TimerActivitiesPresenter
-import kotlinx.android.synthetic.main.timer_items_layout.*
+import com.example.advanced_chrono2.view.custom_adapters.TimerItemsAdapter
+import kotlinx.android.synthetic.main.timer_personalize_activities_layout.*
 
 
 //Provvisorio per lista di attività
@@ -28,7 +29,6 @@ class TimerActivitiesFragment : Fragment(), TimerActivitiesContract.ITimerActivi
     companion object
     {
         private const val TAG = "TIMER FRAGMENT CICLE"
-        const val itemLogo = R.drawable.ic_timer_black
     }
 
     private val timerActivitiesPresenter:
@@ -37,11 +37,11 @@ class TimerActivitiesFragment : Fragment(), TimerActivitiesContract.ITimerActivi
     private lateinit var activityItemList: RecyclerView
     private lateinit var activityList: RecyclerView
 
-    private lateinit var timerItemAdapter: SwipableItemsAdapter
-    private lateinit var activityItemAdapter: ActivityHorizontalAdapter
+    private lateinit var timerItemAdapter: TimerItemsAdapter
+    private lateinit var activityItemAdapter: TimerActivitiesAdapter
 
     private lateinit var itemTouchHelper: ItemTouchHelper
-    private lateinit var itemHelperOnSwipe: ItemTouchHelper.SimpleCallback
+    private lateinit var swipeDragCallbackHelper: SwipeDragCallbackHelper
 
     //This method shows when a new fragment is created
     override fun onCreate(savedInstanceState: Bundle?)
@@ -64,7 +64,7 @@ class TimerActivitiesFragment : Fragment(), TimerActivitiesContract.ITimerActivi
         savedInstanceState: Bundle?
     ): View?
     {
-        return inflater.inflate(R.layout.timer_items_layout, container, false)
+        return inflater.inflate(R.layout.timer_personalize_activities_layout, container, false)
     }
 
 
@@ -82,11 +82,16 @@ class TimerActivitiesFragment : Fragment(), TimerActivitiesContract.ITimerActivi
 
     //INTERFACE FUNCTIONS------------------------------------------------------------------------------------------
 
-    override fun setUpView(activities: List<String>, timerItems: List<TimerItemData>)
+    override fun setUpView(activities: List<TimerActivityData>)
     {
         createActivityList(activities)
-        createItemList(timerItems)
-        setListsMoventBehaviour()
+
+        //TODO make correct for every position
+        //the activity list passes her list retrived from model via the presenter to the adapter.
+        createItemList(activities[0].timerItems)
+
+        setTimerItemsListMovementBehaviour()
+
     }
 
     override fun updateActivitiesView()
@@ -105,7 +110,7 @@ class TimerActivitiesFragment : Fragment(), TimerActivitiesContract.ITimerActivi
 
 
     //HELPER FUNCTIONS---------------------------------------------------------------------------------------------------
-    private fun createActivityList(activities: List<String>)
+    private fun createActivityList(activities: List<TimerActivityData>)
     {
         this.activityList = activity_recycle
 
@@ -113,7 +118,7 @@ class TimerActivitiesFragment : Fragment(), TimerActivitiesContract.ITimerActivi
 
         activityList.layoutManager = LinearLayoutManager(this.context, LinearLayoutManager.HORIZONTAL, false)
 
-        activityItemAdapter = ActivityHorizontalAdapter(activities as ArrayList<String>)
+        activityItemAdapter = TimerActivitiesAdapter(activities as ArrayList<TimerActivityData>)
         activityList.adapter = activityItemAdapter
 
         setActivityListDecoration()
@@ -137,13 +142,15 @@ class TimerActivitiesFragment : Fragment(), TimerActivitiesContract.ITimerActivi
         })
     }
 
+
+    //Create the list of items view connected to an activity
     private fun createItemList(timerItems: List<TimerItemData>)
     {
         activityItemList = activity_item_recycler
 
         activityItemList.setHasFixedSize(true)
 
-        timerItemAdapter = SwipableItemsAdapter(timerItems as ArrayList<TimerItemData>)
+        timerItemAdapter = TimerItemsAdapter(timerItems as ArrayList<TimerItemData>)
 
         activityItemList.layoutManager = LinearLayoutManager(this.context)
         activityItemList.adapter = timerItemAdapter
@@ -161,22 +168,24 @@ class TimerActivitiesFragment : Fragment(), TimerActivitiesContract.ITimerActivi
         })
     }
 
-    private fun setListsMoventBehaviour()
+    private fun setTimerItemsListMovementBehaviour()
     {
         //itemMovementHelper defines behaviour of recyclerView on user inputs
-        itemHelperOnSwipe =
-            ItemMovementHelper(
+        swipeDragCallbackHelper =
+            SwipeDragCallbackHelper(
                 ItemTouchHelper.UP or ItemTouchHelper.DOWN,
                 ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT,
                 timerItemAdapter
             )
 
-        itemTouchHelper = ItemTouchHelper(itemHelperOnSwipe)
+        itemTouchHelper = ItemTouchHelper(swipeDragCallbackHelper)
 
-        timerItemAdapter.setTouchHelper(itemTouchHelper)
+        //Set the touch helper after beacuse the swipeDragCallbackHelper needs to know the adpater
+        timerItemAdapter.setItemTouchHelper(itemTouchHelper)
 
         itemTouchHelper.attachToRecyclerView(activityItemList)
     }
+
 
     private fun showAddTimerItemDialog()
     {

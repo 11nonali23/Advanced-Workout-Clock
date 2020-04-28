@@ -144,8 +144,6 @@ class HomeChronometerFragment : Fragment(), HomeChronometerContract.IHomeChronom
 
     //INTERFACE FUNCTIONS------------------------------------------------------------------------------------------
 
-    override fun displayResult(result: String) = Toast.makeText(this.context, result, Toast.LENGTH_LONG).show()
-
     override fun setUpSpinnerView(activitiesName: List<String>)
     {
         this.spinnerAdapter = ArrayAdapter(this.context!!,
@@ -159,6 +157,8 @@ class HomeChronometerFragment : Fragment(), HomeChronometerContract.IHomeChronom
     {
         spinnerAdapter.notifyDataSetChanged()
     }
+
+    override fun displayResult(result: String) = Toast.makeText(this.context, result, Toast.LENGTH_LONG).show()
 
     //END INTERFACE FUNCTIONS------------------------------------------------------------------------------------------
 

@@ -1,5 +1,6 @@
 package com.example.advanced_chrono2.model
 
+import com.example.advanced_chrono2.contract.TimerActivitiesContract
 import com.example.advanced_chrono2.view.fragments.TimerActivitiesFragment
 
 /* This class is a singleton one ---> https://blog.mindorks.com/how-to-create-a-singleton-class-in-kotlin*/
@@ -10,35 +11,27 @@ object TimerActivitiesDatabaseHelper {
 
     val activities: ArrayList<TimerActivityData> = ArrayList()
     private val timerItems = ArrayList<TimerItemData>()         //mokup items. All activities will have the same
-    val activitiesName: ArrayList<String> = ArrayList()   //List of activity names to pass to the activity
 
     init {
-        timerItems.add(TimerItemData(TimerActivitiesFragment.itemLogo, 20, 5))
-        timerItems.add(TimerItemData(TimerActivitiesFragment.itemLogo, 30, 15))
-        timerItems.add(TimerItemData(TimerActivitiesFragment.itemLogo, 40, 25))
-        timerItems.add(TimerItemData(TimerActivitiesFragment.itemLogo, 50, 35))
-        timerItems.add(TimerItemData(TimerActivitiesFragment.itemLogo, 60, 45))
-        timerItems.add(TimerItemData(TimerActivitiesFragment.itemLogo, 70, 55))
+        timerItems.add(TimerItemData(TimerActivitiesContract.ITimerActivitiesView.itemLogo, 20, 5))
+        timerItems.add(TimerItemData(TimerActivitiesContract.ITimerActivitiesView.itemLogo, 30, 15))
+        timerItems.add(TimerItemData(TimerActivitiesContract.ITimerActivitiesView.itemLogo, 40, 25))
+        timerItems.add(TimerItemData(TimerActivitiesContract.ITimerActivitiesView.itemLogo, 50, 35))
+        timerItems.add(TimerItemData(TimerActivitiesContract.ITimerActivitiesView.itemLogo, 60, 45))
+        timerItems.add(TimerItemData(TimerActivitiesContract.ITimerActivitiesView.itemLogo, 70, 55))
 
 
-        activities.add(TimerActivityData("Activity 1", timerItems))
-        activities.add(TimerActivityData("Activity 2", timerItems))
-        activities.add(TimerActivityData("Activity 3", timerItems))
-        activities.add(TimerActivityData("Activity 4", timerItems))
-        activities.add(TimerActivityData("Activity 5", timerItems))
-
-        activities.forEach { activitiesName.add(it.name) }
+        activities.add(TimerActivityData("BICEPS", timerItems))
+        activities.add(TimerActivityData("LEGS", timerItems))
+        activities.add(TimerActivityData("CHEST", timerItems))
+        activities.add(TimerActivityData("CARDIO", timerItems))
+        activities.add(TimerActivityData("STRETCHING", timerItems))
     }
 
 
-    fun getAllActivitiesName(): List<String>
+    fun getAllActivities(): ArrayList<TimerActivityData>
     {
-        return activitiesName
-    }
-
-    fun getTimerItemData(position: Int): ArrayList<TimerItemData>
-    {
-        return activities.get(position).timerItems
+        return activities
     }
 
     //TODO real db need position
