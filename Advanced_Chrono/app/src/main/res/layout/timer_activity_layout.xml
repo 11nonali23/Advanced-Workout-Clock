@@ -37,11 +37,6 @@
             android:layout_alignParentTop="true"
             android:layout_toEndOf="@id/image"/>
 
-        <ImageView
-            android:id="@+id/image_activity"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_gravity="center"/>
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/start_timerActivity_button"

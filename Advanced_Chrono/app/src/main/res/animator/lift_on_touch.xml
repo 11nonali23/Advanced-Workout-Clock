@@ -14,7 +14,7 @@
             <set>
                 <objectAnimator android:duration="@android:integer/config_shortAnimTime"
                     android:propertyName="y"
-                    android:valueTo="40dp"
+                    android:valueTo="45dp"
                     android:valueType="floatType"/>
             </set>
         </item>
