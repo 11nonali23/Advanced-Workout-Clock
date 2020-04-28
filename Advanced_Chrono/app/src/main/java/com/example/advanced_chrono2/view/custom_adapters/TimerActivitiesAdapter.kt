@@ -72,7 +72,8 @@ class TimerActivitiesAdapter (private val itemList: ArrayList<TimerActivityData>
             {
                 //explicit intent for timer activity passing the data of the current position item
                 val intent = Intent(v.context, TimerActivity::class.java)
-                intent.putExtra(EXTRA_NAME, itemList[this.absoluteAdapterPosition].timerItems)
+                //TODO i need to implement java.io.Serializable
+                //intent.putExtra(EXTRA_NAME, itemList[this.absoluteAdapterPosition].timerItems)
                 v.context.startActivity(intent)
             }
             else if (v?.id == card.id)

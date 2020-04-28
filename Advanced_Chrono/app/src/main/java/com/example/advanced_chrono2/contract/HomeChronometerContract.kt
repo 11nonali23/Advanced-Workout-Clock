@@ -25,4 +25,16 @@ interface HomeChronometerContract
 
         fun saveTempo(tempo: Long)
     }
+
+    interface IHomeModel
+    {
+        fun getAllActivitiesName(): ArrayList<String>
+
+        fun addNewActivity(name: String)
+
+        fun deleteActivity(activityId: Int)
+
+        fun addNewTiming(time: Long, timestamp: Long, activityId: Int)
+
+    }
 }
