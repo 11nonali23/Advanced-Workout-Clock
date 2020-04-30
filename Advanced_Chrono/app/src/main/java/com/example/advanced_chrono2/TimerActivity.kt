@@ -230,7 +230,7 @@ class TimerActivity : AppCompatActivity()
 
         if (isWorkout)
         {
-            currTimerLengthSeconds = (lenghtInMinutes * currTimerItemData.workoutSeconds)
+            currTimerLengthSeconds = ((lenghtInMinutes * currTimerItemData.workoutSeconds).toLong())
             progress_circular.max = currTimerLengthSeconds.toInt()
             progress_circular.progress = progress_circular.max
 
@@ -239,7 +239,7 @@ class TimerActivity : AppCompatActivity()
         }
         else
         {
-            currTimerLengthSeconds = (lenghtInMinutes * currTimerItemData.restSeconds)
+            currTimerLengthSeconds = ((lenghtInMinutes * currTimerItemData.restSeconds).toLong())
             progress_circular_rest.max = currTimerLengthSeconds.toInt()
         }
     }

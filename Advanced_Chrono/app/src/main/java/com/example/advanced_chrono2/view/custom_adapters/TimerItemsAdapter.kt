@@ -59,7 +59,7 @@ class TimerItemsAdapter(private val timerList: ArrayList<TimerItem>)
         //MINUTES
         if(curr.workoutSeconds > 60)
             holder.workoutTextView.text = "work ${curr.workoutSeconds/60}$MIN_SYMBOL ${curr.workoutSeconds%60}$SEC_SYMBOL"
-        else if (curr.workoutSeconds == 60L)
+        else if (curr.workoutSeconds == 60)
             holder.workoutTextView.text = "work 1$MIN_SYMBOL"
         else
             holder.workoutTextView.text = "work ${curr.workoutSeconds}$SEC_SYMBOL"
@@ -67,7 +67,7 @@ class TimerItemsAdapter(private val timerList: ArrayList<TimerItem>)
         //SECONDS
         if(curr.restSeconds >= 60)
             holder.restTextView.text = "rest ${curr.restSeconds/60}$MIN_SYMBOL ${curr.restSeconds%60}$SEC_SYMBOL"
-        else if (curr.restSeconds == 60L)
+        else if (curr.restSeconds == 60)
             holder.restTextView.text = "rest 1$MIN_SYMBOL"
         else
             holder.restTextView.text = "rest ${curr.restSeconds}$SEC_SYMBOL"

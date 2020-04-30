@@ -17,11 +17,11 @@ class ChronometerActivitiesDB(context: Context) :
     {
         private const val TAG = "HOME DB"
 
-        private var DATABASE_VERSION = 3
+        private var DATABASE_VERSION = 4
         private const val DATABASE_NAME = "ChronometerDb"
 
         //Name of activity table
-        private const val ACTIVITY_TABLE_NAME = "activity"
+        private const val ACTIVITY_TABLE_NAME = "chronometer_activity"
         //Keys of activity
         private const val KEY_ID = "id"/*The protection from id overflow is intrinsic in the application. It is more than highly improbable that someone creates that much activities*/
         private const val KEY_NAME = "name"
@@ -32,7 +32,7 @@ class ChronometerActivitiesDB(context: Context) :
         private const val KEY_TIME = "time"
         private const val KEY_TIMESTAMP = "timestamp"
         private const val KEY_ID_FOREIGN = "activity_id"
-        private const val ON_UPDTAE_ON_DELETE_TIMING = "ON DELETE CASCADE ON UPDATE CASCADE"
+        private const val ON_UPDATE_ON_DELETE_TIMING = "ON DELETE CASCADE ON UPDATE CASCADE"
 
         //create activity entries. Avoid using autoincrement for bad performances:
         private const val SQL_CREATE_ACTIVITY_ENTRIES =
@@ -45,7 +45,7 @@ class ChronometerActivitiesDB(context: Context) :
                     "$KEY_TIME REAL NOT NULL," +
                     "$KEY_TIMESTAMP INTEGER NOT NULL," +
                     "$KEY_ID_FOREIGN INTEGER NOT NULL," +
-                    "FOREIGN KEY($KEY_ID_FOREIGN) REFERENCES $ACTIVITY_TABLE_NAME($KEY_ID) $ON_UPDTAE_ON_DELETE_TIMING);"
+                    "FOREIGN KEY($KEY_ID_FOREIGN) REFERENCES $ACTIVITY_TABLE_NAME($KEY_ID) $ON_UPDATE_ON_DELETE_TIMING);"
 
         private const val SQL_DELETE_ACTIVITY_ENTRIES = "DROP TABLE IF EXISTS $ACTIVITY_TABLE_NAME"
 

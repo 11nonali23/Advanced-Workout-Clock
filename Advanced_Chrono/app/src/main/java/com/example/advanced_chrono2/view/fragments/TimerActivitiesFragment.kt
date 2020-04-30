@@ -88,7 +88,7 @@ class TimerActivitiesFragment : Fragment(), TimerActivitiesContract.ITimerActivi
 
         //TODO make correct for every position
         //the activity list passes her list retrived from model via the presenter to the adapter.
-        createItemList(activities[0].timerItems)
+        activities[0].timerItems?.let { createItemList(it) }
 
         setTimerItemsListMovementBehaviour()
 

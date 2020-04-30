@@ -6,7 +6,8 @@ import android.database.sqlite.SQLiteOpenHelper
 import com.example.advanced_chrono2.contract.TimerActivitiesContract
 
 class TimerActivitiesDB(context: Context) :
-    SQLiteOpenHelper(context,
+    SQLiteOpenHelper(
+        context,
         DATABASE_NAME, null,
         DATABASE_VERSION
     ),
@@ -20,7 +21,7 @@ class TimerActivitiesDB(context: Context) :
         private const val DATABASE_NAME = "timerActivitiesDb"
 
         //Name of activity table
-        private const val ACTIVITY_TABLE_NAME = "activity"
+        private const val ACTIVITY_TABLE_NAME = "timer_activity"
         //Keys of activity
         private const val KEY_ACTIVITY_ID = "id"/*The protection from id overflow is intrinsic in the application. It is more than highly improbable that someone creates that much activities*/
         private const val KEY_NAME = "name"
@@ -44,21 +45,61 @@ class TimerActivitiesDB(context: Context) :
         private const val SQL_CREATE_ITEM_ENTRIES =
             "CREATE TABLE $ITEM_TABLE_NAME(" +
                     "$KEY_ITEM_ID INTEGER PRIMARY KEY," +
-                    "$KEY_NAME TEXT UNIQUE NOT NULL);"
+                    "$KEY_WORKOUT_SEC INTEGER NOT NULL," +
+                    "$KEY_REST_SEC INTEGER NOT NULL," +
+                    "$KEY_FOREIGN_ACTIVITY_ID INTEGER NOT NULL" +
+                    "FOREIGN KEY($KEY_FOREIGN_ACTIVITY_ID) REFERENCES $ACTIVITY_TABLE_NAME($KEY_ACTIVITY_ID) $ON_UPDTAE_ON_DELETE_ITEM);"
+
+        private const val SQL_DELETE_ACTIVITY_ENTRIES = "DROP TABLE IF EXISTS $ACTIVITY_TABLE_NAME"
+
+        private const val SQL_DELETE_ITEM_ENTRIES = "DROP TABLE IF EXISTS $ITEM_TABLE_NAME"
+
+        private const val SQL_SELECT_ALL_ACTIVITIES = "SELECT * FROM $ACTIVITY_TABLE_NAME"
+
+        private const val SQL_SELECT_ACTIVITY_ITEMS =
+            "SELECT * " +
+            "FROM $ITEM_TABLE_NAME" +
+            "WHERE $KEY_ACTIVITY_ID = ?"
     }
 
 
 
-    override fun onCreate(db: SQLiteDatabase?) {
-        TODO("Not yet implemented")
+    override fun onCreate(db: SQLiteDatabase?)
+    {
+        db?.execSQL(SQL_CREATE_ACTIVITY_ENTRIES)
+        db?.execSQL(SQL_CREATE_ITEM_ENTRIES)
     }
 
-    override fun onUpgrade(db: SQLiteDatabase?, oldVersion: Int, newVersion: Int) {
-        TODO("Not yet implemented")
+    override fun onUpgrade(db: SQLiteDatabase?, oldVersion: Int, newVersion: Int)
+    {
+        db?.execSQL(SQL_DELETE_ACTIVITY_ENTRIES)
+        db?.execSQL(SQL_DELETE_ITEM_ENTRIES)
+
+        onCreate(db)
     }
 
-    override fun getAllActivities(): ArrayList<TimerActivity> {
-        TODO("Not yet implemented")
+    override fun getAllActivities(): ArrayList<TimerActivity>
+    {
+        val activities: ArrayList<TimerActivity> = ArrayList()
+
+        val db = this.writableDatabase
+        val cursor = db.rawQuery(SQL_SELECT_ALL_ACTIVITIES, null)
+
+        if (cursor.moveToFirst())
+        {
+            do
+            {
+                activities.add(
+                    TimerActivity(
+                        cursor.getInt(0), cursor.getString(1), getAllTimerItems(cursor.getInt(0)))
+                )
+            }
+            while (cursor.moveToNext())
+        }
+        cursor.close()
+        db.close()
+
+        return activities
     }
 
     override fun addNewActivity(name: String): Activity {
@@ -71,6 +112,35 @@ class TimerActivitiesDB(context: Context) :
 
     override fun getNewMaxId(writableDatabase: SQLiteDatabase): Int {
         TODO("Not yet implemented")
+    }
+
+    override fun getAllTimerItems(activityId: Int): ArrayList<TimerItem>
+    {
+        val db = this.writableDatabase
+        val cursor = db.rawQuery(SQL_SELECT_ACTIVITY_ITEMS, arrayOf(activityId.toString()))
+        val timerItems: ArrayList<TimerItem> = ArrayList()
+
+        if(cursor.moveToFirst())
+        {
+            do {
+                timerItems.add(
+                    TimerItem(
+                        cursor.getInt(0),
+                        TimerActivitiesContract.ITimerActivitiesView.itemLogo,
+                        cursor.getInt(2),
+                        cursor.getInt(3)
+                    )
+                )
+            }while (cursor.moveToNext())
+
+        }
+        else
+        {
+            cursor.close()
+            db.close()
+        }
+
+        return timerItems
     }
 
     override fun addTimerItem(timerItemData: TimerItem) {

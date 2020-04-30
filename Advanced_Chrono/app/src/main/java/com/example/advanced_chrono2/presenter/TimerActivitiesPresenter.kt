@@ -29,6 +29,19 @@ class TimerActivitiesPresenter(val fragment: TimerActivitiesContract.ITimerActiv
         workoutSecondsText: String,
         restMinutesText: String,
         restSecondsText: String
+    ) {
+        TODO("Not yet implemented")
+    }
+
+    override fun deleteItem() {
+        TODO("Not yet implemented")
+    }
+
+    /*override fun addNewTimerItem(
+        workoutMinutesText: String,
+        workoutSecondsText: String,
+        restMinutesText: String,
+        restSecondsText: String
     )
     {
 
@@ -78,5 +91,5 @@ class TimerActivitiesPresenter(val fragment: TimerActivitiesContract.ITimerActiv
 
     override fun deleteItem() {
         //TODO
-    }
+    }*/
 }

@@ -13,6 +13,8 @@ interface TimerActivitiesContract
 
     interface ITimerActivitiesModel : BaseModel
     {
+        fun getAllTimerItems(activityId: Int): ArrayList<TimerItem>
+
         fun addTimerItem(timerItemData: TimerItem)
 
         fun delTimerItem(timerItemData: TimerItem)
