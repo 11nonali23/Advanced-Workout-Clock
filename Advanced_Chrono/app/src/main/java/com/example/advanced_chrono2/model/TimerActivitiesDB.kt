@@ -1,9 +1,12 @@
 package com.example.advanced_chrono2.model
 
+import android.content.ContentValues
 import android.content.Context
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
+import android.util.Log
 import com.example.advanced_chrono2.contract.TimerActivitiesContract
+import java.sql.SQLException
 
 class TimerActivitiesDB(context: Context) :
     SQLiteOpenHelper(
@@ -17,7 +20,7 @@ class TimerActivitiesDB(context: Context) :
     {
         private const val TAG = "TIMER_ACTIVITIES DB"
 
-        private var DATABASE_VERSION = 1
+        private var DATABASE_VERSION = 7
         private const val DATABASE_NAME = "timerActivitiesDb"
 
         //Name of activity table
@@ -29,7 +32,7 @@ class TimerActivitiesDB(context: Context) :
         //name of timing table
         private const val ITEM_TABLE_NAME= "item"
         //Keys of timing
-        private const val KEY_ITEM_ID = "time"
+        private const val KEY_ITEM_ID = "item_id"
         private const val KEY_WORKOUT_SEC = "workout_sec"
         private const val KEY_REST_SEC = "rest_sec"
         private const val KEY_FOREIGN_ACTIVITY_ID = "activity_id"
@@ -47,7 +50,7 @@ class TimerActivitiesDB(context: Context) :
                     "$KEY_ITEM_ID INTEGER PRIMARY KEY," +
                     "$KEY_WORKOUT_SEC INTEGER NOT NULL," +
                     "$KEY_REST_SEC INTEGER NOT NULL," +
-                    "$KEY_FOREIGN_ACTIVITY_ID INTEGER NOT NULL" +
+                    "$KEY_FOREIGN_ACTIVITY_ID INTEGER NOT NULL," +
                     "FOREIGN KEY($KEY_FOREIGN_ACTIVITY_ID) REFERENCES $ACTIVITY_TABLE_NAME($KEY_ACTIVITY_ID) $ON_UPDTAE_ON_DELETE_ITEM);"
 
         private const val SQL_DELETE_ACTIVITY_ENTRIES = "DROP TABLE IF EXISTS $ACTIVITY_TABLE_NAME"
@@ -58,8 +61,17 @@ class TimerActivitiesDB(context: Context) :
 
         private const val SQL_SELECT_ACTIVITY_ITEMS =
             "SELECT * " +
-            "FROM $ITEM_TABLE_NAME" +
-            "WHERE $KEY_ACTIVITY_ID = ?"
+            "FROM $ITEM_TABLE_NAME " +
+            "WHERE $KEY_FOREIGN_ACTIVITY_ID = ?"
+
+        private const val SQL_SELECT_MAX_ID = "SELECT MAX($KEY_ACTIVITY_ID) FROM $ACTIVITY_TABLE_NAME"
+
+        private const val SQL_SELECT_MAX_TIMER_ITEM_ID =
+            "SELECT MAX($KEY_ITEM_ID) " +
+            "FROM $ITEM_TABLE_NAME " +
+            "WHERE $KEY_FOREIGN_ACTIVITY_ID = ?"
+
+
     }
 
 
@@ -102,16 +114,58 @@ class TimerActivitiesDB(context: Context) :
         return activities
     }
 
-    override fun addNewActivity(name: String): Activity {
-        TODO("Not yet implemented")
+    override fun addNewActivity(name: String): TimerActivity?
+    {
+        val db = this.writableDatabase
+
+        //Selecting the maximum id incremented by one
+        val id = getNewMaxId()
+
+        val values = ContentValues()
+        values.put(KEY_ACTIVITY_ID, id)
+        values.put(KEY_NAME, name)
+
+        //if db insert the element i will return a new activity with an empty timing list else null
+        try {
+            db.insertOrThrow(ACTIVITY_TABLE_NAME, null, values)
+        }
+        catch (sqlExc: SQLException) {
+            db.close()
+            return null
+        }
+
+        db.close()
+        return TimerActivity(id, name, ArrayList())
     }
 
-    override fun deleteActivity(activityName: String): Boolean {
-        TODO("Not yet implemented")
+    override fun deleteActivity(activityName: String): Boolean
+    {
+        val db = this.writableDatabase
+
+        /*delete returns the number of rows affected if a whereClause is passed in, 0 otherwise.*/
+        val rowsDeleted = db.delete(
+            ACTIVITY_TABLE_NAME,
+            "$KEY_NAME = ?",
+            arrayOf(activityName)
+        )
+
+        db.close()
+
+        return rowsDeleted > 0
     }
 
-    override fun getNewMaxId(writableDatabase: SQLiteDatabase): Int {
-        TODO("Not yet implemented")
+    override fun getNewMaxId(): Int
+    {
+        var id = 0
+        val cursor = writableDatabase.rawQuery(SQL_SELECT_MAX_ID, null)
+        if (cursor.moveToFirst())
+            id = cursor.getInt(0) + 1
+
+        cursor.close()
+
+        Log.d(TAG, "new max id: $id")
+
+        return id
     }
 
     override fun getAllTimerItems(activityId: Int): ArrayList<TimerItem>
@@ -132,22 +186,56 @@ class TimerActivitiesDB(context: Context) :
                     )
                 )
             }while (cursor.moveToNext())
+        }
 
-        }
-        else
-        {
-            cursor.close()
-            db.close()
-        }
+        cursor.close()
+        db.close()
 
         return timerItems
     }
 
-    override fun addTimerItem(timerItemData: TimerItem) {
-        TODO("Not yet implemented")
+    override fun addTimerItem(parentId: Int, workoutSeconds: Int, restSeconds: Int): TimerItem?
+    {
+        val db = this.writableDatabase
+
+        val id = getNewMaxTimerItemId(parentId)
+
+        val values = ContentValues()
+        values.put(KEY_ITEM_ID, id)
+        values.put(KEY_WORKOUT_SEC, workoutSeconds)
+        values.put(KEY_REST_SEC, restSeconds)
+        values.put(KEY_FOREIGN_ACTIVITY_ID, parentId)
+
+        try {
+
+            db.insertOrThrow(ITEM_TABLE_NAME, null, values)
+        }
+        catch (sqlExc: SQLException) {
+            db.close()
+            return null
+        }
+
+        db.close()
+
+        Log.d(TAG, "actitivity $id:  workout:   $workoutSeconds. rest :     $restSeconds")
+        return TimerItem(id, TimerActivitiesContract.ITimerActivitiesView.itemLogo, workoutSeconds, restSeconds)
     }
 
     override fun delTimerItem(timerItemData: TimerItem) {
         TODO("Not yet implemented")
+    }
+
+    override fun getNewMaxTimerItemId(activityId: Int) : Int
+    {
+        var id = 0
+        val cursor = writableDatabase.rawQuery(SQL_SELECT_MAX_TIMER_ITEM_ID,  arrayOf(activityId.toString()))
+        if (cursor.moveToFirst())
+            id = cursor.getInt(0) + 1
+
+        cursor.close()
+
+        Log.d(TAG, "new max id: $id")
+
+        return id
     }
 }

@@ -1,7 +1,6 @@
 package com.example.advanced_chrono2.view.fragments
 
 import android.app.AlertDialog
-import android.os.Build
 import android.os.Bundle
 import android.os.SystemClock
 import android.util.Log
@@ -44,12 +43,13 @@ class HomeChronometerFragment : Fragment(), HomeChronometerContract.IHomeChronom
 
         //add activity dialog button messages
         private const val ADD_ACTIVITY_CONFIRM = "SAVE ACTIVITY"
-        private const val ADD_ACTIVITY_DISMISS = "CANCEL"
 
         //delete activity dialog messages
         private const val DEL_ACTIVITY_TITLE = "DELETE THE CURRENT ACIVITY?"
         private const val DEL_ACTIVITY_CONFIRM = "DELETE"
-        private const val DEL_ACTIVITY_DISMISS = "CANCEL"
+
+        private const val DISMISS_DIALOG = "CANCEL"
+
 
     }
 
@@ -180,7 +180,7 @@ class HomeChronometerFragment : Fragment(), HomeChronometerContract.IHomeChronom
         chrono_spinner.adapter = this.spinnerAdapter
     }
 
-    override fun updateActivitiesList()
+    override fun updateActivitiesView()
     {
         spinnerAdapter.notifyDataSetChanged()
     }
@@ -202,7 +202,7 @@ class HomeChronometerFragment : Fragment(), HomeChronometerContract.IHomeChronom
     private fun showAddDialogBuilder()
     {
         val dialogBuilder = AlertDialog.Builder(this.context, R.style.AlertDialogCustom)
-        val dialogView = layoutInflater.inflate(R.layout.add_chrono_activity_layout, null)
+        val dialogView = layoutInflater.inflate(R.layout.add_activity_layout, null)
         dialogBuilder.setView(dialogView)
 
         dialogBuilder.setPositiveButton(ADD_ACTIVITY_CONFIRM) { _, _->
@@ -210,7 +210,7 @@ class HomeChronometerFragment : Fragment(), HomeChronometerContract.IHomeChronom
             homePresenter.addNewActivity(editText.text.toString())
         }
 
-        dialogBuilder.setNegativeButton(ADD_ACTIVITY_DISMISS) { dialogInterface, _ ->
+        dialogBuilder.setNegativeButton(DISMISS_DIALOG) { dialogInterface, _ ->
             dialogInterface.dismiss()
         }
 
@@ -227,7 +227,7 @@ class HomeChronometerFragment : Fragment(), HomeChronometerContract.IHomeChronom
             homePresenter.deleteActivity(chrono_spinner.selectedItem.toString())
         }
 
-        dialogBuilder.setNegativeButton(DEL_ACTIVITY_DISMISS) { dialogInterface, _ ->
+        dialogBuilder.setNegativeButton(DISMISS_DIALOG) { dialogInterface, _ ->
             dialogInterface.dismiss()
         }
         dialogBuilder.show()

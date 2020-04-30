@@ -108,7 +108,7 @@ class ChronometerActivitiesDB(context: Context) :
         val db = this.writableDatabase
 
         //Selecting the maximum id incremented by one
-        val id = getNewMaxId(db)
+        val id = getNewMaxId()
 
         val values = ContentValues()
         values.put(KEY_ID, id)
@@ -144,7 +144,7 @@ class ChronometerActivitiesDB(context: Context) :
         return rowsDeleted > 0
     }
 
-    override fun getNewMaxId(writableDatabase: SQLiteDatabase): Int
+    override fun getNewMaxId(): Int
     {
         var id = 0
         val cursor = writableDatabase.rawQuery(SQL_SELECT_MAX_ID, null)

@@ -29,10 +29,26 @@ class TimerActivitiesFragment : Fragment(), TimerActivitiesContract.ITimerActivi
     companion object
     {
         private const val TAG = "TIMER FRAGMENT CICLE"
+
+        private const val DEFAULT_ITEM_POSITION = 0
+
+        //add activity dialog button messages
+        private const val ADD_ACTIVITY_CONFIRM = "SAVE ACTIVITY"
+
+        //delete activity dialog messages
+        private const val DEL_ACTIVITY_TITLE = "DELETE THE CURRENT ACIVITY?"
+        private const val DEL_ACTIVITY_CONFIRM = "DELETE"
+
+        private const val ADD_ITEM_CONFIRM = "SAVE ACTIVITY"
+
+
+        private const val DISMISS_DIALOG = "CANCEL"
     }
 
     private val timerActivitiesPresenter:
             TimerActivitiesContract.ITimerActivitiesPresenter = TimerActivitiesPresenter(this)
+
+    private var settedUp = false
 
     private lateinit var activityItemList: RecyclerView
     private lateinit var activityList: RecyclerView
@@ -55,6 +71,26 @@ class TimerActivitiesFragment : Fragment(), TimerActivitiesContract.ITimerActivi
     override fun onCreateOptionsMenu(menu: Menu, menuInflater: MenuInflater)
     {
         menuInflater.inflate(R.menu.timer_activities_menu, menu)
+
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean
+    {
+        when(item.itemId)
+        {
+            R.id.addItem ->
+            {
+                showAddActivityDialogBuilder()
+                return true
+            }
+
+            R.id.delItem ->
+            {
+                showDeleteActivityDialogBuilder()
+                return true
+            }
+        }
+        return false
     }
 
     //when creating the view inflating the timer layout
@@ -71,7 +107,7 @@ class TimerActivitiesFragment : Fragment(), TimerActivitiesContract.ITimerActivi
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
-        timerActivitiesPresenter.onViewCreated()
+        timerActivitiesPresenter.onViewCreated(this.context)
 
         timer_items_button.setOnClickListener {
             showAddTimerItemDialog()
@@ -88,11 +124,15 @@ class TimerActivitiesFragment : Fragment(), TimerActivitiesContract.ITimerActivi
 
         //TODO make correct for every position
         //the activity list passes her list retrived from model via the presenter to the adapter.
-        activities[0].timerItems?.let { createItemList(it) }
+        activities[DEFAULT_ITEM_POSITION].timerItems?.let { createItemList(it) }
 
         setTimerItemsListMovementBehaviour()
 
+        this.settedUp = true
+
     }
+
+    override fun isViewSettedUp(): Boolean = this.settedUp
 
     override fun updateActivitiesView()
     {
@@ -193,20 +233,54 @@ class TimerActivitiesFragment : Fragment(), TimerActivitiesContract.ITimerActivi
         val dialogView = layoutInflater.inflate(R.layout.add_timer_item_layout, null)
         dialogBuilder.setView(dialogView)
 
-        dialogBuilder.setPositiveButton("SAVE ACTIVITY") { _, _ ->
-            Toast.makeText(this.context, "ADDED", Toast.LENGTH_LONG).show()
-
+        dialogBuilder.setPositiveButton(ADD_ITEM_CONFIRM) { _, _ ->
             val workoutMinutesText = dialogView.findViewById<EditText>(R.id.workout_minutes).text.toString()
             val workoutSecondsText = dialogView.findViewById<EditText>(R.id.workout_seconds).text.toString()
             val restMinutesText = dialogView.findViewById<EditText>(R.id.rest_minutes).text.toString()
             val restSecondsText = dialogView.findViewById<EditText>(R.id.rest_seconds).text.toString()
 
+            val id = (activity_recycle.adapter as TimerActivitiesAdapter).getSelectedActivityId()
 
             //TODO aggiungere tramite presenter
-            timerActivitiesPresenter.addNewTimerItem(workoutMinutesText, workoutSecondsText, restMinutesText, restSecondsText)
+            timerActivitiesPresenter.addNewTimerItem(id, workoutMinutesText, workoutSecondsText, restMinutesText, restSecondsText)
         }
 
-        dialogBuilder.setNegativeButton("CANCEL") { dialogInterface, _ ->
+        dialogBuilder.setNegativeButton(DISMISS_DIALOG) { dialogInterface, _ ->
+            dialogInterface.dismiss()
+        }
+        dialogBuilder.show()
+    }
+
+    private fun showAddActivityDialogBuilder() {
+        val dialogBuilder = AlertDialog.Builder(this.context, R.style.AlertDialogCustom)
+        val dialogView = layoutInflater.inflate(R.layout.add_activity_layout, null)
+        dialogBuilder.setView(dialogView)
+
+        dialogBuilder.setPositiveButton(ADD_ACTIVITY_CONFIRM) { _, _ ->
+            Toast.makeText(this.context, "ADDED", Toast.LENGTH_LONG).show()
+
+            val editText = dialogView.findViewById<EditText>(R.id.insertText)
+            timerActivitiesPresenter.addNewActivity(editText.text.toString())
+        }
+
+        dialogBuilder.setNegativeButton(DISMISS_DIALOG) { dialogInterface, _ ->
+            dialogInterface.dismiss()
+        }
+        dialogBuilder.show()
+
+    }
+
+    //TODO center the buttons
+    private fun showDeleteActivityDialogBuilder()
+    {
+        val dialogBuilder = AlertDialog.Builder(this.context, R.style.AlertDialogCustom)
+        dialogBuilder.setTitle(DEL_ACTIVITY_TITLE)
+
+        dialogBuilder.setPositiveButton(DEL_ACTIVITY_CONFIRM) { _, _->
+            //homePresenter.deleteActivity(chrono_spinner.selectedItem.toString())
+        }
+
+        dialogBuilder.setNegativeButton(DISMISS_DIALOG) { dialogInterface, _ ->
             dialogInterface.dismiss()
         }
         dialogBuilder.show()

@@ -10,7 +10,7 @@ import kotlin.collections.ArrayList
 class HomePresenter(val view: HomeChronometerContract.IHomeChronometerView) : HomeChronometerContract.IHomePresenter
 {
     private var model: ChronometerActivitiesDB? = null
-    private var activitiesName: ArrayList<ChronoActivity>? = null  //List of activity names to pass to the activity
+    private var activities: ArrayList<ChronoActivity>? = null  //List of activity names to pass to the activity
 
     companion object
     {
@@ -31,8 +31,8 @@ class HomePresenter(val view: HomeChronometerContract.IHomeChronometerView) : Ho
         if(context != null)
         {
             model = ChronometerActivitiesDB(context)
-            activitiesName = model!!.getAllActivities()
-            view.setUpSpinnerView(this.activitiesName!!)
+            activities = model!!.getAllActivities()
+            view.setUpSpinnerView(this.activities!!)
         }
     }
 
@@ -49,9 +49,9 @@ class HomePresenter(val view: HomeChronometerContract.IHomeChronometerView) : Ho
 
                 if (newActivity != null)
                 {
-                    activitiesName?.add(newActivity)
+                    activities?.add(newActivity)
                     view.displayResult(ADD_ACTIVITY_SUCCES)
-                    view.updateActivitiesList()
+                    view.updateActivitiesView()
                     view.setNewItemAsSelected()
                     return
                 }
@@ -78,9 +78,9 @@ class HomePresenter(val view: HomeChronometerContract.IHomeChronometerView) : Ho
         {
             if(model!!.deleteActivity(activityName))
             {
-                activitiesName?.removeAll{it.name == activityName}
+                activities?.removeAll{it.name == activityName}
                 view.displayResult(DEL_ACTIVITY_SUCCES)
-                view.updateActivitiesList()
+                view.updateActivitiesView()
                 return
             }
         }

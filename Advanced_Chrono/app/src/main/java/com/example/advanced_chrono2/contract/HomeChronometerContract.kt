@@ -19,7 +19,7 @@ interface HomeChronometerContract
     {
         fun setUpSpinnerView(activities: List<ChronoActivity>)
 
-        fun updateActivitiesList()
+        fun updateActivitiesView()
 
         fun setNewItemAsSelected()
 

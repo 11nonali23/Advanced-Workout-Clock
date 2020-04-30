@@ -1,5 +1,6 @@
 package com.example.advanced_chrono2.contract
 
+import android.content.Context
 import com.example.advanced_chrono2.R
 import com.example.advanced_chrono2.model.BaseModel
 import com.example.advanced_chrono2.model.TimerActivity
@@ -15,9 +16,11 @@ interface TimerActivitiesContract
     {
         fun getAllTimerItems(activityId: Int): ArrayList<TimerItem>
 
-        fun addTimerItem(timerItemData: TimerItem)
+        fun addTimerItem(parentId: Int, workoutSeconds: Int, restSeconds: Int): TimerItem?
 
         fun delTimerItem(timerItemData: TimerItem)
+
+        fun getNewMaxTimerItemId(activityId: Int): Int
     }
 
 
@@ -27,6 +30,8 @@ interface TimerActivitiesContract
         companion object { const val itemLogo = R.drawable.ic_timer_black }
 
         fun setUpView(activities: List<TimerActivity>)
+
+        fun isViewSettedUp(): Boolean
 
         fun updateActivitiesView()
 
@@ -38,10 +43,15 @@ interface TimerActivitiesContract
     interface ITimerActivitiesPresenter
     {
         //first steps to do when a view is created
-        fun onViewCreated()
+        fun onViewCreated(context: Context?)
+
+        fun addNewActivity(activityName: String)
+
+        fun deleteActivity(activityName: String)
 
         //ToDO it wil also need the position in the real app
-        fun addNewTimerItem(workoutMinutesText: String,
+        fun addNewTimerItem(parentId: Int?,
+                            workoutMinutesText: String,
                             workoutSecondsText: String,
                             restMinutesText: String,
                             restSecondsText: String)

@@ -10,5 +10,5 @@ interface BaseModel
 
     fun deleteActivity(activityName: String): Boolean
 
-    fun getNewMaxId(writableDatabase: SQLiteDatabase): Int
+    fun getNewMaxId(): Int
 }

@@ -1,6 +1,7 @@
 package com.example.advanced_chrono2.view.custom_adapters
 
 import android.content.Intent
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -18,7 +19,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton
 when a change is done to the timer items in the activity also this list will change
  */
 
-class TimerActivitiesAdapter (private val itemList: ArrayList<com.example.advanced_chrono2.model.TimerActivity>) : RecyclerView.Adapter<TimerActivitiesAdapter.HorizontalItemsViewHolder>()
+class TimerActivitiesAdapter (private val itemList: ArrayList<TimerActivity>) : RecyclerView.Adapter<TimerActivitiesAdapter.HorizontalItemsViewHolder>()
 {
 
     companion object {private const val DEFAULT_ITEM_POS = 0; private const val EXTRA_NAME = "Timer Activities"}
@@ -27,6 +28,8 @@ class TimerActivitiesAdapter (private val itemList: ArrayList<com.example.advanc
     By default the selected card is the an at 0 postion*/
     //TODO When i will implement the delete I need to change this field to a default value if the selected card is deleted
     private lateinit var selectedCard: CardView //init in OnBindViewHolder
+
+    private var selectedItemPosition: Int? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): HorizontalItemsViewHolder
     {
@@ -47,6 +50,15 @@ class TimerActivitiesAdapter (private val itemList: ArrayList<com.example.advanc
         //By default the selected card is the an at 0 postion
         if (position == DEFAULT_ITEM_POS)
             this.selectedCard = holder.card
+        this.selectedItemPosition = DEFAULT_ITEM_POS
+    }
+
+    fun getSelectedActivityId(): Int?
+    {
+        if (selectedItemPosition != null)
+            return this.itemList.get(selectedItemPosition!!).id
+        else
+            return null
     }
 
     inner class HorizontalItemsViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView), View.OnClickListener
@@ -82,9 +94,16 @@ class TimerActivitiesAdapter (private val itemList: ArrayList<com.example.advanc
                     selectedCard.isSelected = false
                     selectedCard = v as CardView
                     selectedCard.isSelected = true
+
+                    //Setting the new selected item position
+                    selectedItemPosition = absoluteAdapterPosition
                 }
                 else
+                {
+                    //if i selected a card already selected no one will be selected
                     selectedCard.isSelected = !selectedCard.isSelected
+                    selectedItemPosition = null
+                }
             }
         }
     }
