@@ -1,7 +1,7 @@
 package com.example.advanced_chrono2.view.fragments
 
 import android.app.AlertDialog
-import android.content.Context
+import android.os.Build
 import android.os.Bundle
 import android.os.SystemClock
 import android.util.Log
@@ -12,6 +12,7 @@ import android.widget.EditText
 import android.widget.Toast
 import com.example.advanced_chrono2.R
 import com.example.advanced_chrono2.contract.HomeChronometerContract
+import com.example.advanced_chrono2.model.ChronoActivity
 import com.example.advanced_chrono2.presenter.HomePresenter
 import kotlinx.android.synthetic.main.chrono_layout.*
 
@@ -29,7 +30,7 @@ class HomeChronometerFragment : Fragment(), HomeChronometerContract.IHomeChronom
     private val homePresenter: HomeChronometerContract.IHomePresenter = HomePresenter(this)
 
     //ADAPTERS
-    private lateinit var spinnerAdapter: ArrayAdapter<String>
+    private lateinit var spinnerAdapter: ArrayAdapter<ChronoActivity>
 
     companion object
     {
@@ -87,6 +88,8 @@ class HomeChronometerFragment : Fragment(), HomeChronometerContract.IHomeChronom
     {
         super.onActivityCreated(savedInstanceState)
 
+        updateUIButtons()
+
         homePresenter.onViewCreated(this.context)
 
         //LISTENERS-----------------------------------------------------------------------------------------------------------------------------------
@@ -114,6 +117,10 @@ class HomeChronometerFragment : Fragment(), HomeChronometerContract.IHomeChronom
             Log.e(TAG, "$pauseOffset")
             chronoState = ChronoState.Paused
             updateUIButtons()
+
+            //if the checbox is selected then I have to save the timing
+            if (chrono_check.isSelected)
+                saveCurrentTiming()
         }
 
         chrono_reset.setOnClickListener {
@@ -163,11 +170,12 @@ class HomeChronometerFragment : Fragment(), HomeChronometerContract.IHomeChronom
 
     //INTERFACE FUNCTIONS------------------------------------------------------------------------------------------
 
-    override fun setUpSpinnerView(activitiesName: List<String>)
+    override fun setUpSpinnerView(activities: List<ChronoActivity>)
     {
-        this.spinnerAdapter = ArrayAdapter(this.context!!,
+        this.spinnerAdapter = ArrayAdapter(
+            this.context!!,
             R.layout.support_simple_spinner_dropdown_item,
-            activitiesName)
+            activities)
 
         chrono_spinner.adapter = this.spinnerAdapter
     }
@@ -176,6 +184,8 @@ class HomeChronometerFragment : Fragment(), HomeChronometerContract.IHomeChronom
     {
         spinnerAdapter.notifyDataSetChanged()
     }
+
+    override fun setNewItemAsSelected() = chrono_spinner.setSelection(chrono_spinner.count - 1)
 
     override fun displayResult(result: String)
     {
@@ -223,10 +233,9 @@ class HomeChronometerFragment : Fragment(), HomeChronometerContract.IHomeChronom
         dialogBuilder.show()
     }
 
-    private fun saveCurrentTiming()
-    {
-        //TODO
-    }
+
+    private fun saveCurrentTiming() = homePresenter.saveTempo(pauseOffset, (chrono_spinner.selectedItem as ChronoActivity).id)
+
 
     //Update buttons of the user interface depending on the state of the chrono
     private fun updateUIButtons()

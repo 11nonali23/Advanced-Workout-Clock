@@ -4,6 +4,7 @@ import android.content.ContentValues
 import android.content.Context
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
+import android.util.Log
 import com.example.advanced_chrono2.contract.HomeChronometerContract
 import java.sql.SQLException
 
@@ -14,6 +15,8 @@ class ChronometerActivitiesDatabase(context: Context) :
 
     companion object
     {
+        private const val TAG = "HOME DB"
+
         private var DATABASE_VERSION = 2
         private const val DATABASE_NAME = "timerActivitiesDb"
 
@@ -50,12 +53,17 @@ class ChronometerActivitiesDatabase(context: Context) :
 
         private const val SQL_SELECT_MAX_ID = "SELECT MAX($KEY_ID) FROM $ACTIVITY_TABLE_NAME"
 
-        private const val SQL_SELECT_ALL_ACTIVITIES_NAME =
-            "SELECT $KEY_NAME FROM $ACTIVITY_TABLE_NAME"
+        private const val SQL_SELECT_ALL_ACTIVITIES_NO_TIMINGS =
+            "SELECT * FROM $ACTIVITY_TABLE_NAME"
+
+        private const val SQL_CHECK_ACTIVITY_ID =
+            "SELECT $KEY_ID " +
+            "FROM $ACTIVITY_TABLE_NAME " +
+            "WHERE $KEY_NAME = ?"
 
         private const val SQL_SELECT_ALL_ACTIVITIES_AND_TIMINGS = "" +
-                    "SELECT $KEY_NAME " +
-                    "FROM $ACTIVITY_TABLE_NAME a JOIN $TIMING_TABLE_NAME t ON a.$KEY_ID = t.$KEY_ID_FOREIGN"
+            "SELECT $KEY_NAME " +
+            "FROM $ACTIVITY_TABLE_NAME a JOIN $TIMING_TABLE_NAME t ON a.$KEY_ID = t.$KEY_ID_FOREIGN"
 
     }
 
@@ -75,26 +83,32 @@ class ChronometerActivitiesDatabase(context: Context) :
         onCreate(db)
     }
 
-    override fun getAllActivitiesName(): ArrayList<String>?
+    override fun getAllActivities(): ArrayList<ChronoActivity>?
     {
-        val activityNames = ArrayList<String>()
+        val activities: ArrayList<ChronoActivity> = ArrayList()
+
         val db = this.writableDatabase
-        val cursor = db.rawQuery(SQL_SELECT_ALL_ACTIVITIES_NAME, null)
+        val cursor = db.rawQuery(SQL_SELECT_ALL_ACTIVITIES_NO_TIMINGS, null)
 
         if (cursor.moveToFirst())
         {
             do
-            { activityNames.add(cursor.getString(0)) }
+            {
+                activities.add(
+                    ChronoActivity(
+                        cursor.getInt(0), cursor.getString(1), null)
+                )
+            }
             while (cursor.moveToNext())
         }
         cursor.close()
         db.close()
 
-        return activityNames
+        return activities
 
     }
 
-    override fun addNewActivity(name: String): Boolean
+    override fun addNewActivity(name: String): ChronoActivity?
     {
         val db = this.writableDatabase
 
@@ -111,11 +125,11 @@ class ChronometerActivitiesDatabase(context: Context) :
         }
         catch (sqlExc: SQLException) {
             db.close()
-            return false
+            return null
         }
-
+        
         db.close()
-        return true
+        return ChronoActivity(id, name, ArrayList())
     }
 
     //TODO catch the error
@@ -135,17 +149,29 @@ class ChronometerActivitiesDatabase(context: Context) :
         return rowsDeleted > 0
     }
 
-    override fun addNewTiming(time: Long, timestamp: Long, activityName: String)
+    override fun addNewTiming(time: Long, timestamp: Long, activitiyId: Int): Boolean
     {
         val db = this.writableDatabase
 
         val values = ContentValues()
         values.put(KEY_TIME, time)
         values.put(KEY_TIMESTAMP, timestamp)
+        values.put(KEY_ID_FOREIGN, activitiyId)
 
-        db.insert(ACTIVITY_TABLE_NAME, null, values)
+        try {
+
+            db.insertOrThrow(TIMING_TABLE_NAME, null, values)
+        }
+        catch (sqlExc: SQLException) {
+            db.close()
+            Log.e(TAG, "${sqlExc.printStackTrace()}")
+            return false
+        }
 
         db.close()
+
+        Log.d(TAG, "actitivity $activitiyId:  new timing:   $time. Its timestamp :     $timestamp")
+        return true
     }
 
     //END INTERFACE FUNCITONS------------------------------------------------------------------------------------------------------------------------------------------------
@@ -161,6 +187,8 @@ class ChronometerActivitiesDatabase(context: Context) :
             id = cursor.getInt(0) + 1
 
         cursor.close()
+
+        Log.d(TAG, "new max id: $id")
 
         return id
     }

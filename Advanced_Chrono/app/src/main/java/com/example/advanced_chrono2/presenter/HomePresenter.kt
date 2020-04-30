@@ -2,21 +2,27 @@ package com.example.advanced_chrono2.presenter
 
 import android.content.Context
 import com.example.advanced_chrono2.contract.HomeChronometerContract
+import com.example.advanced_chrono2.model.ChronoActivity
 import com.example.advanced_chrono2.model.ChronometerActivitiesDatabase
+import java.util.*
+import kotlin.collections.ArrayList
 
 class HomePresenter(val view: HomeChronometerContract.IHomeChronometerView) : HomeChronometerContract.IHomePresenter
 {
     private var model: ChronometerActivitiesDatabase? = null
-    private var activitiesName: ArrayList<String>? = null  //List of activity names to pass to the activity
+    private var activitiesName: ArrayList<ChronoActivity>? = null  //List of activity names to pass to the activity
 
     companion object
     {
         private const val INTERNAL_ERROR = "Internal Error: activity not added"
+
         private const val ADD_ACTIVITY_SUCCES = "Succesfully added!"
         private const val ADD_ACTIVITY_DB_ERROR = "Error: this name already exists!"
         private const val ADD_EMPTY_ACTIVITY = "Error: activity can' t be empty"
 
         private const val DEL_ACTIVITY_SUCCES = "Succesfully deleted!"
+
+        private const val SAVE_TIMING_SUCCES = "Timing added succesfully"
     }
 
 
@@ -25,7 +31,7 @@ class HomePresenter(val view: HomeChronometerContract.IHomeChronometerView) : Ho
         if(context != null)
         {
             model = ChronometerActivitiesDatabase(context)
-            activitiesName = model!!.getAllActivitiesName()
+            activitiesName = model!!.getAllActivities()
             view.setUpSpinnerView(this.activitiesName!!)
         }
     }
@@ -39,11 +45,14 @@ class HomePresenter(val view: HomeChronometerContract.IHomeChronometerView) : Ho
             val activityNameTrimmed: String = activityName.trimEnd().trimStart() //trimeEnd and trimStart remove all special character at the end and the start
             if (activityNameTrimmed.isNotEmpty())
             {
-                if (model!!.addNewActivity(activityNameTrimmed))
+                val newActivity = model!!.addNewActivity(activityNameTrimmed)
+
+                if (newActivity != null)
                 {
-                    activitiesName?.add(activityNameTrimmed)
+                    activitiesName?.add(newActivity)
                     view.displayResult(ADD_ACTIVITY_SUCCES)
                     view.updateActivitiesList()
+                    view.setNewItemAsSelected()
                     return
                 }
                 else
@@ -69,7 +78,7 @@ class HomePresenter(val view: HomeChronometerContract.IHomeChronometerView) : Ho
         {
             if(model!!.deleteActivity(activityName))
             {
-                activitiesName?.remove(activityName)
+                activitiesName?.removeAll{it.name == activityName}
                 view.displayResult(DEL_ACTIVITY_SUCCES)
                 view.updateActivitiesList()
                 return
@@ -78,8 +87,21 @@ class HomePresenter(val view: HomeChronometerContract.IHomeChronometerView) : Ho
         view.displayResult(INTERNAL_ERROR)
     }
 
-    override fun saveTempo(tempo: Long)
+    //saving a tempo is not an error than acan occur by the user input. It is only internal
+    override fun saveTempo(tempo: Long, activityId: Int)
     {
-        //model try to save tempo and return a code
+        if (model != null)
+        {
+            if(model!!.addNewTiming(
+                tempo,
+                GregorianCalendar.getInstance().timeInMillis,
+                activityId
+                ))
+            {
+                view.displayResult(SAVE_TIMING_SUCCES)
+                return
+            }
+        }
+        view.displayResult(INTERNAL_ERROR)
     }
 }
