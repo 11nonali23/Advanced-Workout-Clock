@@ -190,7 +190,7 @@ class TimerActivitiesFragment : Fragment(), TimerActivitiesContract.ITimerActivi
 
         activityItemList.setHasFixedSize(true)
 
-        timerItemAdapter = TimerItemsAdapter(timerItems as ArrayList<TimerItem>)
+        timerItemAdapter = TimerItemsAdapter(this.timerActivitiesPresenter, timerItems as ArrayList<TimerItem>)
 
         activityItemList.layoutManager = LinearLayoutManager(this.context)
         activityItemList.adapter = timerItemAdapter

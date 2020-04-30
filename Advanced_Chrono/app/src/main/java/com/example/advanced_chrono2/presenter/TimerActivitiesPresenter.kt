@@ -162,8 +162,10 @@ class TimerActivitiesPresenter(val view: TimerActivitiesContract.ITimerActivitie
 
     }
 
-    override fun deleteItem() {
-        TODO("Not yet implemented")
+    override fun deleteItem(activityId: Int, position: Int)
+    {
+        TODO()
+
     }
 
 }

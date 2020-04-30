@@ -18,7 +18,7 @@ interface TimerActivitiesContract
 
         fun addTimerItem(parentId: Int, workoutSeconds: Int, restSeconds: Int): TimerItem?
 
-        fun delTimerItem(timerItemData: TimerItem)
+        fun delTimerItem(activityId: Int, itemId: Int): Boolean
 
         fun getNewMaxTimerItemId(activityId: Int): Int
     }
@@ -57,6 +57,6 @@ interface TimerActivitiesContract
                             restSecondsText: String)
 
         //TODO need to understand what parameter pass
-        fun deleteItem()
+        fun deleteItem(activityId: Int, position: Int)
     }
 }

@@ -36,7 +36,7 @@ class TimerActivitiesDB(context: Context) :
         private const val KEY_WORKOUT_SEC = "workout_sec"
         private const val KEY_REST_SEC = "rest_sec"
         private const val KEY_FOREIGN_ACTIVITY_ID = "activity_id"
-        private const val ON_UPDTAE_ON_DELETE_ITEM = "ON DELETE CASCADE ON UPDATE CASCADE"
+        private const val ON_UPDATE_ON_DELETE_ITEM = "ON DELETE CASCADE ON UPDATE CASCADE"
 
         //create activity entries. Avoid using autoincrement for bad performances:
         private const val SQL_CREATE_ACTIVITY_ENTRIES =
@@ -51,7 +51,7 @@ class TimerActivitiesDB(context: Context) :
                     "$KEY_WORKOUT_SEC INTEGER NOT NULL," +
                     "$KEY_REST_SEC INTEGER NOT NULL," +
                     "$KEY_FOREIGN_ACTIVITY_ID INTEGER NOT NULL," +
-                    "FOREIGN KEY($KEY_FOREIGN_ACTIVITY_ID) REFERENCES $ACTIVITY_TABLE_NAME($KEY_ACTIVITY_ID) $ON_UPDTAE_ON_DELETE_ITEM);"
+                    "FOREIGN KEY($KEY_FOREIGN_ACTIVITY_ID) REFERENCES $ACTIVITY_TABLE_NAME($KEY_ACTIVITY_ID) $ON_UPDATE_ON_DELETE_ITEM);"
 
         private const val SQL_DELETE_ACTIVITY_ENTRIES = "DROP TABLE IF EXISTS $ACTIVITY_TABLE_NAME"
 
@@ -221,8 +221,9 @@ class TimerActivitiesDB(context: Context) :
         return TimerItem(id, TimerActivitiesContract.ITimerActivitiesView.itemLogo, workoutSeconds, restSeconds)
     }
 
-    override fun delTimerItem(timerItemData: TimerItem) {
-        TODO("Not yet implemented")
+    override fun delTimerItem(activityId: Int, itemId: Int) : Boolean
+    {
+        TODO()
     }
 
     override fun getNewMaxTimerItemId(activityId: Int) : Int
