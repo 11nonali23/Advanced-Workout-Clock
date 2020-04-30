@@ -15,8 +15,8 @@ import com.example.advanced_chrono2.R
 import com.example.advanced_chrono2.view.custom_adapters.TimerActivitiesAdapter
 import com.example.advanced_chrono2.view.custom_adapters.SwipeDragCallbackHelper
 import com.example.advanced_chrono2.contract.TimerActivitiesContract
-import com.example.advanced_chrono2.model.TimerActivityData
-import com.example.advanced_chrono2.model.TimerItemData
+import com.example.advanced_chrono2.model.TimerActivity
+import com.example.advanced_chrono2.model.TimerItem
 import com.example.advanced_chrono2.presenter.TimerActivitiesPresenter
 import com.example.advanced_chrono2.view.custom_adapters.TimerItemsAdapter
 import kotlinx.android.synthetic.main.timer_personalize_activities_layout.*
@@ -82,7 +82,7 @@ class TimerActivitiesFragment : Fragment(), TimerActivitiesContract.ITimerActivi
 
     //INTERFACE FUNCTIONS------------------------------------------------------------------------------------------
 
-    override fun setUpView(activities: List<TimerActivityData>)
+    override fun setUpView(activities: List<TimerActivity>)
     {
         createActivityList(activities)
 
@@ -110,7 +110,7 @@ class TimerActivitiesFragment : Fragment(), TimerActivitiesContract.ITimerActivi
 
 
     //HELPER FUNCTIONS---------------------------------------------------------------------------------------------------
-    private fun createActivityList(activities: List<TimerActivityData>)
+    private fun createActivityList(activities: List<TimerActivity>)
     {
         this.activityList = activity_recycle
 
@@ -118,7 +118,7 @@ class TimerActivitiesFragment : Fragment(), TimerActivitiesContract.ITimerActivi
 
         activityList.layoutManager = LinearLayoutManager(this.context, LinearLayoutManager.HORIZONTAL, false)
 
-        activityItemAdapter = TimerActivitiesAdapter(activities as ArrayList<TimerActivityData>)
+        activityItemAdapter = TimerActivitiesAdapter(activities as ArrayList<TimerActivity>)
         activityList.adapter = activityItemAdapter
 
         setActivityListDecoration()
@@ -144,13 +144,13 @@ class TimerActivitiesFragment : Fragment(), TimerActivitiesContract.ITimerActivi
 
 
     //Create the list of items view connected to an activity
-    private fun createItemList(timerItems: List<TimerItemData>)
+    private fun createItemList(timerItems: List<TimerItem>)
     {
         activityItemList = activity_item_recycler
 
         activityItemList.setHasFixedSize(true)
 
-        timerItemAdapter = TimerItemsAdapter(timerItems as ArrayList<TimerItemData>)
+        timerItemAdapter = TimerItemsAdapter(timerItems as ArrayList<TimerItem>)
 
         activityItemList.layoutManager = LinearLayoutManager(this.context)
         activityItemList.adapter = timerItemAdapter

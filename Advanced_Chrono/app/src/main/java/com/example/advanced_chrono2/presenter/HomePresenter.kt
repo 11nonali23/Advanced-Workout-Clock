@@ -3,13 +3,13 @@ package com.example.advanced_chrono2.presenter
 import android.content.Context
 import com.example.advanced_chrono2.contract.HomeChronometerContract
 import com.example.advanced_chrono2.model.ChronoActivity
-import com.example.advanced_chrono2.model.ChronometerActivitiesDatabase
+import com.example.advanced_chrono2.model.ChronometerActivitiesDB
 import java.util.*
 import kotlin.collections.ArrayList
 
 class HomePresenter(val view: HomeChronometerContract.IHomeChronometerView) : HomeChronometerContract.IHomePresenter
 {
-    private var model: ChronometerActivitiesDatabase? = null
+    private var model: ChronometerActivitiesDB? = null
     private var activitiesName: ArrayList<ChronoActivity>? = null  //List of activity names to pass to the activity
 
     companion object
@@ -30,7 +30,7 @@ class HomePresenter(val view: HomeChronometerContract.IHomeChronometerView) : Ho
     {
         if(context != null)
         {
-            model = ChronometerActivitiesDatabase(context)
+            model = ChronometerActivitiesDB(context)
             activitiesName = model!!.getAllActivities()
             view.setUpSpinnerView(this.activitiesName!!)
         }

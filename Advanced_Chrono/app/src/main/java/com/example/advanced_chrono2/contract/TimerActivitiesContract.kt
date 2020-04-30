@@ -1,13 +1,37 @@
 package com.example.advanced_chrono2.contract
 
 import com.example.advanced_chrono2.R
-import com.example.advanced_chrono2.model.TimerActivityData
+import com.example.advanced_chrono2.model.BaseModel
+import com.example.advanced_chrono2.model.TimerActivity
+import com.example.advanced_chrono2.model.TimerItem
 
 //This interface define a contract between the timer activities view and the presenter related to it
 
 
 interface TimerActivitiesContract
 {
+
+    interface ITimerActivitiesModel : BaseModel
+    {
+        fun addTimerItem(timerItemData: TimerItem)
+
+        fun delTimerItem(timerItemData: TimerItem)
+    }
+
+
+    interface ITimerActivitiesView
+    {
+        //Logo accessible for every class that needs it
+        companion object { const val itemLogo = R.drawable.ic_timer_black }
+
+        fun setUpView(activities: List<TimerActivity>)
+
+        fun updateActivitiesView()
+
+        fun updateTimerItemsView()
+
+        fun displayResult(message: String)
+    }
 
     interface ITimerActivitiesPresenter
     {
@@ -22,19 +46,5 @@ interface TimerActivitiesContract
 
         //TODO need to understand what parameter pass
         fun deleteItem()
-    }
-
-    interface ITimerActivitiesView
-    {
-        //Logo accessible for every class that needs it
-        companion object { const val itemLogo = R.drawable.ic_timer_black }
-
-        fun setUpView(activities: List<TimerActivityData>)
-
-        fun updateActivitiesView()
-
-        fun updateTimerItemsView()
-
-        fun displayResult(message: String)
     }
 }

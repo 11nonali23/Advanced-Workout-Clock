@@ -8,7 +8,7 @@ import android.util.Log
 import com.example.advanced_chrono2.contract.HomeChronometerContract
 import java.sql.SQLException
 
-class ChronometerActivitiesDatabase(context: Context) :
+class ChronometerActivitiesDB(context: Context) :
     SQLiteOpenHelper(context, DATABASE_NAME, null, DATABASE_VERSION),
     HomeChronometerContract.IHomeModel
 {
@@ -17,8 +17,8 @@ class ChronometerActivitiesDatabase(context: Context) :
     {
         private const val TAG = "HOME DB"
 
-        private var DATABASE_VERSION = 2
-        private const val DATABASE_NAME = "timerActivitiesDb"
+        private var DATABASE_VERSION = 3
+        private const val DATABASE_NAME = "ChronometerDb"
 
         //Name of activity table
         private const val ACTIVITY_TABLE_NAME = "activity"
@@ -34,7 +34,7 @@ class ChronometerActivitiesDatabase(context: Context) :
         private const val KEY_ID_FOREIGN = "activity_id"
         private const val ON_UPDTAE_ON_DELETE_TIMING = "ON DELETE CASCADE ON UPDATE CASCADE"
 
-        //create activity entries. Avoid using autoincrement fro bad performances:
+        //create activity entries. Avoid using autoincrement for bad performances:
         private const val SQL_CREATE_ACTIVITY_ENTRIES =
             "CREATE TABLE $ACTIVITY_TABLE_NAME(" +
                     "$KEY_ID INTEGER PRIMARY KEY," +
@@ -55,11 +55,6 @@ class ChronometerActivitiesDatabase(context: Context) :
 
         private const val SQL_SELECT_ALL_ACTIVITIES_NO_TIMINGS =
             "SELECT * FROM $ACTIVITY_TABLE_NAME"
-
-        private const val SQL_CHECK_ACTIVITY_ID =
-            "SELECT $KEY_ID " +
-            "FROM $ACTIVITY_TABLE_NAME " +
-            "WHERE $KEY_NAME = ?"
 
         private const val SQL_SELECT_ALL_ACTIVITIES_AND_TIMINGS = "" +
             "SELECT $KEY_NAME " +
@@ -83,7 +78,7 @@ class ChronometerActivitiesDatabase(context: Context) :
         onCreate(db)
     }
 
-    override fun getAllActivities(): ArrayList<ChronoActivity>?
+    override fun getAllActivities(): ArrayList<ChronoActivity>
     {
         val activities: ArrayList<ChronoActivity> = ArrayList()
 
@@ -127,7 +122,7 @@ class ChronometerActivitiesDatabase(context: Context) :
             db.close()
             return null
         }
-        
+
         db.close()
         return ChronoActivity(id, name, ArrayList())
     }
@@ -147,6 +142,20 @@ class ChronometerActivitiesDatabase(context: Context) :
         db.close()
 
         return rowsDeleted > 0
+    }
+
+    override fun getNewMaxId(writableDatabase: SQLiteDatabase): Int
+    {
+        var id = 0
+        val cursor = writableDatabase.rawQuery(SQL_SELECT_MAX_ID, null)
+        if (cursor.moveToFirst())
+            id = cursor.getInt(0) + 1
+
+        cursor.close()
+
+        Log.d(TAG, "new max id: $id")
+
+        return id
     }
 
     override fun addNewTiming(time: Long, timestamp: Long, activitiyId: Int): Boolean
@@ -177,19 +186,4 @@ class ChronometerActivitiesDatabase(context: Context) :
     //END INTERFACE FUNCITONS------------------------------------------------------------------------------------------------------------------------------------------------
 
     //HELPER FUNCITONS------------------------------------------------------------------------------------------------------------------------------------------------
-
-    //Returns maximum id
-    private fun getNewMaxId(writableDatabase: SQLiteDatabase): Int
-    {
-        var id = 0
-        val cursor = writableDatabase.rawQuery(SQL_SELECT_MAX_ID, null)
-        if (cursor.moveToFirst())
-            id = cursor.getInt(0) + 1
-
-        cursor.close()
-
-        Log.d(TAG, "new max id: $id")
-
-        return id
-    }
 }

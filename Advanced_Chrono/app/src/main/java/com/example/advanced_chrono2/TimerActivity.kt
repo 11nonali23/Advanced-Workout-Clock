@@ -1,7 +1,7 @@
 package com.example.advanced_chrono2
 
 import androidx.core.content.ContextCompat
-import com.example.advanced_chrono2.model.TimerItemData
+import com.example.advanced_chrono2.model.TimerItem
 import com.example.advanced_chrono2.shared_preferences.TimerPrefUtilsManager
 import kotlinx.android.synthetic.main.timer_layout.*
 import android.graphics.Color
@@ -24,18 +24,18 @@ class TimerActivity : AppCompatActivity()
     private var timerState = TimerState.Stopped //tracks the state of the timer
     private var secondsRemaining = 0L //tracks the remining seconds to the end of the timer
 
-    private var timerItemList = LinkedList<TimerItemData>() //List of items to complete
+    private var timerItemList = LinkedList<TimerItem>() //List of items to complete
     private var isWorkout = true //tracks if activity has to set to show workout bar or rest
     private var isTimerListStarted = false //tracks if item list is started
-    private var currTimerItemData: TimerItemData //tracks the curent item to complete
+    private var currTimerItemData: TimerItem //tracks the curent item to complete
 
-    //This will be deleted
+    //TEST --_> This init will be deleted
     init {
-        timerItemList.add(TimerItemData(R.drawable.ic_timer_black, 20, 15))
-        timerItemList.add(TimerItemData(R.drawable.ic_timer_black,20 ,10))
-        timerItemList.add(TimerItemData(R.drawable.ic_timer_black,15, 5))
-        timerItemList.add(TimerItemData(R.drawable.ic_timer_black, 20, 4))
-        timerItemList.add(TimerItemData(R.drawable.ic_timer_black,25, 40))
+        timerItemList.add(TimerItem(0,R.drawable.ic_timer_black, 20, 15))
+        timerItemList.add(TimerItem(1, R.drawable.ic_timer_black,20 ,10))
+        timerItemList.add(TimerItem(2, R.drawable.ic_timer_black,15, 5))
+        timerItemList.add(TimerItem(3, R.drawable.ic_timer_black, 20, 4))
+        timerItemList.add(TimerItem(4, R.drawable.ic_timer_black,25, 40))
 
         currTimerItemData = timerItemList.poll()
     }

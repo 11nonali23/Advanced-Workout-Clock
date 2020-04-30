@@ -4,7 +4,7 @@ package com.example.advanced_chrono2.shared_preferences
 import android.content.Context
 import androidx.preference.PreferenceManager
 import com.example.advanced_chrono2.TimerActivity
-import com.example.advanced_chrono2.model.TimerItemData
+import com.example.advanced_chrono2.model.TimerItem
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import java.lang.reflect.Type
@@ -23,7 +23,7 @@ class TimerPrefUtilsManager {
         private val gson = Gson()
 
         // the LinkedList of TimerItemDatas
-        private val type: Type = object : TypeToken<LinkedList<TimerItemData>>() {}.type
+        private val type: Type = object : TypeToken<LinkedList<TimerItem>>() {}.type
 
 //USEFUL VARIABLES ----------------------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -88,19 +88,19 @@ class TimerPrefUtilsManager {
         //TODO remember it returns null as default value
         private const val TIMER_ITEMS_LIST_ID = "com.timer.item_list"
 
-        fun getTimerItemDataList(context: Context): LinkedList<TimerItemData>{
+        fun getTimerItemDataList(context: Context): LinkedList<TimerItem>{
             val preferences = PreferenceManager.getDefaultSharedPreferences(context)
 
             val json = preferences.getString(TIMER_ITEMS_LIST_ID, null)
 
             if (json == null)
-                return LinkedList<TimerItemData>()
+                return LinkedList<TimerItem>()
 
-            val timerItemList: LinkedList<TimerItemData> = gson.fromJson(json, type)
+            val timerItemList: LinkedList<TimerItem> = gson.fromJson(json, type)
             return timerItemList
         }
 
-        fun setTimerItemDatasList(context: Context, timerItemList: LinkedList<TimerItemData>){
+        fun setTimerItemDatasList(context: Context, timerItemList: LinkedList<TimerItem>){
             val editor = PreferenceManager.getDefaultSharedPreferences(context).edit()
 
             editor.putString(TIMER_ITEMS_LIST_ID, gson.toJson(timerItemList))

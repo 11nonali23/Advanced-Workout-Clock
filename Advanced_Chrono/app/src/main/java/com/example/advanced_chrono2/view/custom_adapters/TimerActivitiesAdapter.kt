@@ -8,8 +8,7 @@ import android.widget.TextView
 import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.advanced_chrono2.R
-import com.example.advanced_chrono2.TimerActivity
-import com.example.advanced_chrono2.model.TimerActivityData
+import com.example.advanced_chrono2.model.TimerActivity
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 
@@ -19,7 +18,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton
 when a change is done to the timer items in the activity also this list will change
  */
 
-class TimerActivitiesAdapter (private val itemList: ArrayList<TimerActivityData>) : RecyclerView.Adapter<TimerActivitiesAdapter.HorizontalItemsViewHolder>()
+class TimerActivitiesAdapter (private val itemList: ArrayList<com.example.advanced_chrono2.model.TimerActivity>) : RecyclerView.Adapter<TimerActivitiesAdapter.HorizontalItemsViewHolder>()
 {
 
     companion object {private const val DEFAULT_ITEM_POS = 0; private const val EXTRA_NAME = "Timer Activities"}

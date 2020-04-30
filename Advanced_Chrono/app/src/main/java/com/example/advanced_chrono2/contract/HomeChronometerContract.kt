@@ -1,6 +1,7 @@
 package com.example.advanced_chrono2.contract
 
 import android.content.Context
+import com.example.advanced_chrono2.model.BaseModel
 import com.example.advanced_chrono2.model.ChronoActivity
 import kotlin.collections.ArrayList
 
@@ -8,14 +9,8 @@ import kotlin.collections.ArrayList
 
 interface HomeChronometerContract
 {
-    interface IHomeModel
+    interface IHomeModel : BaseModel
     {
-        fun getAllActivities(): ArrayList<ChronoActivity>?
-
-        fun addNewActivity(name: String): ChronoActivity?
-
-        fun deleteActivity(activityName: String): Boolean
-
         fun addNewTiming(time: Long, timestamp: Long, activitiyId: Int): Boolean
 
     }

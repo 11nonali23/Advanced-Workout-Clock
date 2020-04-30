@@ -9,7 +9,7 @@ import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.Adapter
 import com.example.advanced_chrono2.R
-import com.example.advanced_chrono2.model.TimerItemData
+import com.example.advanced_chrono2.model.TimerItem
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -23,7 +23,7 @@ interface ItemTouchHelperAdapter
     fun onItemDismiss(position: Int)
 }
 
-class TimerItemsAdapter(private val timerList: ArrayList<TimerItemData>)
+class TimerItemsAdapter(private val timerList: ArrayList<TimerItem>)
 
     : Adapter<TimerItemsAdapter.SwipableItemsViewHolder>(), ItemTouchHelperAdapter
 
@@ -84,7 +84,7 @@ class TimerItemsAdapter(private val timerList: ArrayList<TimerItemData>)
 
     //This method will be used every time the user changes the selected activity
 
-    fun setTimerList(newTimerList: ArrayList<TimerItemData>)
+    fun setTimerList(newTimerList: ArrayList<TimerItem>)
     {
         //this.timerList = newTimerList
     }
