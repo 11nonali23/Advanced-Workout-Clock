@@ -5,9 +5,9 @@ import com.example.advanced_chrono2.view.fragments.TimerActivitiesFragment
 
 /* This class is a singleton one ---> https://blog.mindorks.com/how-to-create-a-singleton-class-in-kotlin*/
 
-//Fake database. One true will be added sooon
+//Fake database. One true will be added soon
 
-object TimerActivitiesDatabaseHelper {
+object TimerActivitiesFAKEDatabase {
 
     val activities: ArrayList<TimerActivityData> = ArrayList()
     private val timerItems = ArrayList<TimerItemData>()         //mokup items. All activities will have the same

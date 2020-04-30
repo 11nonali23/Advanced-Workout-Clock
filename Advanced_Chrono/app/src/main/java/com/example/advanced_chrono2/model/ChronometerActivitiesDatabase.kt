@@ -5,6 +5,7 @@ import android.content.Context
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
 import com.example.advanced_chrono2.contract.HomeChronometerContract
+import java.sql.SQLException
 
 class ChronometerActivitiesDatabase(context: Context) :
     SQLiteOpenHelper(context, DATABASE_NAME, null, DATABASE_VERSION),
@@ -13,34 +14,35 @@ class ChronometerActivitiesDatabase(context: Context) :
 
     companion object
     {
-        private var DATABASE_VERSION = 1
+        private var DATABASE_VERSION = 2
         private const val DATABASE_NAME = "timerActivitiesDb"
 
-        //Name of the two tables
+        //Name of activity table
         private const val ACTIVITY_TABLE_NAME = "activity"
-        private const val TIMING_TABLE_NAME= "timing"
-
         //Keys of activity
-        private const val KEY_ID = "id"
+        private const val KEY_ID = "id"/*The protection from id overflow is intrinsic in the application. It is more than highly improbable that someone creates that much activities*/
         private const val KEY_NAME = "name"
 
+        //name of timing table
+        private const val TIMING_TABLE_NAME= "timing"
         //Keys of timing
         private const val KEY_TIME = "time"
         private const val KEY_TIMESTAMP = "timestamp"
         private const val KEY_ID_FOREIGN = "activity_id"
+        private const val ON_UPDTAE_ON_DELETE_TIMING = "ON DELETE CASCADE ON UPDATE CASCADE"
 
         //create activity entries. Avoid using autoincrement fro bad performances:
         private const val SQL_CREATE_ACTIVITY_ENTRIES =
             "CREATE TABLE $ACTIVITY_TABLE_NAME(" +
                     "$KEY_ID INTEGER PRIMARY KEY," +
-                    "$KEY_NAME TEXT NOT NULL);"
+                    "$KEY_NAME TEXT UNIQUE NOT NULL);"
 
         private const val SQL_CREATE_TIMING_ENTRIES =
             "CREATE TABLE $TIMING_TABLE_NAME(" +
                     "$KEY_TIME REAL NOT NULL," +
                     "$KEY_TIMESTAMP INTEGER NOT NULL," +
                     "$KEY_ID_FOREIGN INTEGER NOT NULL," +
-                    "FOREIGN KEY($KEY_ID_FOREIGN) REFERENCES $ACTIVITY_TABLE_NAME($KEY_ID)"
+                    "FOREIGN KEY($KEY_ID_FOREIGN) REFERENCES $ACTIVITY_TABLE_NAME($KEY_ID) $ON_UPDTAE_ON_DELETE_TIMING);"
 
         private const val SQL_DELETE_ACTIVITY_ENTRIES = "DROP TABLE IF EXISTS $ACTIVITY_TABLE_NAME"
 
@@ -73,8 +75,7 @@ class ChronometerActivitiesDatabase(context: Context) :
         onCreate(db)
     }
 
-
-    override fun getAllActivitiesName(): ArrayList<String>
+    override fun getAllActivitiesName(): ArrayList<String>?
     {
         val activityNames = ArrayList<String>()
         val db = this.writableDatabase
@@ -83,46 +84,58 @@ class ChronometerActivitiesDatabase(context: Context) :
         if (cursor.moveToFirst())
         {
             do
-                { activityNames.add(cursor.getString(0)) }
+            { activityNames.add(cursor.getString(0)) }
             while (cursor.moveToNext())
         }
         cursor.close()
         db.close()
 
         return activityNames
+
     }
 
-    override fun addNewActivity(name: String)
+    override fun addNewActivity(name: String): Boolean
     {
         val db = this.writableDatabase
 
-        //Selecting the maximum id and incrementing it by one
-        var id = selectMaxId(db)
+        //Selecting the maximum id incremented by one
+        val id = getNewMaxId(db)
 
         val values = ContentValues()
         values.put(KEY_ID, id)
         values.put(KEY_NAME, name)
 
-        db.insert(ACTIVITY_TABLE_NAME, null, values)
+        //if db insert the element i will return a new activity with an empty timing list else null
+        try {
+            db.insertOrThrow(ACTIVITY_TABLE_NAME, null, values)
+        }
+        catch (sqlExc: SQLException) {
+            db.close()
+            return false
+        }
 
         db.close()
-
+        return true
     }
 
-    override fun deleteActivity(activityId: Int)
+    //TODO catch the error
+    override fun deleteActivity(activityName:String): Boolean
     {
         val db = this.writableDatabase
 
-        db.delete(
+        /*delete returns the number of rows affected if a whereClause is passed in, 0 otherwise.*/
+        val rowsDeleted = db.delete(
             ACTIVITY_TABLE_NAME,
-            "$KEY_ID = ?",
-            arrayOf(activityId.toString())
+            "$KEY_NAME = ?",
+            arrayOf(activityName)
         )
 
         db.close()
+
+        return rowsDeleted > 0
     }
 
-    override fun addNewTiming(time: Long, timestamp: Long, activityId: Int)
+    override fun addNewTiming(time: Long, timestamp: Long, activityName: String)
     {
         val db = this.writableDatabase
 
@@ -139,7 +152,8 @@ class ChronometerActivitiesDatabase(context: Context) :
 
     //HELPER FUNCITONS------------------------------------------------------------------------------------------------------------------------------------------------
 
-    private fun selectMaxId(writableDatabase: SQLiteDatabase): Int
+    //Returns maximum id
+    private fun getNewMaxId(writableDatabase: SQLiteDatabase): Int
     {
         var id = 0
         val cursor = writableDatabase.rawQuery(SQL_SELECT_MAX_ID, null)

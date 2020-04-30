@@ -1,10 +1,9 @@
 package com.example.advanced_chrono2.presenter
 
 import com.example.advanced_chrono2.contract.TimerActivitiesContract
-import com.example.advanced_chrono2.model.TimerActivitiesDatabaseHelper
+import com.example.advanced_chrono2.model.TimerActivitiesFAKEDatabase
 import com.example.advanced_chrono2.model.TimerActivityData
 import com.example.advanced_chrono2.model.TimerItemData
-import com.example.advanced_chrono2.view.fragments.TimerActivitiesFragment
 import java.lang.NumberFormatException
 
 class TimerActivitiesPresenter(val fragment: TimerActivitiesContract.ITimerActivitiesView) : TimerActivitiesContract.ITimerActivitiesPresenter
@@ -14,11 +13,11 @@ class TimerActivitiesPresenter(val fragment: TimerActivitiesContract.ITimerActiv
     {
         private const val numberFormatExceptionMessage = "Error: only numbers are accepted"
         private const val emptyFieldMessage = "Error. Use at least one field for both rest e workout"
-        private const val internalErroMessage = "Sorry, internal error"
+        private const val internalErroMessage = "Sorry, internal error occurred"
     }
 
     private val activities: ArrayList<TimerActivityData> =
-        TimerActivitiesDatabaseHelper.getAllActivities()  //List of activity names to pass to the activity
+        TimerActivitiesFAKEDatabase.getAllActivities()  //List of activity names to pass to the activity
 
     override fun onViewCreated()
     {
@@ -70,7 +69,7 @@ class TimerActivitiesPresenter(val fragment: TimerActivitiesContract.ITimerActiv
                 workoutMinutesInSeconds + workoutSeconds,
                 restMinutesInSeconds + restSeconds)
 
-        if (TimerActivitiesDatabaseHelper.addTimerItem(newTimerItemData))
+        if (TimerActivitiesFAKEDatabase.addTimerItem(newTimerItemData))
             fragment.updateTimerItemsView()
         else
             fragment.displayResult(internalErroMessage)

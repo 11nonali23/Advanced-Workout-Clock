@@ -1,6 +1,7 @@
 package com.example.advanced_chrono2.view.fragments
 
 import android.app.AlertDialog
+import android.content.Context
 import android.os.Bundle
 import android.os.SystemClock
 import android.util.Log
@@ -39,6 +40,16 @@ class HomeChronometerFragment : Fragment(), HomeChronometerContract.IHomeChronom
         private var progresssion :Int = -1                              //define the progression of the circular bar
         private var alwaysSaveChecked: Boolean = false                  //track the checbox to save performance of teh user
         private var chronoState: ChronoState = ChronoState.Resetted     //track the chronometer state
+
+        //add activity dialog button messages
+        private const val ADD_ACTIVITY_CONFIRM = "SAVE ACTIVITY"
+        private const val ADD_ACTIVITY_DISMISS = "CANCEL"
+
+        //delete activity dialog messages
+        private const val DEL_ACTIVITY_TITLE = "DELETE THE CURRENT ACIVITY?"
+        private const val DEL_ACTIVITY_CONFIRM = "DELETE"
+        private const val DEL_ACTIVITY_DISMISS = "CANCEL"
+
     }
 
     //This enum stores the states of the chronometer
@@ -76,9 +87,10 @@ class HomeChronometerFragment : Fragment(), HomeChronometerContract.IHomeChronom
     {
         super.onActivityCreated(savedInstanceState)
 
-        homePresenter.onViewCreated()
+        homePresenter.onViewCreated(this.context)
 
         //LISTENERS-----------------------------------------------------------------------------------------------------------------------------------
+
         //Listener to update progression bar
         chronometer_.setOnChronometerTickListener {
             progress_circular_chrono.progress = progresssion++ % 60
@@ -119,17 +131,24 @@ class HomeChronometerFragment : Fragment(), HomeChronometerContract.IHomeChronom
 
         }
 
+        //checkbox for always save on reset
         chrono_check.setOnCheckedChangeListener { _, isChecked ->
             alwaysSaveChecked = isChecked
         }
 
+        //add new activity
         add_activity_button.setOnClickListener {
-            showAddActivityDialogBuilder()
+            showAddDialogBuilder()
         }
 
-        //TODO
+        //delete selected activity
+        del_activity_button.setOnClickListener{
+            showDeleteDialogBuilder()
+        }
+
+        //save timing button
         chrono_save_btn.setOnClickListener {
-            chronometer_
+            saveCurrentTiming()
         }
 
         //LISTENERS-----------------------------------------------------------------------------------------------------------------------------------
@@ -158,29 +177,55 @@ class HomeChronometerFragment : Fragment(), HomeChronometerContract.IHomeChronom
         spinnerAdapter.notifyDataSetChanged()
     }
 
-    override fun displayResult(result: String) = Toast.makeText(this.context, result, Toast.LENGTH_LONG).show()
+    override fun displayResult(result: String)
+    {
+        if (context != null)
+            Toast.makeText(this.context, result, Toast.LENGTH_LONG).show()
+    }
 
     //END INTERFACE FUNCTIONS------------------------------------------------------------------------------------------
 
 
     //VIEW HELPER FUNCTIONS------------------------------------------------------------------------------------------
 
-    private fun showAddActivityDialogBuilder()
+    //TODO center the buttons
+    private fun showAddDialogBuilder()
     {
         val dialogBuilder = AlertDialog.Builder(this.context, R.style.AlertDialogCustom)
         val dialogView = layoutInflater.inflate(R.layout.add_chrono_activity_layout, null)
         dialogBuilder.setView(dialogView)
 
-        dialogBuilder.setPositiveButton("SAVE ACTIVITY") {_ , _->
+        dialogBuilder.setPositiveButton(ADD_ACTIVITY_CONFIRM) { _, _->
             val editText = dialogView.findViewById<EditText>(R.id.insertText)
             homePresenter.addNewActivity(editText.text.toString())
         }
 
-        dialogBuilder.setNegativeButton("CANCEL") { dialogInterface, _ ->
+        dialogBuilder.setNegativeButton(ADD_ACTIVITY_DISMISS) { dialogInterface, _ ->
             dialogInterface.dismiss()
         }
 
         dialogBuilder.show()
+    }
+
+    //TODO center the buttons
+    private fun showDeleteDialogBuilder()
+    {
+        val dialogBuilder = AlertDialog.Builder(this.context, R.style.AlertDialogCustom)
+        dialogBuilder.setTitle(DEL_ACTIVITY_TITLE)
+
+        dialogBuilder.setPositiveButton(DEL_ACTIVITY_CONFIRM) { _, _->
+            homePresenter.deleteActivity(chrono_spinner.selectedItem.toString())
+        }
+
+        dialogBuilder.setNegativeButton(DEL_ACTIVITY_DISMISS) { dialogInterface, _ ->
+            dialogInterface.dismiss()
+        }
+        dialogBuilder.show()
+    }
+
+    private fun saveCurrentTiming()
+    {
+        //TODO
     }
 
     //Update buttons of the user interface depending on the state of the chrono
