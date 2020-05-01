@@ -19,15 +19,17 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton
 when a change is done to the timer items in the activity also this list will change
  */
 
+//TODO when I selected an activity I have to change the list of items to the one related to the selected one
+
 class TimerActivitiesAdapter (private val itemList: ArrayList<TimerActivity>) : RecyclerView.Adapter<TimerActivitiesAdapter.HorizontalItemsViewHolder>()
 {
 
-    companion object {private const val DEFAULT_ITEM_POS = 0; private const val EXTRA_NAME = "Timer Activities"}
+    companion object {private const val DEFAULT_ITEM_POS = 0}
 
     /*Only one ViewHolder card can be selected. Done due to the proper work of the animation that lift the selected card
     By default the selected card is the an at 0 postion*/
     //TODO When i will implement the delete I need to change this field to a default value if the selected card is deleted
-    private lateinit var selectedCard: CardView //init in OnBindViewHolder
+    private var selectedCard: CardView? = null
 
     private var selectedItemPosition: Int? = null
 
@@ -47,11 +49,13 @@ class TimerActivitiesAdapter (private val itemList: ArrayList<TimerActivity>) : 
     {
         holder.textView.text = this.itemList[position].name
 
-        //TODO activity doeS not go up!!!
-        //By default the selected card is the an at 0 postion
+        //TODO activity does not go up!!!
+        /*By default the selected card is the an at 0 postion
         if (position == DEFAULT_ITEM_POS)
+        {
             this.selectedCard = holder.card
-        this.selectedItemPosition = DEFAULT_ITEM_POS
+            this.selectedItemPosition = DEFAULT_ITEM_POS
+        }*/
     }
 
     fun getSelectedActivityPosition(): Int?
@@ -91,20 +95,32 @@ class TimerActivitiesAdapter (private val itemList: ArrayList<TimerActivity>) : 
             }
             else if (v?.id == card.id)
             {
-                if (v != selectedCard)
+                //If there is another selected card
+                if (selectedCard != null)
                 {
-                    selectedCard.isSelected = false
-                    selectedCard = v as CardView
-                    selectedCard.isSelected = true
+                    if (v != selectedCard)
+                    {
+                        selectedCard?.isSelected = false
+                        selectedCard = v as CardView
+                        selectedCard?.isSelected = true
+                        //Setting the new selected item position
+                        selectedItemPosition = absoluteAdapterPosition
+                    } else
+                    {
+                        //if i selected a card already selected no one will be selected
 
-                    //Setting the new selected item position
-                    selectedItemPosition = absoluteAdapterPosition
+
+                        selectedCard!!.isSelected = !selectedCard!!.isSelected      //setting the current card as not selected anymore
+                        selectedCard = null                                         //setting the current selected card as none
+                        selectedItemPosition = null                                 //setting the current selected position as none
+                    }
                 }
+                //if selected card is null I have to initialize it with the one selected
                 else
                 {
-                    //if i selected a card already selected no one will be selected
-                    selectedCard.isSelected = !selectedCard.isSelected
-                    selectedItemPosition = null
+                    selectedCard = v as CardView
+                    selectedCard!!.isSelected = true
+                    selectedItemPosition = absoluteAdapterPosition
                 }
             }
         }
