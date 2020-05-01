@@ -21,9 +21,6 @@ import com.example.advanced_chrono2.presenter.TimerActivitiesPresenter
 import com.example.advanced_chrono2.view.custom_adapters.TimerItemsAdapter
 import kotlinx.android.synthetic.main.timer_personalize_activities_layout.*
 
-
-//Provvisorio per lista di attività
-
 class TimerActivitiesFragment : Fragment(), TimerActivitiesContract.ITimerActivitiesView
 {
     companion object
@@ -126,7 +123,7 @@ class TimerActivitiesFragment : Fragment(), TimerActivitiesContract.ITimerActivi
         //the activity list passes her list retrived from model via the presenter to the adapter.
         activities[DEFAULT_ITEM_POSITION].timerItems?.let { createItemList(it) }
 
-        setTimerItemsListMovementBehaviour()
+        setTimerItemListMovementBehaviour()
 
         this.settedUp = true
 
@@ -144,6 +141,11 @@ class TimerActivitiesFragment : Fragment(), TimerActivitiesContract.ITimerActivi
         timerItemAdapter.notifyDataSetChanged()
     }
 
+    override fun changeTimerItemListView(newItemList: ArrayList<TimerItem>)
+    {
+        this.timerItemAdapter.setItemList(newItemList)
+    }
+
     override fun displayResult(message: String) = Toast.makeText(this.context, message, Toast.LENGTH_LONG).show()
 
     //END INTERFACE FUNCTIONS------------------------------------------------------------------------------------------
@@ -158,7 +160,7 @@ class TimerActivitiesFragment : Fragment(), TimerActivitiesContract.ITimerActivi
 
         activityList.layoutManager = LinearLayoutManager(this.context, LinearLayoutManager.HORIZONTAL, false)
 
-        activityItemAdapter = TimerActivitiesAdapter(activities as ArrayList<TimerActivity>)
+        activityItemAdapter = TimerActivitiesAdapter(this, activities as ArrayList<TimerActivity>)
         activityList.adapter = activityItemAdapter
 
         setActivityListDecoration()
@@ -208,7 +210,7 @@ class TimerActivitiesFragment : Fragment(), TimerActivitiesContract.ITimerActivi
         })
     }
 
-    private fun setTimerItemsListMovementBehaviour()
+    private fun setTimerItemListMovementBehaviour()
     {
         //itemMovementHelper defines behaviour of recyclerView on user inputs
         swipeDragCallbackHelper =
@@ -290,6 +292,8 @@ class TimerActivitiesFragment : Fragment(), TimerActivitiesContract.ITimerActivi
 
     //HELPER ADAPTER FUNCTIONS---------------------------------------------------------------------------------------------------
     fun informPresenterItemDismissed(itemPosition: Int) = timerActivitiesPresenter.deleteItem(this.activityItemAdapter.getSelectedActivityPosition(), itemPosition)
+
+    fun informPresenterSelectedActivityChanged(position: Int) {this.timerActivitiesPresenter.onSelectedActivityChange(position)}
     //HELPER ADAPTER FUNCTIONS---------------------------------------------------------------------------------------------------
 
 

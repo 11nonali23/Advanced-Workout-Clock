@@ -33,6 +33,8 @@ interface TimerActivitiesContract
 
         fun isViewSettedUp(): Boolean
 
+        fun changeTimerItemListView(newItemList: ArrayList<TimerItem>)
+
         fun updateActivitiesView()
 
         fun updateTimerItemsView()
@@ -58,5 +60,9 @@ interface TimerActivitiesContract
 
         //TODO need to understand what parameter pass
         fun deleteItem(selectedActivityPosition: Int?, position: Int)
+
+
+        fun onSelectedActivityChange(position: Int)
+
     }
 }

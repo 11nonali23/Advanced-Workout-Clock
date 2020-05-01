@@ -10,6 +10,7 @@ import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.advanced_chrono2.R
 import com.example.advanced_chrono2.model.TimerActivity
+import com.example.advanced_chrono2.view.fragments.TimerActivitiesFragment
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 
@@ -21,15 +22,18 @@ when a change is done to the timer items in the activity also this list will cha
 
 //TODO when I selected an activity I have to change the list of items to the one related to the selected one
 
-class TimerActivitiesAdapter (private val itemList: ArrayList<TimerActivity>) : RecyclerView.Adapter<TimerActivitiesAdapter.HorizontalItemsViewHolder>()
-{
+class TimerActivitiesAdapter (
+    private val parentView: TimerActivitiesFragment,
+    private val itemList: ArrayList<TimerActivity>
 
-    companion object {private const val DEFAULT_ITEM_POS = 0}
+) : RecyclerView.Adapter<TimerActivitiesAdapter.HorizontalItemsViewHolder>()
+
+{
 
     /*Only one ViewHolder card can be selected. Done due to the proper work of the animation that lift the selected card
     By default the selected card is the an at 0 postion*/
     //TODO When i will implement the delete I need to change this field to a default value if the selected card is deleted
-    private var selectedCard: CardView? = null
+    private var selectedCard: CardView? = null  //null when no card is selected
 
     private var selectedItemPosition: Int? = null
 
@@ -93,6 +97,8 @@ class TimerActivitiesAdapter (private val itemList: ArrayList<TimerActivity>) : 
                 //intent.putExtra(EXTRA_NAME, itemList[this.absoluteAdapterPosition].timerItems)
                 v.context.startActivity(intent)
             }
+
+            //check if the view selected is the card itself
             else if (v?.id == card.id)
             {
                 //If there is another selected card
@@ -105,11 +111,11 @@ class TimerActivitiesAdapter (private val itemList: ArrayList<TimerActivity>) : 
                         selectedCard?.isSelected = true
                         //Setting the new selected item position
                         selectedItemPosition = absoluteAdapterPosition
+                        //update the item list
+                        parentView.informPresenterSelectedActivityChanged(selectedItemPosition!!)
                     } else
                     {
                         //if i selected a card already selected no one will be selected
-
-
                         selectedCard!!.isSelected = !selectedCard!!.isSelected      //setting the current card as not selected anymore
                         selectedCard = null                                         //setting the current selected card as none
                         selectedItemPosition = null                                 //setting the current selected position as none
@@ -120,7 +126,10 @@ class TimerActivitiesAdapter (private val itemList: ArrayList<TimerActivity>) : 
                 {
                     selectedCard = v as CardView
                     selectedCard!!.isSelected = true
+                    //Setting the new selected item position
                     selectedItemPosition = absoluteAdapterPosition
+                    //update the item list
+                    parentView.informPresenterSelectedActivityChanged(selectedItemPosition!!)
                 }
             }
         }

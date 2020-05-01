@@ -25,7 +25,7 @@ interface ItemTouchHelperAdapter
 }
 
 class TimerItemsAdapter(private val parent: TimerActivitiesFragment,
-                        private val itemList: ArrayList<TimerItem>)
+                        private var itemList: ArrayList<TimerItem>)
 
     : Adapter<TimerItemsAdapter.SwipableItemsViewHolder>(), ItemTouchHelperAdapter
 
@@ -84,10 +84,12 @@ class TimerItemsAdapter(private val parent: TimerActivitiesFragment,
         this.itemTouchHelper = itemTouchHelper
     }
 
+    fun setItemList(newItemList: ArrayList<TimerItem>) {this.itemList = newItemList}
+
 
     //INTERFACE FUNCTIONS-----------------------------------------------------------------------------------------------
 
-    //when the user swaps to items, since the list is the one passed by reference from the presenter, I don't need to advise the presenter directly!
+    //when the user swaps to items, since the list is the one passed by reference from the presenter, I don't need to advise the presenter directly! ==>TODO it' wrong!!!!!
     override fun onItemMove(fromPosition: Int, toPosition: Int)
     {
         Log.e("TIMER ITEM ADAPTER", "from : $fromPosition , to: $toPosition")
