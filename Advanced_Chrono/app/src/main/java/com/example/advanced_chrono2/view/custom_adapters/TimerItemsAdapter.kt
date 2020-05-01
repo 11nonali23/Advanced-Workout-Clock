@@ -9,8 +9,8 @@ import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.Adapter
 import com.example.advanced_chrono2.R
-import com.example.advanced_chrono2.contract.TimerActivitiesContract
 import com.example.advanced_chrono2.model.TimerItem
+import com.example.advanced_chrono2.view.fragments.TimerActivitiesFragment
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -24,8 +24,8 @@ interface ItemTouchHelperAdapter
     fun onItemDismiss(position: Int)
 }
 
-class TimerItemsAdapter(private val viewPresenter: TimerActivitiesContract.ITimerActivitiesPresenter,
-                        private val timerList: ArrayList<TimerItem>)
+class TimerItemsAdapter(private val parent: TimerActivitiesFragment,
+                        private val itemList: ArrayList<TimerItem>)
 
     : Adapter<TimerItemsAdapter.SwipableItemsViewHolder>(), ItemTouchHelperAdapter
 
@@ -47,12 +47,12 @@ class TimerItemsAdapter(private val viewPresenter: TimerActivitiesContract.ITime
 
     override fun getItemCount(): Int
     {
-        return timerList.size
+        return itemList.size
     }
 
     override fun onBindViewHolder(holder: SwipableItemsViewHolder, position: Int)
     {
-        val curr = timerList.get(position)
+        val curr = itemList.get(position)
 
         holder.imageView.setImageResource(curr.imageResource)
 
@@ -86,18 +86,20 @@ class TimerItemsAdapter(private val viewPresenter: TimerActivitiesContract.ITime
 
 
     //INTERFACE FUNCTIONS-----------------------------------------------------------------------------------------------
+
+    //when the user swaps to items, since the list is the one passed by reference from the presenter, I don't need to advise the presenter directly!
     override fun onItemMove(fromPosition: Int, toPosition: Int)
     {
         Log.e("TIMER ITEM ADAPTER", "from : $fromPosition , to: $toPosition")
 
-        Collections.swap(this.timerList, fromPosition, toPosition)
+        Collections.swap(this.itemList, fromPosition, toPosition)
 
         notifyItemMoved(fromPosition, toPosition)
     }
 
     override fun onItemDismiss(position: Int)
     {
-        //TODO()
+        parent.informPresenterItemDismissed(position)
     }
     //END INTERFACE FUNCTIONS-----------------------------------------------------------------------------------------------
 

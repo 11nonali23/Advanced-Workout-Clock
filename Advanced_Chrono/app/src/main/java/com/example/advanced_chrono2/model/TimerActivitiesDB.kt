@@ -20,7 +20,7 @@ class TimerActivitiesDB(context: Context) :
     {
         private const val TAG = "TIMER_ACTIVITIES DB"
 
-        private var DATABASE_VERSION = 7
+        private var DATABASE_VERSION = 9
         private const val DATABASE_NAME = "timerActivitiesDb"
 
         //Name of activity table
@@ -66,12 +66,7 @@ class TimerActivitiesDB(context: Context) :
 
         private const val SQL_SELECT_MAX_ID = "SELECT MAX($KEY_ACTIVITY_ID) FROM $ACTIVITY_TABLE_NAME"
 
-        private const val SQL_SELECT_MAX_TIMER_ITEM_ID =
-            "SELECT MAX($KEY_ITEM_ID) " +
-            "FROM $ITEM_TABLE_NAME " +
-            "WHERE $KEY_FOREIGN_ACTIVITY_ID = ?"
-
-
+        private const val SQL_SELECT_MAX_TIMER_ITEM_ID = "SELECT MAX($KEY_ITEM_ID) FROM $ITEM_TABLE_NAME "
     }
 
 
@@ -97,10 +92,12 @@ class TimerActivitiesDB(context: Context) :
         val db = this.writableDatabase
         val cursor = db.rawQuery(SQL_SELECT_ALL_ACTIVITIES, null)
 
+
         if (cursor.moveToFirst())
         {
             do
             {
+                Log.e(TAG, "ACTIVTY ID: ${cursor.getInt(0)}")
                 activities.add(
                     TimerActivity(
                         cursor.getInt(0), cursor.getString(1), getAllTimerItems(cursor.getInt(0)))
@@ -168,6 +165,7 @@ class TimerActivitiesDB(context: Context) :
         return id
     }
 
+    //if no timer Items are associated to the activity I will only return an empty array
     override fun getAllTimerItems(activityId: Int): ArrayList<TimerItem>
     {
         val db = this.writableDatabase
@@ -190,7 +188,6 @@ class TimerActivitiesDB(context: Context) :
 
         cursor.close()
         db.close()
-
         return timerItems
     }
 
@@ -198,7 +195,7 @@ class TimerActivitiesDB(context: Context) :
     {
         val db = this.writableDatabase
 
-        val id = getNewMaxTimerItemId(parentId)
+        val id = getNewMaxTimerItemId()
 
         val values = ContentValues()
         values.put(KEY_ITEM_ID, id)
@@ -218,18 +215,32 @@ class TimerActivitiesDB(context: Context) :
         db.close()
 
         Log.d(TAG, "actitivity $id:  workout:   $workoutSeconds. rest :     $restSeconds")
+
         return TimerItem(id, TimerActivitiesContract.ITimerActivitiesView.itemLogo, workoutSeconds, restSeconds)
     }
 
     override fun delTimerItem(activityId: Int, itemId: Int) : Boolean
     {
-        TODO()
+        val db = this.writableDatabase
+
+        Log.e(TAG, "DB WILL DELETE: ITEM ID $itemId    PARENT ACTIVITY: $activityId")
+
+        /*delete returns the number of rows affected if a whereClause is passed in, 0 otherwise.*/
+        val rowsDeleted = db.delete(
+            ITEM_TABLE_NAME,
+            "$KEY_ITEM_ID = ? AND $KEY_FOREIGN_ACTIVITY_ID = ?",
+            arrayOf(itemId.toString(), activityId.toString())
+        )
+
+        db.close()
+
+        return rowsDeleted > 0
     }
 
-    override fun getNewMaxTimerItemId(activityId: Int) : Int
+    override fun getNewMaxTimerItemId() : Int
     {
         var id = 0
-        val cursor = writableDatabase.rawQuery(SQL_SELECT_MAX_TIMER_ITEM_ID,  arrayOf(activityId.toString()))
+        val cursor = writableDatabase.rawQuery(SQL_SELECT_MAX_TIMER_ITEM_ID, null)
         if (cursor.moveToFirst())
             id = cursor.getInt(0) + 1
 

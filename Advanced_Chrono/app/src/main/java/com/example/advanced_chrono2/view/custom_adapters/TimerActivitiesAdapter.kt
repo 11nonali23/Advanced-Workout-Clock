@@ -47,19 +47,21 @@ class TimerActivitiesAdapter (private val itemList: ArrayList<TimerActivity>) : 
     {
         holder.textView.text = this.itemList[position].name
 
+        //TODO activity doeS not go up!!!
         //By default the selected card is the an at 0 postion
         if (position == DEFAULT_ITEM_POS)
             this.selectedCard = holder.card
         this.selectedItemPosition = DEFAULT_ITEM_POS
     }
 
-    fun getSelectedActivityId(): Int?
+    fun getSelectedActivityPosition(): Int?
     {
         if (selectedItemPosition != null)
-            return this.itemList.get(selectedItemPosition!!).id
+            return selectedItemPosition!!
         else
             return null
     }
+
 
     inner class HorizontalItemsViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView), View.OnClickListener
     {

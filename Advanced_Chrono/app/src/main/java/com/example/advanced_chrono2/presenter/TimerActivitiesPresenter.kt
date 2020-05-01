@@ -1,9 +1,11 @@
 package com.example.advanced_chrono2.presenter
 
 import android.content.Context
+import android.util.Log
 import com.example.advanced_chrono2.contract.TimerActivitiesContract
 import com.example.advanced_chrono2.model.TimerActivitiesDB
 import com.example.advanced_chrono2.model.TimerActivity
+import java.lang.Exception
 import java.lang.NumberFormatException
 
 class TimerActivitiesPresenter(val view: TimerActivitiesContract.ITimerActivitiesView) : TimerActivitiesContract.ITimerActivitiesPresenter
@@ -14,7 +16,9 @@ class TimerActivitiesPresenter(val view: TimerActivitiesContract.ITimerActivitie
 
     companion object
     {
-        private const val INTERNAL_ERROR = "Internal Error: activity not added"
+        private const val TAG = "TIMER PRESENTER"
+
+        private const val INTERNAL_ERROR = "Internal Error"
 
         //add activity logs to the user
         private const val ADD_ACTIVITY_SUCCES = "Succesfully added!"
@@ -23,13 +27,15 @@ class TimerActivitiesPresenter(val view: TimerActivitiesContract.ITimerActivitie
 
         private const val DEL_ACTIVITY_SUCCES = "Succesfully deleted!"
 
+        private const val NO_SELECTED_ACTIVITY = "ERROR! Please select an activity"
+
         //add item logs to the user
         private const val NUMBER_FORMAT_ERROR = "Error: only numbers are accepted"
         private const val EMPTY_ITEM_FIELDS = "Error. Use at least one field for both rest e workout"
-        private const val ADD_ITEM_NO_SELECTED_ACTIVITY = "No activity is selected"
 
         //TODO implement an example activity
         private const val EXAMPLE_ACTIVITY_NAME = "EXAMPLE ACTIVITY"
+
     }
 
 
@@ -99,40 +105,51 @@ class TimerActivitiesPresenter(val view: TimerActivitiesContract.ITimerActivitie
     }
 
     override fun addNewTimerItem(
-        parentId: Int?,
+        selectedActivityPosition: Int?,
         workoutMinutesText: String,
         workoutSecondsText: String,
         restMinutesText: String,
         restSecondsText: String
     ) {
 
-        if (model == null)
+        if (this.model == null || this.activities == null)
         {
             view.displayResult(INTERNAL_ERROR)
             return
         }
 
         //if the parent activity id is null it means that no element is selected
-        if (parentId == null)
+        if (selectedActivityPosition == null)
         {
-            view.displayResult(ADD_ITEM_NO_SELECTED_ACTIVITY)
+            view.displayResult(NO_SELECTED_ACTIVITY)
             return
         }
-        //Checking if at least one value is not empty for seconds e minutes
+
+        //If the parent ID isn't in the itemList it means i have an internal error! It can't be user fault.
+        val parentActivityID: Int
+
+        try {
+            parentActivityID = this.activities!![selectedActivityPosition].id
+        }
+        catch (exc: ArrayIndexOutOfBoundsException){
+            view.displayResult(INTERNAL_ERROR)
+            return
+        }
+
+        //Checking if at least one value is not empty for seconds e minutes for both workout and rest
         if(workoutMinutesText.isEmpty() && workoutSecondsText.isEmpty())
         {
             view.displayResult(EMPTY_ITEM_FIELDS)
             return
         }
-
         if (restMinutesText.isEmpty() && restSecondsText.isEmpty())
         {
             view.displayResult(EMPTY_ITEM_FIELDS)
             return
         }
 
-        //creating seconds value for each string passed. If i have NumberFormatException i will advise view and end
-        //Converting minutes in seconds
+        /*creating seconds value for each string passed by converting minutes into seconds).
+        If i have NumberFormatException i will advise view and end*/
         val workoutMinutesInSeconds: Int
         val workoutSeconds: Int
         val restMinutesInSeconds: Int
@@ -149,11 +166,11 @@ class TimerActivitiesPresenter(val view: TimerActivitiesContract.ITimerActivitie
             return
         }
 
-        val newItem = model!!.addTimerItem(parentId, workoutMinutesInSeconds + workoutSeconds, restMinutesInSeconds + restSeconds)
+        val newItem = model!!.addTimerItem(parentActivityID, workoutMinutesInSeconds + workoutSeconds, restMinutesInSeconds + restSeconds)
 
         if (newItem != null)
         {
-            activities!!.forEach { if (it.id == parentId) it.timerItems?.add(newItem) }
+            activities!!.forEach { if (it.id == parentActivityID) it.timerItems?.add(newItem) }
             view.updateTimerItemsView()
             return
         }
@@ -162,10 +179,55 @@ class TimerActivitiesPresenter(val view: TimerActivitiesContract.ITimerActivitie
 
     }
 
-    override fun deleteItem(activityId: Int, position: Int)
+    override fun deleteItem(selectedActivityPosition: Int?, position: Int)
     {
-        TODO()
 
+        Log.e(TAG, "PARENT ACTIVITY POSITION: $selectedActivityPosition ITEM POSITION: $position")
+
+        //Checking that an activity is selected. If not i will inform user via the view
+        if (model == null ||activities == null || selectedActivityPosition == null)
+        {
+            view.displayResult(NO_SELECTED_ACTIVITY)
+            return
+        }
+
+        /*If the parent ID isn't in the itemList it means i have an internal error! It can't be user fault.
+        *This is beacuse the user can't handle the id's of the items*/
+        val parentActivityID: Int
+
+        try {
+            parentActivityID = this.activities!![selectedActivityPosition].id
+        }
+        catch (exc: ArrayIndexOutOfBoundsException){
+            view.displayResult(INTERNAL_ERROR)
+            Log.e(TAG, "OUT OF BOUND FOR PARENT ACTIVITY")
+            return
+        }
+
+        Log.e(TAG, "PARENT ACTIVITY ID: $parentActivityID")
+
+
+        //Same concepet of above for itemId
+        val itemID: Int
+
+        try {
+            itemID = this.activities!![selectedActivityPosition].timerItems!![position].id
+        }
+        catch (exc: Exception ){
+            view.displayResult(INTERNAL_ERROR)
+            Log.e(TAG, "OUT OF BOUND FOR CHILD ITEM")
+            return
+        }
+
+        Log.e(TAG, "ITEM ID: $itemID")
+
+        //when i have the two IDs i am ready to call the DB.
+
+        //If the model succesfully deletes the item i don't want to log nothin to the user
+        if(model!!.delTimerItem(parentActivityID, itemID))
+            return
+        else
+            view.displayResult(INTERNAL_ERROR)
     }
 
 }

@@ -20,7 +20,7 @@ interface TimerActivitiesContract
 
         fun delTimerItem(activityId: Int, itemId: Int): Boolean
 
-        fun getNewMaxTimerItemId(activityId: Int): Int
+        fun getNewMaxTimerItemId(): Int
     }
 
 
@@ -50,13 +50,13 @@ interface TimerActivitiesContract
         fun deleteActivity(activityName: String)
 
         //ToDO it wil also need the position in the real app
-        fun addNewTimerItem(parentId: Int?,
+        fun addNewTimerItem(selectedActivityPosition: Int?,
                             workoutMinutesText: String,
                             workoutSecondsText: String,
                             restMinutesText: String,
                             restSecondsText: String)
 
         //TODO need to understand what parameter pass
-        fun deleteItem(activityId: Int, position: Int)
+        fun deleteItem(selectedActivityPosition: Int?, position: Int)
     }
 }

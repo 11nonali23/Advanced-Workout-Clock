@@ -190,7 +190,7 @@ class TimerActivitiesFragment : Fragment(), TimerActivitiesContract.ITimerActivi
 
         activityItemList.setHasFixedSize(true)
 
-        timerItemAdapter = TimerItemsAdapter(this.timerActivitiesPresenter, timerItems as ArrayList<TimerItem>)
+        timerItemAdapter = TimerItemsAdapter(this, timerItems as ArrayList<TimerItem>)
 
         activityItemList.layoutManager = LinearLayoutManager(this.context)
         activityItemList.adapter = timerItemAdapter
@@ -239,7 +239,7 @@ class TimerActivitiesFragment : Fragment(), TimerActivitiesContract.ITimerActivi
             val restMinutesText = dialogView.findViewById<EditText>(R.id.rest_minutes).text.toString()
             val restSecondsText = dialogView.findViewById<EditText>(R.id.rest_seconds).text.toString()
 
-            val id = (activity_recycle.adapter as TimerActivitiesAdapter).getSelectedActivityId()
+            val id = (activity_recycle.adapter as TimerActivitiesAdapter).getSelectedActivityPosition()
 
             //TODO aggiungere tramite presenter
             timerActivitiesPresenter.addNewTimerItem(id, workoutMinutesText, workoutSecondsText, restMinutesText, restSecondsText)
@@ -286,4 +286,12 @@ class TimerActivitiesFragment : Fragment(), TimerActivitiesContract.ITimerActivi
         dialogBuilder.show()
     }
     //END HELPER FUNCTIONS---------------------------------------------------------------------------------------------------
+
+
+    //HELPER ADAPTER FUNCTIONS---------------------------------------------------------------------------------------------------
+    fun informPresenterItemDismissed(itemPosition: Int) = timerActivitiesPresenter.deleteItem(this.activityItemAdapter.getSelectedActivityPosition(), itemPosition)
+    //HELPER ADAPTER FUNCTIONS---------------------------------------------------------------------------------------------------
+
+
+
 }
