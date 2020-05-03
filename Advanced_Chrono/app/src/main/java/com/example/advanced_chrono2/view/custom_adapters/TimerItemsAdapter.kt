@@ -1,6 +1,6 @@
 package com.example.advanced_chrono2.view.custom_adapters
 
-
+import com.example.advanced_chrono2.view.fragments.TimerActivitiesFragment
 import android.util.Log
 import android.view.*
 import android.widget.ImageView
@@ -9,10 +9,11 @@ import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.Adapter
 import com.example.advanced_chrono2.R
-import com.example.advanced_chrono2.model.TimerItem
-import com.example.advanced_chrono2.view.fragments.TimerActivitiesFragment
 import java.util.*
-import kotlin.collections.ArrayList
+
+
+//The field activitiesList of the companion object of ITimerActivitiesPresenter wil be renamed as presenterList
+import com.example.advanced_chrono2.contract.TimerActivitiesContract.ITimerActivitiesPresenter.Companion.activitiesList as presenterList
 
 /*This adapter is used to manage the items of the activities.
  They can be swiped to be deleted and also dragged into another position*/
@@ -24,10 +25,10 @@ interface ItemTouchHelperAdapter
     fun onItemDismiss(position: Int)
 }
 
-class TimerItemsAdapter(private val parent: TimerActivitiesFragment,
-                        private var itemList: ArrayList<TimerItem>)
 
-    : Adapter<TimerItemsAdapter.SwipableItemsViewHolder>(), ItemTouchHelperAdapter
+class TimerItemsAdapter(private val parent: TimerActivitiesFragment,
+                        private var currentActivityPosition: Int
+) : Adapter<TimerItemsAdapter.SwipableItemsViewHolder>(), ItemTouchHelperAdapter
 
 {
 
@@ -47,12 +48,17 @@ class TimerItemsAdapter(private val parent: TimerActivitiesFragment,
 
     override fun getItemCount(): Int
     {
-        return itemList.size
+        return presenterList[currentActivityPosition].timerItems.size
     }
 
     override fun onBindViewHolder(holder: SwipableItemsViewHolder, position: Int)
     {
-        val curr = itemList.get(position)
+        val curr = presenterList[currentActivityPosition].timerItems[position]
+
+        Log.e("TIMER ITEM ADAP","size of list ${presenterList[currentActivityPosition].timerItems.size}")
+
+        Log.e("TIMER ITEM ADAP","item at $position : id = ${curr.id}         work = ${curr.workoutSeconds}     rest = ${curr.restSeconds}")
+
 
         holder.imageView.setImageResource(curr.imageResource)
 
@@ -84,7 +90,7 @@ class TimerItemsAdapter(private val parent: TimerActivitiesFragment,
         this.itemTouchHelper = itemTouchHelper
     }
 
-    fun setItemList(newItemList: ArrayList<TimerItem>) {this.itemList = newItemList}
+    fun setItemList(position: Int) {currentActivityPosition = position}
 
 
     //INTERFACE FUNCTIONS-----------------------------------------------------------------------------------------------
@@ -94,14 +100,14 @@ class TimerItemsAdapter(private val parent: TimerActivitiesFragment,
     {
         Log.e("TIMER ITEM ADAPTER", "from : $fromPosition , to: $toPosition")
 
-        Collections.swap(this.itemList, fromPosition, toPosition)
+        Collections.swap(presenterList[currentActivityPosition].timerItems, fromPosition, toPosition)
 
         notifyItemMoved(fromPosition, toPosition)
     }
 
     override fun onItemDismiss(position: Int)
     {
-        parent.informPresenterItemDismissed(position)
+        parent.timerActivitiesPresenter.deleteItem(currentActivityPosition, position)
     }
     //END INTERFACE FUNCTIONS-----------------------------------------------------------------------------------------------
 

@@ -179,10 +179,11 @@ class TimerActivitiesDB(context: Context) :
                     TimerItem(
                         cursor.getInt(0),
                         TimerActivitiesContract.ITimerActivitiesView.itemLogo,
-                        cursor.getInt(2),
-                        cursor.getInt(3)
+                        cursor.getInt(1),
+                        cursor.getInt(2)
                     )
                 )
+                Log.e(TAG, "DB RETRIVING ITEM : work = ${cursor.getInt(1)}     rest = ${cursor.getInt(2)}")
             }while (cursor.moveToNext())
         }
 
@@ -214,7 +215,7 @@ class TimerActivitiesDB(context: Context) :
 
         db.close()
 
-        Log.d(TAG, "actitivity $id:  workout:   $workoutSeconds. rest :     $restSeconds")
+        Log.e(TAG, "new item added---> $id:  workout:   $workoutSeconds. rest :     $restSeconds")
 
         return TimerItem(id, TimerActivitiesContract.ITimerActivitiesView.itemLogo, workoutSeconds, restSeconds)
     }

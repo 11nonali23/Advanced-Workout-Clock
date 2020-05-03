@@ -29,37 +29,48 @@ interface TimerActivitiesContract
         //Logo accessible for every class that needs it
         companion object { const val itemLogo = R.drawable.ic_timer_black }
 
-        fun setUpView(activities: List<TimerActivity>)
+        fun setUpView()
 
-        fun isViewSettedUp(): Boolean
+        fun isViewSetUp(): Boolean
 
-        fun changeTimerItemListView(newItemList: ArrayList<TimerItem>)
+        fun changeTimerItemListView(position: Int)
 
-        fun updateActivitiesView()
+        //The next for functions are MANDATORY to use when the data set of activities or items of an activity is changed
+        fun activitiesDataSetChanged()
 
-        fun updateTimerItemsView()
+        fun activityRemovedFromDataSet(position: Int)
+
+        fun itemDataSetChanged()
+
+        fun itemRemovedFromDataSet(position: Int)
+        //--------------------------------------------------------------------------------------------------------------
 
         fun displayResult(message: String)
     }
 
     interface ITimerActivitiesPresenter
     {
+        companion object
+        {
+            //the presenter has a unique list list of all the activities accessible for View and Adapters as a model
+            var activitiesList: ArrayList<TimerActivity> = ArrayList()
+        }
+
         //first steps to do when a view is created
         fun onViewCreated(context: Context?)
 
         fun addNewActivity(activityName: String)
 
-        fun deleteActivity(activityName: String)
+        fun deleteActivity(position: Int?)
 
-        //ToDO it wil also need the position in the real app
+
         fun addNewTimerItem(selectedActivityPosition: Int?,
                             workoutMinutesText: String,
                             workoutSecondsText: String,
                             restMinutesText: String,
                             restSecondsText: String)
 
-        //TODO need to understand what parameter pass
-        fun deleteItem(selectedActivityPosition: Int?, position: Int)
+        fun deleteItem(selectedActivityPosition: Int?, itemPosition: Int)
 
 
         fun onSelectedActivityChange(position: Int)

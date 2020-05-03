@@ -27,8 +27,6 @@ class TimerActivitiesFragment : Fragment(), TimerActivitiesContract.ITimerActivi
     {
         private const val TAG = "TIMER FRAGMENT CICLE"
 
-        private const val DEFAULT_ITEM_POSITION = 0
-
         //add activity dialog button messages
         private const val ADD_ACTIVITY_CONFIRM = "SAVE ACTIVITY"
 
@@ -42,7 +40,7 @@ class TimerActivitiesFragment : Fragment(), TimerActivitiesContract.ITimerActivi
         private const val DISMISS_DIALOG = "CANCEL"
     }
 
-    private val timerActivitiesPresenter:
+    val timerActivitiesPresenter:
             TimerActivitiesContract.ITimerActivitiesPresenter = TimerActivitiesPresenter(this)
 
     private var settedUp = false
@@ -50,8 +48,8 @@ class TimerActivitiesFragment : Fragment(), TimerActivitiesContract.ITimerActivi
     private lateinit var activityItemList: RecyclerView
     private lateinit var activityList: RecyclerView
 
-    private lateinit var timerItemAdapter: TimerItemsAdapter
-    private lateinit var activityItemAdapter: TimerActivitiesAdapter
+    private lateinit var activityItemAdapter: TimerActivitiesAdapter // this presenter handles the activity list.
+    private lateinit var timerItemAdapter: TimerItemsAdapter         // this presenter hanldes the item list related to an activity
 
     private lateinit var itemTouchHelper: ItemTouchHelper
     private lateinit var swipeDragCallbackHelper: SwipeDragCallbackHelper
@@ -115,13 +113,11 @@ class TimerActivitiesFragment : Fragment(), TimerActivitiesContract.ITimerActivi
 
     //INTERFACE FUNCTIONS------------------------------------------------------------------------------------------
 
-    override fun setUpView(activities: List<TimerActivity>)
+    override fun setUpView()
     {
-        createActivityList(activities)
+        createActivityList()
 
-        //TODO make correct for every position
-        //the activity list passes her list retrived from model via the presenter to the adapter.
-        activities[DEFAULT_ITEM_POSITION].timerItems?.let { createItemList(it) }
+        createItemList()
 
         setTimerItemListMovementBehaviour()
 
@@ -129,21 +125,30 @@ class TimerActivitiesFragment : Fragment(), TimerActivitiesContract.ITimerActivi
 
     }
 
-    override fun isViewSettedUp(): Boolean = this.settedUp
+    override fun isViewSetUp(): Boolean = this.settedUp
 
-    override fun updateActivitiesView()
+    override fun activitiesDataSetChanged()
     {
         activityItemAdapter.notifyDataSetChanged()
     }
 
-    override fun updateTimerItemsView()
+    override fun activityRemovedFromDataSet(position: Int)
+    {
+        activityItemAdapter.notifyItemRemoved(position)
+    }
+
+    override fun itemDataSetChanged()
     {
         timerItemAdapter.notifyDataSetChanged()
     }
 
-    override fun changeTimerItemListView(newItemList: ArrayList<TimerItem>)
+    override fun itemRemovedFromDataSet(position: Int) {
+        timerItemAdapter.notifyItemRemoved(position)
+    }
+
+    override fun changeTimerItemListView(position: Int)
     {
-        this.timerItemAdapter.setItemList(newItemList)
+        this.timerItemAdapter.setItemList(position)
     }
 
     override fun displayResult(message: String) = Toast.makeText(this.context, message, Toast.LENGTH_LONG).show()
@@ -152,7 +157,7 @@ class TimerActivitiesFragment : Fragment(), TimerActivitiesContract.ITimerActivi
 
 
     //HELPER FUNCTIONS---------------------------------------------------------------------------------------------------
-    private fun createActivityList(activities: List<TimerActivity>)
+    private fun createActivityList()
     {
         this.activityList = activity_recycle
 
@@ -160,7 +165,7 @@ class TimerActivitiesFragment : Fragment(), TimerActivitiesContract.ITimerActivi
 
         activityList.layoutManager = LinearLayoutManager(this.context, LinearLayoutManager.HORIZONTAL, false)
 
-        activityItemAdapter = TimerActivitiesAdapter(this, activities as ArrayList<TimerActivity>)
+        activityItemAdapter = TimerActivitiesAdapter(this)
         activityList.adapter = activityItemAdapter
 
         setActivityListDecoration()
@@ -186,13 +191,14 @@ class TimerActivitiesFragment : Fragment(), TimerActivitiesContract.ITimerActivi
 
 
     //Create the list of items view connected to an activity
-    private fun createItemList(timerItems: List<TimerItem>)
+    private fun createItemList()
     {
         activityItemList = activity_item_recycler
 
         activityItemList.setHasFixedSize(true)
 
-        timerItemAdapter = TimerItemsAdapter(this, timerItems as ArrayList<TimerItem>)
+        //TODO mak a better showing position
+        timerItemAdapter = TimerItemsAdapter(this,0)
 
         activityItemList.layoutManager = LinearLayoutManager(this.context)
         activityItemList.adapter = timerItemAdapter
@@ -243,7 +249,6 @@ class TimerActivitiesFragment : Fragment(), TimerActivitiesContract.ITimerActivi
 
             val id = (activity_recycle.adapter as TimerActivitiesAdapter).getSelectedActivityPosition()
 
-            //TODO aggiungere tramite presenter
             timerActivitiesPresenter.addNewTimerItem(id, workoutMinutesText, workoutSecondsText, restMinutesText, restSecondsText)
         }
 
@@ -279,7 +284,7 @@ class TimerActivitiesFragment : Fragment(), TimerActivitiesContract.ITimerActivi
         dialogBuilder.setTitle(DEL_ACTIVITY_TITLE)
 
         dialogBuilder.setPositiveButton(DEL_ACTIVITY_CONFIRM) { _, _->
-            //homePresenter.deleteActivity(chrono_spinner.selectedItem.toString())
+            timerActivitiesPresenter.deleteActivity(activityItemAdapter.getSelectedActivityPosition())
         }
 
         dialogBuilder.setNegativeButton(DISMISS_DIALOG) { dialogInterface, _ ->
@@ -291,11 +296,15 @@ class TimerActivitiesFragment : Fragment(), TimerActivitiesContract.ITimerActivi
 
 
     //HELPER ADAPTER FUNCTIONS---------------------------------------------------------------------------------------------------
-    fun informPresenterItemDismissed(itemPosition: Int) = timerActivitiesPresenter.deleteItem(this.activityItemAdapter.getSelectedActivityPosition(), itemPosition)
+    fun onItemDismissed(itemPosition: Int) {
+        timerActivitiesPresenter.deleteItem(
+            this.activityItemAdapter.getSelectedActivityPosition(),
+            itemPosition
+        )
+    }
 
-    fun informPresenterSelectedActivityChanged(position: Int) {this.timerActivitiesPresenter.onSelectedActivityChange(position)}
+    fun onSelectedActivityChange(position: Int) {this.timerActivitiesPresenter.onSelectedActivityChange(position)}
     //HELPER ADAPTER FUNCTIONS---------------------------------------------------------------------------------------------------
-
 
 
 }

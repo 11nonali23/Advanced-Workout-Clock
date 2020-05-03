@@ -4,15 +4,17 @@ import android.content.Context
 import android.util.Log
 import com.example.advanced_chrono2.contract.TimerActivitiesContract
 import com.example.advanced_chrono2.model.TimerActivitiesDB
-import com.example.advanced_chrono2.model.TimerActivity
+import com.example.advanced_chrono2.contract.TimerActivitiesContract.ITimerActivitiesPresenter
 import java.lang.Exception
 import java.lang.NumberFormatException
 
-class TimerActivitiesPresenter(val view: TimerActivitiesContract.ITimerActivitiesView) : TimerActivitiesContract.ITimerActivitiesPresenter
+//The field activitiesList of the companion object of ITimerActivitiesPresenter wil be renamed as activities
+import com.example.advanced_chrono2.contract.TimerActivitiesContract.ITimerActivitiesPresenter.Companion.activitiesList as activities
+
+class TimerActivitiesPresenter(val view: TimerActivitiesContract.ITimerActivitiesView) : ITimerActivitiesPresenter
 {
 
     private var model: TimerActivitiesDB? = null
-    private var activities: ArrayList<TimerActivity>? = null
 
     companion object
     {
@@ -21,7 +23,7 @@ class TimerActivitiesPresenter(val view: TimerActivitiesContract.ITimerActivitie
         private const val INTERNAL_ERROR = "Internal Error"
 
         //add activity logs to the user
-        private const val ADD_ACTIVITY_SUCCES = "Succesfully added!"
+        private const val ADD_ACTIVITY_SUCCES = "Successfully added!"
         private const val ADD_ACTIVITY_DB_ERROR = "Error: this name already exists!"
         private const val ADD_EMPTY_ACTIVITY = "Error: activity can' t be empty"
 
@@ -32,7 +34,6 @@ class TimerActivitiesPresenter(val view: TimerActivitiesContract.ITimerActivitie
         //add item logs to the user
         private const val NUMBER_FORMAT_ERROR = "Error: only numbers are accepted"
         private const val EMPTY_ITEM_FIELDS = "Error. Use at least one field for both rest e workout"
-
     }
 
 
@@ -40,11 +41,12 @@ class TimerActivitiesPresenter(val view: TimerActivitiesContract.ITimerActivitie
     {
         if (context!= null)
         {
+            Log.e(TAG, "on view created")
             model = TimerActivitiesDB(context)
             activities = model!!.getAllActivities()
             //If there is some activity i set up the views
-            if(activities!!.size != 0)
-                view.setUpView(activities!!)
+            if(activities.size != 0)
+                view.setUpView()
         }
     }
 
@@ -53,20 +55,21 @@ class TimerActivitiesPresenter(val view: TimerActivitiesContract.ITimerActivitie
         if (model != null)
         {
             val activityNameTrimmed: String = activityName.trimEnd().trimStart() //trimeEnd and trimStart remove all special character at the end and the start
+
             if (activityNameTrimmed.isNotEmpty())
             {
                 val newActivity = model!!.addNewActivity(activityNameTrimmed)
 
                 if (newActivity != null)
                 {
-                    activities?.add(newActivity)
+                    activities.add(newActivity)
                     view.displayResult(ADD_ACTIVITY_SUCCES)
 
-                    //If it is the first activitity added i have to set up the view
-                    if(!view.isViewSettedUp())
-                        view.setUpView(activities!!)
-                    view.updateActivitiesView()
-                    view.updateTimerItemsView()
+                    //If it is the first activity added i have to set up the view
+                    if(!view.isViewSetUp())
+                        view.setUpView()
+                    view.activitiesDataSetChanged()
+                    view.itemDataSetChanged()
                     return
                 }
                 else
@@ -84,20 +87,35 @@ class TimerActivitiesPresenter(val view: TimerActivitiesContract.ITimerActivitie
         view.displayResult(INTERNAL_ERROR)
     }
 
-    override fun deleteActivity(activityName: String)
+    //TODO refactor it
+    override fun deleteActivity(position: Int?)
     {
-        /*If an activity isn't deleted it can't be an error of the user:
-       the only deletable activities are the one already added!*/
-        if (model != null)
+        if (model == null)
         {
-            if(model!!.deleteActivity(activityName))
-            {
-                activities?.removeAll{it.name == activityName}
-                view.displayResult(DEL_ACTIVITY_SUCCES)
-                view.updateActivitiesView()
-                return
-            }
+            view.displayResult(INTERNAL_ERROR)
+            return
         }
+        //If position is null the user didn't select a possition
+        if(position == null)
+        {
+            view.displayResult(NO_SELECTED_ACTIVITY)
+            return
+        }
+        //There's no such case that the user selects an out of bounds exception. It can only be a system error
+        if(position >= activities.size)
+        {
+            view.displayResult(INTERNAL_ERROR)
+            return
+        }
+
+        if(model!!.deleteActivity(activities[position].name))
+        {
+            activities.removeAt(position)
+            view.displayResult(DEL_ACTIVITY_SUCCES)
+            view.activityRemovedFromDataSet(position)
+            return
+        }
+
         view.displayResult(INTERNAL_ERROR)
     }
 
@@ -110,7 +128,7 @@ class TimerActivitiesPresenter(val view: TimerActivitiesContract.ITimerActivitie
     ) {
 
         //checking if data structures and DB are initialized. If not it can't be a user error
-        if (this.model == null || this.activities == null)
+        if (this.model == null)
         {
             view.displayResult(INTERNAL_ERROR)
             return
@@ -127,7 +145,7 @@ class TimerActivitiesPresenter(val view: TimerActivitiesContract.ITimerActivitie
         val parentActivityID: Int
 
         try {
-            parentActivityID = this.activities!![selectedActivityPosition].id
+            parentActivityID = activities[selectedActivityPosition].id
         }
         catch (exc: ArrayIndexOutOfBoundsException){
             view.displayResult(INTERNAL_ERROR)
@@ -168,8 +186,9 @@ class TimerActivitiesPresenter(val view: TimerActivitiesContract.ITimerActivitie
 
         if (newItem != null)
         {
-            activities!!.forEach { if (it.id == parentActivityID) it.timerItems?.add(newItem) }
-            view.updateTimerItemsView()
+            Log.e(TAG, "adding new item :  work = ${newItem.workoutSeconds}          rest = ${newItem.restSeconds}")
+            activities.forEach { if (it.id == parentActivityID) it.timerItems.add(newItem) }
+            view.itemDataSetChanged()
             return
         }
 
@@ -177,13 +196,13 @@ class TimerActivitiesPresenter(val view: TimerActivitiesContract.ITimerActivitie
 
     }
 
-    override fun deleteItem(selectedActivityPosition: Int?, position: Int)
+    override fun deleteItem(selectedActivityPosition: Int?, itemPosition: Int)
     {
 
-        Log.e(TAG, "PARENT ACTIVITY POSITION: $selectedActivityPosition ITEM POSITION: $position")
+        Log.e(TAG, "PARENT ACTIVITY POSITION: $selectedActivityPosition ITEM POSITION: $itemPosition")
 
         //checking if data structures and DB are initialized. If not it can't be a user error
-        if(model == null || activities == null)
+        if(model == null)
         {
             view.displayResult(INTERNAL_ERROR)
             return
@@ -197,19 +216,13 @@ class TimerActivitiesPresenter(val view: TimerActivitiesContract.ITimerActivitie
         }
 
         //check if activity posisition exists. If it doesn't it can be only an internal error. User can't select an unexisting item
-        if(selectedActivityPosition >= activities!!.size)
+        if(selectedActivityPosition >= activities.size)
         {
             view.displayResult(INTERNAL_ERROR)
             return
         }
         //check if item posisition exists. If it doesn't it can be only an internal error. User can't select an unexisting item
-        if(position >= activities!![selectedActivityPosition].timerItems!!.size)
-        {
-            view.displayResult(INTERNAL_ERROR)
-            return
-        }
-        //if the timer items is null it is an internal error for the same reason of the first condition check
-        if(activities!![position].timerItems == null)
+        if(itemPosition >= activities[selectedActivityPosition].timerItems.size)
         {
             view.displayResult(INTERNAL_ERROR)
             return
@@ -220,7 +233,7 @@ class TimerActivitiesPresenter(val view: TimerActivitiesContract.ITimerActivitie
         val parentActivityID: Int
 
         try {
-            parentActivityID = this.activities!![selectedActivityPosition].id
+            parentActivityID = activities[selectedActivityPosition].id
         }
         catch (exc: ArrayIndexOutOfBoundsException){
             view.displayResult(INTERNAL_ERROR)
@@ -235,7 +248,7 @@ class TimerActivitiesPresenter(val view: TimerActivitiesContract.ITimerActivitie
         val itemID: Int
 
         try {
-            itemID = this.activities!![selectedActivityPosition].timerItems!![position].id
+            itemID = activities[selectedActivityPosition].timerItems[itemPosition].id
         }
         catch (exc: Exception ){
             view.displayResult(INTERNAL_ERROR)
@@ -250,8 +263,8 @@ class TimerActivitiesPresenter(val view: TimerActivitiesContract.ITimerActivitie
         //If the model succesfully deletes the item i don't want to log nothing to the user. I just want to delete the item from the list
         if(model!!.delTimerItem(parentActivityID, itemID))
         {
-            activities!![selectedActivityPosition].timerItems!!.removeAt(position)
-            view.updateTimerItemsView()
+            activities[selectedActivityPosition].timerItems.removeAt(itemPosition)
+            view.itemRemovedFromDataSet(itemPosition)
             return
         }
         else
@@ -261,26 +274,15 @@ class TimerActivitiesPresenter(val view: TimerActivitiesContract.ITimerActivitie
     override fun onSelectedActivityChange(position: Int)
     {
         //If activities is null there's an internal error since the db returns for each activity a non-empty list (see the contract package)
-        if(activities == null)
-        {
-            view.displayResult(INTERNAL_ERROR)
-            return
-        }
         //check if posisition exists. If it doesn't it can be only an internal error. User can't select an unexisting item
-        if(position >= activities!!.size)
-        {
-            view.displayResult(INTERNAL_ERROR)
-            return
-        }
-        //if the timer items is null it is an internal error for the same reason of the first condition check
-        if(activities!![position].timerItems == null)
+        if(position >= activities.size)
         {
             view.displayResult(INTERNAL_ERROR)
             return
         }
 
-        view.changeTimerItemListView(activities!![position].timerItems!!)
-        view.updateTimerItemsView()
+        view.changeTimerItemListView(position)
+        view.itemDataSetChanged()
     }
 
 }
