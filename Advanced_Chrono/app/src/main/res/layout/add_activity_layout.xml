@@ -2,8 +2,12 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/insertActivity"
     android:layout_width="match_parent"
-    android:layout_height="100dp"
+    android:layout_height="match_parent"
     android:gravity="center"
     android:hint="@string/chrono_insert_hint"
     android:textSize="23sp"
-    android:textStyle="bold" />
+    android:textStyle="bold"
+    android:textCursorDrawable="@drawable/cursor_orange"
+    android:backgroundTint="@color/deep_orange">
+    <requestFocus/>
+</EditText>
