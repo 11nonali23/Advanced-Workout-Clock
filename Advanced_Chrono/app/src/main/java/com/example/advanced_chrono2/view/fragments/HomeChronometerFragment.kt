@@ -206,7 +206,7 @@ class HomeChronometerFragment : Fragment(), HomeChronometerContract.IHomeChronom
         dialogBuilder.setView(dialogView)
 
         dialogBuilder.setPositiveButton(ADD_ACTIVITY_CONFIRM) { _, _->
-            val editText = dialogView.findViewById<EditText>(R.id.insertText)
+            val editText = dialogView.findViewById<EditText>(R.id.insertActivity)
             homePresenter.addNewActivity(editText.text.toString())
         }
 
