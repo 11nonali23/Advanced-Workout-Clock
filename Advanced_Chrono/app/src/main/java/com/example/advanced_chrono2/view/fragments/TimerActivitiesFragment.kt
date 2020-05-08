@@ -15,8 +15,6 @@ import com.example.advanced_chrono2.R
 import com.example.advanced_chrono2.view.custom_adapters.TimerActivitiesAdapter
 import com.example.advanced_chrono2.view.custom_adapters.SwipeDragCallbackHelper
 import com.example.advanced_chrono2.contract.TimerActivitiesContract
-import com.example.advanced_chrono2.model.TimerActivity
-import com.example.advanced_chrono2.model.TimerItem
 import com.example.advanced_chrono2.presenter.TimerActivitiesPresenter
 import com.example.advanced_chrono2.view.custom_adapters.TimerItemsAdapter
 import kotlinx.android.synthetic.main.timer_personalize_activities_layout.*
@@ -146,9 +144,9 @@ class TimerActivitiesFragment : Fragment(), TimerActivitiesContract.ITimerActivi
         timerItemAdapter.notifyItemRemoved(position)
     }
 
-    override fun changeTimerItemListView(position: Int)
+    override fun changeTimerItemListView(position: Int?)
     {
-        this.timerItemAdapter.setItemList(position)
+        this.timerItemAdapter.changeCurrentActivityPosition(position)
     }
 
     override fun displayResult(message: String) = Toast.makeText(this.context, message, Toast.LENGTH_LONG).show()
@@ -195,10 +193,8 @@ class TimerActivitiesFragment : Fragment(), TimerActivitiesContract.ITimerActivi
     {
         activityItemList = activity_item_recycler
 
-        activityItemList.setHasFixedSize(true)
-
         //TODO mak a better showing position
-        timerItemAdapter = TimerItemsAdapter(this,0)
+        timerItemAdapter = TimerItemsAdapter(this,null)
 
         activityItemList.layoutManager = LinearLayoutManager(this.context)
         activityItemList.adapter = timerItemAdapter
@@ -292,19 +288,4 @@ class TimerActivitiesFragment : Fragment(), TimerActivitiesContract.ITimerActivi
         }
         dialogBuilder.show()
     }
-    //END HELPER FUNCTIONS---------------------------------------------------------------------------------------------------
-
-
-    //HELPER ADAPTER FUNCTIONS---------------------------------------------------------------------------------------------------
-    fun onItemDismissed(itemPosition: Int) {
-        timerActivitiesPresenter.deleteItem(
-            this.activityItemAdapter.getSelectedActivityPosition(),
-            itemPosition
-        )
-    }
-
-    fun onSelectedActivityChange(position: Int) {this.timerActivitiesPresenter.onSelectedActivityChange(position)}
-    //HELPER ADAPTER FUNCTIONS---------------------------------------------------------------------------------------------------
-
-
 }

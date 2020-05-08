@@ -271,11 +271,11 @@ class TimerActivitiesPresenter(val view: TimerActivitiesContract.ITimerActivitie
             view.displayResult(INTERNAL_ERROR)
     }
 
-    override fun onSelectedActivityChange(position: Int)
+    override fun onSelectedActivityChange(position: Int?)
     {
         //If activities is null there's an internal error since the db returns for each activity a non-empty list (see the contract package)
         //check if posisition exists. If it doesn't it can be only an internal error. User can't select an unexisting item
-        if(position >= activities.size)
+        if(position != null && position >= activities.size)
         {
             view.displayResult(INTERNAL_ERROR)
             return

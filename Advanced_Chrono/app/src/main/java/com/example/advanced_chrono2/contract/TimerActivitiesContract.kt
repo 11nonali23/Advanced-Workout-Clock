@@ -33,7 +33,7 @@ interface TimerActivitiesContract
 
         fun isViewSetUp(): Boolean
 
-        fun changeTimerItemListView(position: Int)
+        fun changeTimerItemListView(position: Int?)
 
         //The next for functions are MANDATORY to use when the data set of activities or items of an activity is changed
         fun activitiesDataSetChanged()
@@ -73,7 +73,7 @@ interface TimerActivitiesContract
         fun deleteItem(selectedActivityPosition: Int?, itemPosition: Int)
 
 
-        fun onSelectedActivityChange(position: Int)
+        fun onSelectedActivityChange(position: Int?)
 
     }
 }

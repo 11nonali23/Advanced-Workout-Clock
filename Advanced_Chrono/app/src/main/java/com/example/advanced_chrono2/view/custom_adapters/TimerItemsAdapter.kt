@@ -27,7 +27,7 @@ interface ItemTouchHelperAdapter
 
 
 class TimerItemsAdapter(private val parent: TimerActivitiesFragment,
-                        private var currentActivityPosition: Int
+                        private var currentActivityPosition: Int?
 ) : Adapter<TimerItemsAdapter.SwipableItemsViewHolder>(), ItemTouchHelperAdapter
 
 {
@@ -48,37 +48,51 @@ class TimerItemsAdapter(private val parent: TimerActivitiesFragment,
 
     override fun getItemCount(): Int
     {
-        return presenterList[currentActivityPosition].timerItems.size
+        return if (currentActivityPosition != null)
+            presenterList[currentActivityPosition!!].timerItems.size
+        else
+            0
     }
 
     override fun onBindViewHolder(holder: SwipableItemsViewHolder, position: Int)
     {
-        val curr = presenterList[currentActivityPosition].timerItems[position]
+        if (currentActivityPosition != null)
+        {
+            val curr = presenterList[currentActivityPosition!!].timerItems[position]
 
-        Log.e("TIMER ITEM ADAP","size of list ${presenterList[currentActivityPosition].timerItems.size}")
+            Log.e(
+                "TIMER ITEM ADAP",
+                "size of list ${presenterList[currentActivityPosition!!].timerItems.size}"
+            )
 
-        Log.e("TIMER ITEM ADAP","item at $position : id = ${curr.id}         work = ${curr.workoutSeconds}     rest = ${curr.restSeconds}")
+            Log.e(
+                "TIMER ITEM ADAP",
+                "item at $position : id = ${curr.id}         work = ${curr.workoutSeconds}     rest = ${curr.restSeconds}"
+            )
 
 
-        holder.imageView.setImageResource(curr.imageResource)
+            holder.imageView.setImageResource(curr.imageResource)
 
-        //setting timer item view text with minutes (if seconds > 60) and seconds
-        //if seconds > 60: minutes = seconds/60, seconds = seconds%60
-        //MINUTES
-        if(curr.workoutSeconds > 60)
-            holder.workoutTextView.text = "work ${curr.workoutSeconds/60}$MIN_SYMBOL ${curr.workoutSeconds%60}$SEC_SYMBOL"
-        else if (curr.workoutSeconds == 60)
-            holder.workoutTextView.text = "work 1$MIN_SYMBOL"
-        else
-            holder.workoutTextView.text = "work ${curr.workoutSeconds}$SEC_SYMBOL"
+            //setting timer item view text with minutes (if seconds > 60) and seconds
+            //if seconds > 60: minutes = seconds/60, seconds = seconds%60
+            //MINUTES
+            if (curr.workoutSeconds > 60)
+                holder.workoutTextView.text =
+                    "work ${curr.workoutSeconds / 60}$MIN_SYMBOL ${curr.workoutSeconds % 60}$SEC_SYMBOL"
+            else if (curr.workoutSeconds == 60)
+                holder.workoutTextView.text = "work 1$MIN_SYMBOL"
+            else
+                holder.workoutTextView.text = "work ${curr.workoutSeconds}$SEC_SYMBOL"
 
-        //SECONDS
-        if(curr.restSeconds >= 60)
-            holder.restTextView.text = "rest ${curr.restSeconds/60}$MIN_SYMBOL ${curr.restSeconds%60}$SEC_SYMBOL"
-        else if (curr.restSeconds == 60)
-            holder.restTextView.text = "rest 1$MIN_SYMBOL"
-        else
-            holder.restTextView.text = "rest ${curr.restSeconds}$SEC_SYMBOL"
+            //SECONDS
+            if (curr.restSeconds >= 60)
+                holder.restTextView.text =
+                    "rest ${curr.restSeconds / 60}$MIN_SYMBOL ${curr.restSeconds % 60}$SEC_SYMBOL"
+            else if (curr.restSeconds == 60)
+                holder.restTextView.text = "rest 1$MIN_SYMBOL"
+            else
+                holder.restTextView.text = "rest ${curr.restSeconds}$SEC_SYMBOL"
+        }
     }
 
 
@@ -90,7 +104,7 @@ class TimerItemsAdapter(private val parent: TimerActivitiesFragment,
         this.itemTouchHelper = itemTouchHelper
     }
 
-    fun setItemList(position: Int) {currentActivityPosition = position}
+    fun changeCurrentActivityPosition(position: Int?) {currentActivityPosition = position}
 
 
     //INTERFACE FUNCTIONS-----------------------------------------------------------------------------------------------
@@ -100,13 +114,15 @@ class TimerItemsAdapter(private val parent: TimerActivitiesFragment,
     {
         Log.e("TIMER ITEM ADAPTER", "from : $fromPosition , to: $toPosition")
 
-        Collections.swap(presenterList[currentActivityPosition].timerItems, fromPosition, toPosition)
+        //If an item is moved it is impossible that no items are showing
+        Collections.swap(presenterList[currentActivityPosition!!].timerItems, fromPosition, toPosition)
 
         notifyItemMoved(fromPosition, toPosition)
     }
 
     override fun onItemDismiss(position: Int)
     {
+        //If an item is deleted it is impossible that no items are showing
         parent.timerActivitiesPresenter.deleteItem(currentActivityPosition, position)
     }
     //END INTERFACE FUNCTIONS-----------------------------------------------------------------------------------------------

@@ -32,8 +32,7 @@ class TimerActivitiesAdapter (private val parentView: TimerActivitiesFragment
 
 {
 
-    /*Only one ViewHolder card can be selected. Done due to the proper work of the animation that lift the selected card
-    By default the selected card is the an at 0 postion*/
+    /*Only one ViewHolder card can be selected. Done due to the proper work of the animation that lift the selected card*/
     //TODO When i will implement the delete I need to change this field to a default value if the selected card is deleted
     private var selectedCard: CardView? = null  //null when no card is selected
 
@@ -113,14 +112,13 @@ class TimerActivitiesAdapter (private val parentView: TimerActivitiesFragment
                         selectedCard?.isSelected = true
                         //Setting the new selected item position
                         selectedActivityPosition = absoluteAdapterPosition
-                        //update the item list
-                        parentView.timerActivitiesPresenter.onSelectedActivityChange(selectedActivityPosition!!)
                     } else
                     {
                         //if i selected a card already selected no one will be selected
                         selectedCard!!.isSelected = !selectedCard!!.isSelected      //setting the current card as not selected anymore
                         selectedCard = null                                         //setting the current selected card as none
                         selectedActivityPosition = null                                 //setting the current selected position as none
+
                     }
                 }
                 //if selected card is null I have to initialize it with the one selected
@@ -130,9 +128,9 @@ class TimerActivitiesAdapter (private val parentView: TimerActivitiesFragment
                     selectedCard!!.isSelected = true
                     //Setting the new selected item position
                     selectedActivityPosition = absoluteAdapterPosition
-                    //update the item list
-                    parentView.timerActivitiesPresenter.onSelectedActivityChange(selectedActivityPosition!!)
                 }
+                //update the item list
+                parentView.timerActivitiesPresenter.onSelectedActivityChange(selectedActivityPosition)
             }
         }
     }
