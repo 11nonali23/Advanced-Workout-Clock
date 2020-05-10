@@ -39,7 +39,6 @@ class HomeChronometerFragment : Fragment(), HomeChronometerContract.IHomeChronom
         //VIEW CHRONOMETER LOGIC
         private var pauseOffset: Long = 0L                              //is used to set the timer properly when restored from on pause and to take note of time
         private var progresssion :Int = -1                              //define the progression of the circular bar
-        private var alwaysSaveChecked: Boolean = false                  //track the checbox to save performance of teh user
         private var chronoState: ChronoState = ChronoState.Resetted     //track the chronometer state
 
         //add activity dialog button messages
@@ -118,10 +117,6 @@ class HomeChronometerFragment : Fragment(), HomeChronometerContract.IHomeChronom
             Log.e(TAG, "$pauseOffset")
             chronoState = ChronoState.Paused
             updateUIButtons()
-
-            //if the checbox is selected then I have to save the timing
-            if (chrono_check.isSelected)
-                saveCurrentTiming()
         }
 
         chrono_reset.setOnClickListener {
@@ -136,12 +131,8 @@ class HomeChronometerFragment : Fragment(), HomeChronometerContract.IHomeChronom
             updateUIButtons()
 
             //i also have to save data in case checbox is checked
-
-        }
-
-        //checkbox for always save on reset
-        chrono_check.setOnCheckedChangeListener { _, isChecked ->
-            alwaysSaveChecked = isChecked
+            if (chrono_check.isChecked)
+                saveCurrentTiming()
         }
 
         //add new activity

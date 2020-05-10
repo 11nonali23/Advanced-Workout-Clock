@@ -3,13 +3,22 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context=".view.fragments.DataFragment">
-
 
     <TextView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="I will implement data here"
-        android:textSize="30sp"/>
+        android:layout_height="90dp"
+        android:layout_marginTop="60dp"
+        android:gravity="center"
+        android:textColor="@color/blood"
+        android:textSize="35sp"
+        android:text="Soon graphs will arrive"/>
+
+    <View
+        android:layout_height="70dp"
+        android:layout_width="70dp"
+        android:layout_gravity="center"
+        android:background="@drawable/ic_pie_chart"/>
 
 </FrameLayout>
