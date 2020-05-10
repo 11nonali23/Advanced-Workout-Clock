@@ -1,6 +1,7 @@
 package com.example.advanced_chrono2.view.fragments
 
 import android.app.AlertDialog
+import android.content.Context
 import android.os.Bundle
 import android.os.SystemClock
 import android.util.Log
@@ -90,7 +91,7 @@ class HomeChronometerFragment : Fragment(), HomeChronometerContract.IHomeChronom
 
         updateUIButtons()
 
-        homePresenter.onViewCreated(this.context)
+        homePresenter.onViewCreated(this.lendContext())
 
         //LISTENERS-----------------------------------------------------------------------------------------------------------------------------------
 
@@ -173,7 +174,7 @@ class HomeChronometerFragment : Fragment(), HomeChronometerContract.IHomeChronom
     override fun setUpSpinnerView(activities: List<ChronoActivity>)
     {
         this.spinnerAdapter = ArrayAdapter(
-            this.context!!,
+            this.lendContext()!!,
             R.layout.support_simple_spinner_dropdown_item,
             activities)
 
@@ -189,9 +190,11 @@ class HomeChronometerFragment : Fragment(), HomeChronometerContract.IHomeChronom
 
     override fun displayResult(result: String)
     {
-        if (context != null)
-            Toast.makeText(this.context, result, Toast.LENGTH_LONG).show()
+        if (lendContext() != null)
+            Toast.makeText(this.lendContext(), result, Toast.LENGTH_LONG).show()
     }
+
+    override fun lendContext(): Context? {return context}
 
     //END INTERFACE FUNCTIONS------------------------------------------------------------------------------------------
 
@@ -201,7 +204,7 @@ class HomeChronometerFragment : Fragment(), HomeChronometerContract.IHomeChronom
     //TODO center the buttons
     private fun showAddDialogBuilder()
     {
-        val dialogBuilder = AlertDialog.Builder(this.context, R.style.AlertDialogCustom)
+        val dialogBuilder = AlertDialog.Builder(this.lendContext(), R.style.AlertDialogCustom)
         val dialogView = layoutInflater.inflate(R.layout.add_activity_layout, null)
         dialogBuilder.setView(dialogView)
 
@@ -220,7 +223,7 @@ class HomeChronometerFragment : Fragment(), HomeChronometerContract.IHomeChronom
     //TODO center the buttons
     private fun showDeleteDialogBuilder()
     {
-        val dialogBuilder = AlertDialog.Builder(this.context, R.style.AlertDialogCustom)
+        val dialogBuilder = AlertDialog.Builder(this.lendContext(), R.style.AlertDialogCustom)
         dialogBuilder.setTitle(DEL_ACTIVITY_TITLE)
 
         dialogBuilder.setPositiveButton(DEL_ACTIVITY_CONFIRM) { _, _->

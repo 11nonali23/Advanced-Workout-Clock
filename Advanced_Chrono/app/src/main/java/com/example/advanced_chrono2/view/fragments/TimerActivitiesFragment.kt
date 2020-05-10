@@ -1,6 +1,7 @@
 package com.example.advanced_chrono2.view.fragments
 
 import android.app.AlertDialog
+import android.content.Context
 import android.graphics.Rect
 import android.os.Bundle
 import android.util.Log
@@ -100,7 +101,7 @@ class TimerActivitiesFragment : Fragment(), TimerActivitiesContract.ITimerActivi
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
-        timerActivitiesPresenter.onViewCreated(this.context)
+        timerActivitiesPresenter.onViewCreated(this.lendContext())
 
         timer_items_button.setOnClickListener {
             showAddTimerItemDialog()
@@ -149,7 +150,9 @@ class TimerActivitiesFragment : Fragment(), TimerActivitiesContract.ITimerActivi
         this.timerItemAdapter.changeCurrentActivityPosition(position)
     }
 
-    override fun displayResult(message: String) = Toast.makeText(this.context, message, Toast.LENGTH_LONG).show()
+    override fun displayResult(message: String) = Toast.makeText(this.lendContext(), message, Toast.LENGTH_LONG).show()
+
+    override fun lendContext(): Context? {return context}
 
     //END INTERFACE FUNCTIONS------------------------------------------------------------------------------------------
 
@@ -161,7 +164,7 @@ class TimerActivitiesFragment : Fragment(), TimerActivitiesContract.ITimerActivi
 
         activityList.setHasFixedSize(true)
 
-        activityList.layoutManager = LinearLayoutManager(this.context, LinearLayoutManager.HORIZONTAL, false)
+        activityList.layoutManager = LinearLayoutManager(this.lendContext(), LinearLayoutManager.HORIZONTAL, false)
 
         activityItemAdapter = TimerActivitiesAdapter(this)
         activityList.adapter = activityItemAdapter
@@ -196,7 +199,7 @@ class TimerActivitiesFragment : Fragment(), TimerActivitiesContract.ITimerActivi
         //TODO mak a better showing position
         timerItemAdapter = TimerItemsAdapter(this,null)
 
-        activityItemList.layoutManager = LinearLayoutManager(this.context)
+        activityItemList.layoutManager = LinearLayoutManager(this.lendContext())
         activityItemList.adapter = timerItemAdapter
 
         //NEW
@@ -233,7 +236,7 @@ class TimerActivitiesFragment : Fragment(), TimerActivitiesContract.ITimerActivi
 
     private fun showAddTimerItemDialog()
     {
-        val dialogBuilder = AlertDialog.Builder(this.context, R.style.AlertDialogCustom)
+        val dialogBuilder = AlertDialog.Builder(this.lendContext(), R.style.AlertDialogCustom)
         val dialogView = layoutInflater.inflate(R.layout.add_timer_item_layout, null)
         dialogBuilder.setView(dialogView)
 
@@ -255,12 +258,12 @@ class TimerActivitiesFragment : Fragment(), TimerActivitiesContract.ITimerActivi
     }
 
     private fun showAddActivityDialogBuilder() {
-        val dialogBuilder = AlertDialog.Builder(this.context, R.style.AlertDialogCustom)
+        val dialogBuilder = AlertDialog.Builder(this.lendContext(), R.style.AlertDialogCustom)
         val dialogView = layoutInflater.inflate(R.layout.add_activity_layout, null)
         dialogBuilder.setView(dialogView)
 
         dialogBuilder.setPositiveButton(ADD_ACTIVITY_CONFIRM) { _, _ ->
-            Toast.makeText(this.context, "ADDED", Toast.LENGTH_LONG).show()
+            Toast.makeText(this.lendContext(), "ADDED", Toast.LENGTH_LONG).show()
 
             val editText = dialogView.findViewById<EditText>(R.id.insertActivity)
             timerActivitiesPresenter.addNewActivity(editText.text.toString())
@@ -276,7 +279,7 @@ class TimerActivitiesFragment : Fragment(), TimerActivitiesContract.ITimerActivi
     //TODO center the buttons
     private fun showDeleteActivityDialogBuilder()
     {
-        val dialogBuilder = AlertDialog.Builder(this.context, R.style.AlertDialogCustom)
+        val dialogBuilder = AlertDialog.Builder(this.lendContext(), R.style.AlertDialogCustom)
         dialogBuilder.setTitle(DEL_ACTIVITY_TITLE)
 
         dialogBuilder.setPositiveButton(DEL_ACTIVITY_CONFIRM) { _, _->

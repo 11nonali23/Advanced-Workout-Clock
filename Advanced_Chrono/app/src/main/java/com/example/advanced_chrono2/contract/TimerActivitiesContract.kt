@@ -46,6 +46,8 @@ interface TimerActivitiesContract
         //--------------------------------------------------------------------------------------------------------------
 
         fun displayResult(message: String)
+
+        fun lendContext(): Context?
     }
 
     interface ITimerActivitiesPresenter
@@ -75,5 +77,6 @@ interface TimerActivitiesContract
 
         fun onSelectedActivityChange(position: Int?)
 
+        fun onActivityStart(position: Int?): ArrayList<TimerItem>?
     }
 }

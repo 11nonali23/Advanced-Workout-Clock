@@ -94,9 +94,13 @@ class TimerActivitiesAdapter (private val parentView: TimerActivitiesFragment
             {
                 //explicit intent for timer activity passing the data of the current position item
                 val intent = Intent(v.context, TimerActivity::class.java)
-                //TODO i need to implement java.io.Serializable
-                //intent.putExtra(EXTRA_NAME, itemList[this.absoluteAdapterPosition].timerItems)
-                v.context.startActivity(intent)
+
+                val items = parentView.timerActivitiesPresenter.onActivityStart(absoluteAdapterPosition)
+                if(items != null)
+                {
+                    intent.putExtra("TIMER_ITEMS", items)
+                    v.context.startActivity(intent)
+                }
             }
 
             //check if the view selected is the card itself

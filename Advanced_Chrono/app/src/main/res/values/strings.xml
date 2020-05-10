@@ -1,8 +1,11 @@
 <resources>
+    <string name="app_name">Advanced_Chrono2</string>
+
     <string name="chrono_tab_indicator">Savable Chrono</string>
     <string name="timer_tab_indicator">Timer Activities</string>
     <string name="data_tab_indicator">Personal Data</string>
-    <string name="app_name">Advanced_Chrono2</string>
+
+    <!--LAYOUT SPECIFIC-->
     <string name="test_yourself">Test Yourself</string>
     <string name="workout_timer">Workout Timer</string>
     <string name="rubick_mode">Rubik\'s cube mode</string>
@@ -24,4 +27,24 @@
     <string name="rest_indicator">rest</string>
     <string name="remaining_indicator">Remaining</string>
     <string name="chrono_insert_hint">Insert name (ex: Rubik\'s cube)</string>
+
+
+    <!--String for outputs on fragments-->
+    <string name="INTERNAL_ERROR">Sorry, Internal Error occurred</string>
+
+    <string name="ADD_ACTIVITY_SUCCESS">Successfully added!</string>
+    <string name="ADD_ACTIVITY_DB_ERROR">Error: this name already exists!</string>
+    <string name="ADD_EMPTY_ACTIVITY">Error: activity can\' t be empty</string>
+    <string name="DEL_ACTIVITY_SUCCESS">Successfully deleted!</string>
+
+
+    <!--HOME ACTIVITY SPECIFIC-->
+    <string name="SAVE_TIMING_SUCCES">Timing saved successfully</string>
+
+    <!--TIMER ACTIVITIES SPECIFIC-->
+    <string name="NUMBER_FORMAT_ERROR">Error: only numbers are accepted</string>
+    <string name="EMPTY_ITEM_FIELDS">Error: this activity has no item!</string>
+    <string name="NO_SELECTED_ACTIVITY">ERROR! Please select an activity</string>
+    <string name="EMPTY_ACTIVITY_ON_START">Error! this activity has no timers</string>
+
 </resources>

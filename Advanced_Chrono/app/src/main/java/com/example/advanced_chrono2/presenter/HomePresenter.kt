@@ -1,6 +1,7 @@
 package com.example.advanced_chrono2.presenter
 
 import android.content.Context
+import com.example.advanced_chrono2.R
 import com.example.advanced_chrono2.contract.HomeChronometerContract
 import com.example.advanced_chrono2.model.ChronoActivity
 import com.example.advanced_chrono2.model.ChronometerActivitiesDB
@@ -14,22 +15,19 @@ class HomePresenter(val view: HomeChronometerContract.IHomeChronometerView) : Ho
 
     companion object
     {
-        private const val INTERNAL_ERROR = "Internal Error: activity not added"
+        private const val TAG = "HOME PRESENTER"
 
-        private const val ADD_ACTIVITY_SUCCES = "Succesfully added!"
-        private const val ADD_ACTIVITY_DB_ERROR = "Error: this name already exists!"
-        private const val ADD_EMPTY_ACTIVITY = "Error: activity can' t be empty"
-
-        private const val DEL_ACTIVITY_SUCCES = "Succesfully deleted!"
-
-        private const val SAVE_TIMING_SUCCES = "Timing added succesfully"
     }
+
+    private lateinit var viewContext: Context
 
 
     override fun onViewCreated(context: Context?)
     {
         if(context != null)
         {
+            viewContext = context
+
             model = ChronometerActivitiesDB(context)
             activities = model!!.getAllActivities()
             view.setUpSpinnerView(this.activities!!)
@@ -50,24 +48,24 @@ class HomePresenter(val view: HomeChronometerContract.IHomeChronometerView) : Ho
                 if (newActivity != null)
                 {
                     activities?.add(newActivity)
-                    view.displayResult(ADD_ACTIVITY_SUCCES)
+                    view.displayResult(viewContext.getString(R.string.ADD_ACTIVITY_SUCCESS))
                     view.updateActivitiesView()
                     view.setNewItemAsSelected()
                     return
                 }
                 else
                 {
-                    view.displayResult(ADD_ACTIVITY_DB_ERROR)
+                    view.displayResult(viewContext.getString(R.string.ADD_ACTIVITY_DB_ERROR))
                     return
                 }
             }
             else
             {
-                view.displayResult(ADD_EMPTY_ACTIVITY)
+                view.displayResult(viewContext.getString(R.string.ADD_EMPTY_ACTIVITY))
                 return
             }
         }
-        view.displayResult(INTERNAL_ERROR)
+        view.displayResult(viewContext.getString(R.string.INTERNAL_ERROR))
     }
 
     override fun deleteActivity(activityName: String)
@@ -79,12 +77,12 @@ class HomePresenter(val view: HomeChronometerContract.IHomeChronometerView) : Ho
             if(model!!.deleteActivity(activityName))
             {
                 activities?.removeAll{it.name == activityName}
-                view.displayResult(DEL_ACTIVITY_SUCCES)
+                view.displayResult(viewContext.getString(R.string.DEL_ACTIVITY_SUCCESS))
                 view.updateActivitiesView()
                 return
             }
         }
-        view.displayResult(INTERNAL_ERROR)
+        view.displayResult(viewContext.getString(R.string.INTERNAL_ERROR))
     }
 
     //saving a tempo is not an error than acan occur by the user input. It is only internal
@@ -98,10 +96,10 @@ class HomePresenter(val view: HomeChronometerContract.IHomeChronometerView) : Ho
                 activityId
                 ))
             {
-                view.displayResult(SAVE_TIMING_SUCCES)
+                view.displayResult(viewContext.getString(R.string.SAVE_TIMING_SUCCES))
                 return
             }
         }
-        view.displayResult(INTERNAL_ERROR)
+        view.displayResult(viewContext.getString(R.string.INTERNAL_ERROR))
     }
 }

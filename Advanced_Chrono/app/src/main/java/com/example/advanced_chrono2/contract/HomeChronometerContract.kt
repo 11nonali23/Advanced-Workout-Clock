@@ -25,6 +25,8 @@ interface HomeChronometerContract
 
         fun displayResult(result: String)
 
+        fun lendContext(): Context?
+
     }
 
     interface IHomePresenter
