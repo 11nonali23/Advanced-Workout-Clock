@@ -3,7 +3,7 @@ package com.example.advanced_chrono2.shared_preferences
 
 import android.content.Context
 import androidx.preference.PreferenceManager
-import com.example.advanced_chrono2.TimerActivity
+import com.example.advanced_chrono2.IntervalTimerActivity
 import com.example.advanced_chrono2.model.TimerItem
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
@@ -55,13 +55,13 @@ class TimerPrefUtilsManager {
         //setting and getting the state of the timer
         private const val TIMER_STATE_ID = "com.timer.timer_state"
 
-        fun getTimerState(context: Context): TimerActivity.TimerState{
+        fun getTimerState(context: Context): IntervalTimerActivity.TimerState{
             val preferences = PreferenceManager.getDefaultSharedPreferences(context)
             val ordinal = preferences.getInt(TIMER_STATE_ID, 0)
-            return TimerActivity.TimerState.values()[ordinal]
+            return IntervalTimerActivity.TimerState.values()[ordinal]
         }
 
-        fun setTimerState(context: Context, state: TimerActivity.TimerState){
+        fun setTimerState(context: Context, state: IntervalTimerActivity.TimerState){
             val editor = PreferenceManager.getDefaultSharedPreferences(context).edit()
             val ordinal = state.ordinal
             editor.putInt(TIMER_STATE_ID, ordinal)

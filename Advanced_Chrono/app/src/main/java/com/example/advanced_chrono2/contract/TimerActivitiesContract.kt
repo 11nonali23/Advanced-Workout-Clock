@@ -77,6 +77,7 @@ interface TimerActivitiesContract
 
         fun onSelectedActivityChange(position: Int?)
 
-        fun onActivityStart(position: Int?): ArrayList<TimerItem>?
+        //returns name of activity and its items
+        fun onActivityStart(position: Int?): Pair<String, ArrayList<TimerItem>>?
     }
 }

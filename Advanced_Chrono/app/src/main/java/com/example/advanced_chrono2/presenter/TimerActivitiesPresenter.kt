@@ -276,7 +276,7 @@ class TimerActivitiesPresenter(val view: TimerActivitiesContract.ITimerActivitie
         view.itemDataSetChanged()
     }
 
-    override fun onActivityStart(position: Int?): ArrayList<TimerItem>?
+    override fun onActivityStart(position: Int?): Pair<String, ArrayList<TimerItem>>?
     {
         //user can't select an unexisting item
         if (position == null)
@@ -291,7 +291,7 @@ class TimerActivitiesPresenter(val view: TimerActivitiesContract.ITimerActivitie
             return null
         }
 
-        return activities[position].timerItems
+        return Pair(activities[position].name, activities[position].timerItems)
     }
 
 }

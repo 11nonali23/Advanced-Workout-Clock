@@ -9,36 +9,28 @@ import android.os.Bundle
 import android.os.CountDownTimer
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
-import java.util.LinkedList
 import kotlinx.android.synthetic.main.toolbar_layout.*
+import java.util.*
+import kotlin.collections.ArrayList
 
 //TODO when in real activity upate the color of the rest or workout based of what is running
 // in the real project data will be get from BUNDLE EXTRA on itent call
 
-class TimerActivity : AppCompatActivity()
+@Suppress("UNCHECKED_CAST")
+class IntervalTimerActivity : AppCompatActivity()
 {
     private lateinit var toolbar: androidx.appcompat.widget.Toolbar
 
     private lateinit var timer: CountDownTimer
-    private var currTimerLengthSeconds = 0L //tracks the length of the current timer
-    private var timerState = TimerState.Stopped //tracks the state of the timer
-    private var secondsRemaining = 0L //tracks the remining seconds to the end of the timer
+    private var currTimerLengthSeconds = 0L                 //tracks the length of the current timer
+    private var timerState = TimerState.Stopped             //tracks the state of the timer
+    private var secondsRemaining = 0L                       //tracks the remining seconds to the end of the timer
 
-    private var timerItemList = LinkedList<TimerItem>() //List of items to complete
-    private var isWorkout = true //tracks if activity has to set to show workout bar or rest
-    private var isTimerListStarted = false //tracks if item list is started
-    private var currTimerItemData: TimerItem //tracks the curent item to complete
+    private var timerItemList = LinkedList<TimerItem>()     //List of items to complete
+    private var isWorkout = true                            //tracks if activity has to set to show workout bar or rest
+    private var isTimerListStarted = false                  //tracks if item list is started
+    private lateinit var currTimerItemData: TimerItem       //tracks the curent item to complete
 
-    //TEST --_> This init will be deleted
-    init {
-        timerItemList.add(TimerItem(0,R.drawable.ic_timer_black, 20, 15))
-        timerItemList.add(TimerItem(1, R.drawable.ic_timer_black,20 ,10))
-        timerItemList.add(TimerItem(2, R.drawable.ic_timer_black,15, 5))
-        timerItemList.add(TimerItem(3, R.drawable.ic_timer_black, 20, 4))
-        timerItemList.add(TimerItem(4, R.drawable.ic_timer_black,25, 40))
-
-        currTimerItemData = timerItemList.poll()
-    }
 
     enum class TimerState {
         Stopped, Paused, Running
@@ -50,12 +42,18 @@ class TimerActivity : AppCompatActivity()
 
         this.toolbar = toolBar
 
-        toolbar.title = "nome attività (preso da bundle)"
+        toolbar.title = intent.getStringExtra("ACTIVITY_NAME")
         toolbar.setNavigationIcon(R.drawable.ic_arrow_back_orange)
         setSupportActionBar(toolbar)
 
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setDisplayShowHomeEnabled(true)
+
+        val list: ArrayList<TimerItem> = intent.getSerializableExtra("TIMER_ITEMS") as ArrayList<TimerItem>
+        list.forEach { timerItemList.add(it) }
+
+        //TODO
+        currTimerItemData = timerItemList.poll()!!
 
         //TIMER LISTENERS-----------------------------------------------------------------------------------------------------------------------------------------------------------
         start.setOnClickListener {

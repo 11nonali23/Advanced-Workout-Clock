@@ -18,7 +18,7 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".TimerActivity"
+        <activity android:name=".IntervalTimerActivity"
             android:parentActivityName=".MainActivity"
             android:label="@string/timer_label"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar">

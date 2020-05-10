@@ -47,4 +47,8 @@
     <string name="NO_SELECTED_ACTIVITY">ERROR! Please select an activity</string>
     <string name="EMPTY_ACTIVITY_ON_START">Error! this activity has no timers</string>
 
+
+    <!--Name of extra on the intent-->
+    <string name="TIMER_ITEMS_INDICATOR">TIMER_ITEMS</string>
+
 </resources>

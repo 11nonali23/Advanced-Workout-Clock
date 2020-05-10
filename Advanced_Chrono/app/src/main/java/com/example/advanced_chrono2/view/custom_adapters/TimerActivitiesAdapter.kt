@@ -7,8 +7,8 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
+import com.example.advanced_chrono2.IntervalTimerActivity
 import com.example.advanced_chrono2.R
-import com.example.advanced_chrono2.model.TimerActivity
 import com.example.advanced_chrono2.view.fragments.TimerActivitiesFragment
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 
@@ -93,12 +93,13 @@ class TimerActivitiesAdapter (private val parentView: TimerActivitiesFragment
             if (v?.id == fab.id)
             {
                 //explicit intent for timer activity passing the data of the current position item
-                val intent = Intent(v.context, TimerActivity::class.java)
+                val intent = Intent(v.context, IntervalTimerActivity::class.java)
 
-                val items = parentView.timerActivitiesPresenter.onActivityStart(absoluteAdapterPosition)
-                if(items != null)
+                val activityInfo = parentView.timerActivitiesPresenter.onActivityStart(absoluteAdapterPosition)
+                if(activityInfo != null)
                 {
-                    intent.putExtra("TIMER_ITEMS", items)
+                    intent.putExtra("ACTIVITY_NAME", activityInfo.first)
+                    intent.putExtra("TIMER_ITEMS", activityInfo.second)
                     v.context.startActivity(intent)
                 }
             }
