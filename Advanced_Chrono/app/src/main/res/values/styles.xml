@@ -12,4 +12,8 @@
         <item name="android:colorAccent">@color/deep_orange</item>
     </style>
 
+    <style name="Theme.NumberPicker" parent="Theme.AppCompat.Light">
+        <item name="colorControlNormal"> @color/accent_yellow </item>
+    </style>
+
 </resources>

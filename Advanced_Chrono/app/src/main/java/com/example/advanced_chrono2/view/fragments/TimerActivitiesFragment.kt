@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.*
 import android.widget.EditText
+import android.widget.NumberPicker
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.ItemTouchHelper
@@ -247,17 +248,25 @@ class TimerActivitiesFragment : Fragment(), TimerActivitiesContract.ITimerActivi
             val restSecondsText = dialogView.findViewById<EditText>(R.id.rest_seconds).text.toString()
 
             val id = (activity_recycle.adapter as TimerActivitiesAdapter).getSelectedActivityPosition()
+            val times = dialogView.findViewById<NumberPicker>(R.id.times_picker).value
 
-            timerActivitiesPresenter.addNewTimerItem(id, workoutMinutesText, workoutSecondsText, restMinutesText, restSecondsText)
+            for (i in 1.. times)
+                timerActivitiesPresenter.addNewTimerItem(id, workoutMinutesText, workoutSecondsText, restMinutesText, restSecondsText)
         }
 
         dialogBuilder.setNegativeButton(DISMISS_DIALOG) { dialogInterface, _ ->
             dialogInterface.dismiss()
         }
+
+        dialogView.findViewById<NumberPicker>(R.id.times_picker).minValue = 1
+        dialogView.findViewById<NumberPicker>(R.id.times_picker).maxValue = 30
+        dialogView.findViewById<NumberPicker>(R.id.times_picker).wrapSelectorWheel = true
+
         dialogBuilder.show()
     }
 
-    private fun showAddActivityDialogBuilder() {
+    private fun showAddActivityDialogBuilder()
+    {
         val dialogBuilder = AlertDialog.Builder(this.lendContext(), R.style.AlertDialogCustom)
         val dialogView = layoutInflater.inflate(R.layout.add_activity_layout, null)
         dialogBuilder.setView(dialogView)
@@ -266,7 +275,9 @@ class TimerActivitiesFragment : Fragment(), TimerActivitiesContract.ITimerActivi
             Toast.makeText(this.lendContext(), "ADDED", Toast.LENGTH_LONG).show()
 
             val editText = dialogView.findViewById<EditText>(R.id.insertActivity)
+
             timerActivitiesPresenter.addNewActivity(editText.text.toString())
+
         }
 
         dialogBuilder.setNegativeButton(DISMISS_DIALOG) { dialogInterface, _ ->

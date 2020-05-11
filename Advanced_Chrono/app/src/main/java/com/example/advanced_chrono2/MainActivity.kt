@@ -43,5 +43,4 @@ class MainActivity : AppCompatActivity() {
             }
         }.attach()
     }
-
 }

@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:gravity="center"
-    android:hint="@string/chrono_insert_hint"
+    android:hint="@string/Timer_activity_name_hint"
     android:textSize="23sp"
     android:textStyle="bold"
     android:textCursorDrawable="@drawable/cursor_orange"
