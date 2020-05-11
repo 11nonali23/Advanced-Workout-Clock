@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Orologio A</string>
+    <string name="app_name">Advanced Workout Clock</string>
     <string name="chrono_tab_indicator">Conometro</string>
     <string name="timer_tab_indicator">Attvità del Timer</string>
     <string name="data_tab_indicator">Dati Personali</string>
@@ -9,7 +9,7 @@
     <string name="settings">impostazioni</string>
     <string name="activity_indicator">attività</string>
     <string name="save_request">salva</string>
-    <string name="save_on_pause_request">salva sempre con reset</string>
+    <string name="save_on_pause_request">salva sempre al reset</string>
     <string name="rest_circle_indicator">Riposo</string>
     <string name="workout_circle_indicator">Lavoro</string>
     <string name="timer_label">attività timer</string>

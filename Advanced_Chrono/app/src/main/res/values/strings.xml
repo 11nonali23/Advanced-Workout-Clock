@@ -47,6 +47,6 @@
     <string name="EMPTY_ACTIVITY_ON_START">Error! this activity has no timers</string>
 
 
-    <!--Name of extra on the intent-->
+    <!--FOR TIMER ACTIVITIES-->
 
 </resources>

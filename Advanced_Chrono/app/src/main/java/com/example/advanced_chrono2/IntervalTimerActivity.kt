@@ -223,11 +223,11 @@ class IntervalTimerActivity : AppCompatActivity()
 
         //setting color
         if (isWorkout) {
-            timer_workout_indicator.setTextColor(ContextCompat.getColor(this, R.color.blood))
+            timer_workout_indicator.setTextColor(ContextCompat.getColor(this, R.color.deep_orange))
             timer_rest_indicator.setTextColor(Color.BLACK)
         }
         else{
-            timer_rest_indicator.setTextColor(ContextCompat.getColor(this, R.color.blood))
+            timer_rest_indicator.setTextColor(ContextCompat.getColor(this, R.color.light_orange))
             timer_workout_indicator.setTextColor(Color.BLACK)
         }
     }
