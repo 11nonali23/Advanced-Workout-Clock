@@ -29,7 +29,7 @@ class IntervalTimerActivity : AppCompatActivity()
     private var timerItemList = LinkedList<TimerItem>()     //List of items to complete
     private var isWorkout = true                            //tracks if activity has to set to show workout bar or rest
     private var isTimerListStarted = false                  //tracks if item list is started
-    private lateinit var currTimerItemData: TimerItem       //tracks the curent item to complete
+    private var currTimerItemData: TimerItem?  = null      //tracks the curent item to complete
 
 
     enum class TimerState {
@@ -52,8 +52,8 @@ class IntervalTimerActivity : AppCompatActivity()
         val list: ArrayList<TimerItem> = intent.getSerializableExtra("TIMER_ITEMS") as ArrayList<TimerItem>
         list.forEach { timerItemList.add(it) }
 
-        //TODO
-        currTimerItemData = timerItemList.poll()!!
+        //getting first element of the list
+        currTimerItemData = timerItemList.poll()
 
         //TIMER LISTENERS-----------------------------------------------------------------------------------------------------------------------------------------------------------
         start.setOnClickListener {
@@ -121,17 +121,20 @@ class IntervalTimerActivity : AppCompatActivity()
     }
 
 
-    override fun onDestroy() {
+    override fun onDestroy()
+    {
         super.onDestroy()
         TimerPrefUtilsManager.clearAll(this)
     }
 
-    override fun onBackPressed() {
+    override fun onBackPressed()
+    {
         super.onBackPressed()
         TimerPrefUtilsManager.clearAll(this)
     }
 
-    private fun restartTimer() {
+    private fun restartTimer()
+    {
         timerState = TimerPrefUtilsManager.getTimerState(this)
         isTimerListStarted = TimerPrefUtilsManager.getIsTimerListStarted(this)
         isWorkout = TimerPrefUtilsManager.getIsWorkout(this)
@@ -156,7 +159,8 @@ class IntervalTimerActivity : AppCompatActivity()
     }
 
     //on finish of the timer. Manage the new Timer call
-    private fun onTimerEnded() {
+    private fun onTimerEnded()
+    {
         timerState = TimerState.Stopped
 
         //changing is workout every time i restart timer
@@ -172,18 +176,23 @@ class IntervalTimerActivity : AppCompatActivity()
         if (!isWorkout)
             currTimerItemData = timerItemList.poll()
 
+        if (currTimerItemData == null)
+            onActivityEnded()
+
         TimerPrefUtilsManager.setSecondsRemaining(this, currTimerLengthSeconds)
         secondsRemaining = currTimerLengthSeconds
 
         startNewTimer()
     }
 
-    private fun startTimersFromList() {
+    private fun startTimersFromList()
+    {
         isTimerListStarted = true
         startNewTimer()
     }
 
-    private fun startNewTimer() {
+    private fun startNewTimer()
+    {
         //If the timer is started the progress bars will be 0 so i have to reset the current running one
         styleBeforeStart()
 
@@ -191,7 +200,8 @@ class IntervalTimerActivity : AppCompatActivity()
         updateUIButtons()
         updateTimerUI()
 
-        timer = object : CountDownTimer(secondsRemaining * 1000, 1000) {
+        timer = object : CountDownTimer(secondsRemaining * 1000, 1000)
+        {
             override fun onFinish() = onTimerEnded()
 
             override fun onTick(millisUntilFinished: Long) {
@@ -201,7 +211,8 @@ class IntervalTimerActivity : AppCompatActivity()
         }.start()
     }
 
-    private fun styleBeforeStart() {
+    private fun styleBeforeStart()
+    {
         //setting progress bar
         if (isWorkout)
             if (progress_circular.progress == progress_circular.max)
@@ -224,20 +235,20 @@ class IntervalTimerActivity : AppCompatActivity()
 
     private fun setNewTimerAndProgressLength()
     {
-        val lenghtInMinutes = TimerPrefUtilsManager.getTimerLength(this)
+        val lengthInMinutes = TimerPrefUtilsManager.getTimerLength(this)
 
         if (isWorkout)
         {
-            currTimerLengthSeconds = ((lenghtInMinutes * currTimerItemData.workoutSeconds).toLong())
+            currTimerLengthSeconds = ((lengthInMinutes * currTimerItemData!!.workoutSeconds).toLong())
             progress_circular.max = currTimerLengthSeconds.toInt()
             progress_circular.progress = progress_circular.max
 
             progress_circular_rest.max = currTimerLengthSeconds.toInt()
-            progress_circular_rest.progress = currTimerItemData.restSeconds.toInt()
+            progress_circular_rest.progress = currTimerItemData!!.restSeconds.toInt()
         }
         else
         {
-            currTimerLengthSeconds = ((lenghtInMinutes * currTimerItemData.restSeconds).toLong())
+            currTimerLengthSeconds = ((lengthInMinutes * currTimerItemData!!.restSeconds).toLong())
             progress_circular_rest.max = currTimerLengthSeconds.toInt()
         }
     }
@@ -280,5 +291,10 @@ class IntervalTimerActivity : AppCompatActivity()
             TimerState.Stopped ->
             {start.isEnabled = true; pause.isEnabled = false; reset.isEnabled = false}
         }
+    }
+
+    private fun onActivityEnded()
+    {
+        //TODO
     }
 }
