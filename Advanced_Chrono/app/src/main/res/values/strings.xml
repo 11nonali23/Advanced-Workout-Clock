@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Advanced_Chrono2</string>
+    <string name="app_name">Advanced Workout Clock</string>
 
     <string name="chrono_tab_indicator">Savable Chrono</string>
     <string name="timer_tab_indicator">Timer Activities</string>
@@ -8,7 +8,6 @@
     <!--LAYOUT SPECIFIC-->
     <string name="test_yourself">Test Yourself</string>
     <string name="workout_timer">Workout Timer</string>
-    <string name="rubick_mode">Rubik\'s cube mode</string>
     <string name="settings">settings</string>
     <string name="activity_indicator">Activity</string>
     <string name="save_request">Save</string>
@@ -19,8 +18,8 @@
     <string name="Timer_activity_name_hint">Insert a name (ex. body workout)</string>
     <string name="workout_time_indicator">Workout Time</string>
     <string name="rest_time_indicator">Rest Time</string>
-    <string name="min_hint">min</string>
-    <string name="sec_hint">sec</string>
+    <string name="min_hint" translatable="false">min</string>
+    <string name="sec_hint" translatable="false">sec</string>
     <string name="save_activity_button_text">Save Activity</string>
     <string name="addNewItem">Add Item</string>
     <string name="workout_indicator">workout</string>
@@ -44,11 +43,10 @@
     <!--TIMER ACTIVITIES SPECIFIC-->
     <string name="NUMBER_FORMAT_ERROR">Error: only numbers are accepted</string>
     <string name="EMPTY_ITEM_FIELDS">Error: this activity has no item!</string>
-    <string name="NO_SELECTED_ACTIVITY">ERROR! Please select an activity</string>
+    <string name="NO_SELECTED_ACTIVITY">Error: Please select an activity</string>
     <string name="EMPTY_ACTIVITY_ON_START">Error! this activity has no timers</string>
 
 
     <!--Name of extra on the intent-->
-    <string name="TIMER_ITEMS_INDICATOR">TIMER_ITEMS</string>
 
 </resources>

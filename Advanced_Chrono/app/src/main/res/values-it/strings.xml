@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Orologio A</string>
+    <string name="chrono_tab_indicator">Conometro</string>
+    <string name="timer_tab_indicator">Attvità del Timer</string>
+    <string name="data_tab_indicator">Dati Personali</string>
+    <string name="test_yourself">Testa te stesso</string>
+    <string name="workout_timer">Timer per workout</string>
+    <string name="settings">impostazioni</string>
+    <string name="activity_indicator">attività</string>
+    <string name="save_request">salva</string>
+    <string name="save_on_pause_request">salva sempre con reset</string>
+    <string name="rest_circle_indicator">Riposo</string>
+    <string name="workout_circle_indicator">Lavoro</string>
+    <string name="timer_label">attività timer</string>
+    <string name="Timer_activity_name_hint">inserisci un nome (es. tricipiti)</string>
+    <string name="workout_time_indicator">Tempo di Lavoro</string>
+    <string name="rest_time_indicator">Tempo di Riposo</string>
+    <string name="save_activity_button_text">Salva Attività</string>
+    <string name="addNewItem">Aggiungi Elemento</string>
+    <string name="workout_indicator">Lavoro</string>
+    <string name="rest_indicator">Riposo</string>
+    <string name="remaining_indicator">Rimanenti</string>
+    <string name="chrono_insert_hint">Inserisci un nome (es. Cubo di Rubik)</string>
+    <string name="INTERNAL_ERROR">Errore interno!</string>
+    <string name="ADD_ACTIVITY_SUCCESS">Aggiunto con sucesso</string>
+    <string name="ADD_ACTIVITY_DB_ERROR">Errore: il nome esiste già</string>
+    <string name="ADD_EMPTY_ACTIVITY">Errore: l\' attività non può essere vuota</string>
+    <string name="DEL_ACTIVITY_SUCCESS">Eliminato con successo</string>
+    <string name="SAVE_TIMING_SUCCES">"Tempo salvato "</string>
+    <string name="NUMBER_FORMAT_ERROR">Errore: solo numeri accettati</string>
+    <string name="EMPTY_ITEM_FIELDS">Errore l\' attività non ha elementi!</string>
+    <string name="NO_SELECTED_ACTIVITY">Errore: seleziona un attività</string>
+    <string name="EMPTY_ACTIVITY_ON_START">Errore: l\' attività non ha timer</string>
+</resources>

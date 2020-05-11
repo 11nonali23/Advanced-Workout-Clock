@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Advanced Workout Clock</string>
+    <string name="EMPTY_ACTIVITY_ON_START">Erreur! cette activité n\'a pas de minuteries</string>
+    <string name="NO_SELECTED_ACTIVITY">Erreur: veuillez sélectionner une activité</string>
+    <string name="EMPTY_ITEM_FIELDS">Erreur: cette activité n\'a pas d\'élément!</string>
+    <string name="NUMBER_FORMAT_ERROR">Erreur: seuls les numéros sont acceptés</string>
+    <string name="SAVE_TIMING_SUCCES">Timing enregistré avec succès</string>
+    <string name="DEL_ACTIVITY_SUCCESS">Supprimé avec succès!</string>
+    <string name="ADD_EMPTY_ACTIVITY">Erreur: l\'activité ne peut pas être vide</string>
+    <string name="ADD_ACTIVITY_DB_ERROR">Erreur: ce nom existe déjà!</string>
+    <string name="ADD_ACTIVITY_SUCCESS">Ajouté avec succès!</string>
+    <string name="INTERNAL_ERROR">Désolé, une erreur interne s\'est produite</string>
+    <string name="chrono_insert_hint">" Insérer un nom (ex: cube de Rubik)"</string>
+    <string name="remaining_indicator">Restant</string>
+    <string name="rest_indicator">du repos</string>
+    <string name="workout_indicator">travail</string>
+    <string name="addNewItem">Ajouter un item</string>
+    <string name="save_activity_button_text">Enregistrer Activité</string>
+    <string name="rest_time_indicator">Temps de Repos</string>
+    <string name="workout_time_indicator">Temps de Travaille</string>
+    <string name="Timer_activity_name_hint">Insérez un nom (ex. Triceps)</string>
+    <string name="timer_label">activité de la minuterie</string>
+    <string name="workout_circle_indicator">Travaille</string>
+    <string name="rest_circle_indicator">Du repos</string>
+    <string name="save_on_pause_request">sauver  à la réinitialisation</string>
+    <string name="save_request">sauver</string>
+    <string name="activity_indicator">activité</string>
+    <string name="settings">règlages</string>
+    <string name="workout_timer">" Minuterie de travaille"</string>
+    <string name="test_yourself">Testez-vous</string>
+    <string name="timer_tab_indicator">Minuterie Activitès</string>
+    <string name="data_tab_indicator">Donnéèes Personelle</string>
+    <string name="chrono_tab_indicator">Savauble Chrono</string>
+</resources>

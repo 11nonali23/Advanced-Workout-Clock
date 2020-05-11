@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Advanced Workout Clock</string>
+    <string name="chrono_tab_indicator">Reloj avanzado</string>
+    <string name="timer_tab_indicator">"Tenporizador "</string>
+    <string name="data_tab_indicator">"Datos personal "</string>
+    <string name="test_yourself">Pruébate</string>
+    <string name="workout_timer">Trabajo Temporizador</string>
+    <string name="settings">ajustes</string>
+    <string name="activity_indicator">Activity</string>
+    <string name="save_on_pause_request">Salvar siempre en restablecer</string>
+    <string name="save_request">Salvar</string>
+    <string name="rest_circle_indicator">Rescanso</string>
+    <string name="workout_circle_indicator">Trabajo</string>
+    <string name="timer_label">actividad del temporizador</string>
+    <string name="Timer_activity_name_hint">Insertar un nombre (ej. Tríceps)</string>
+    <string name="workout_time_indicator">"Tiempo de Trabajo "</string>
+    <string name="rest_time_indicator">Tiempo de Descanso</string>
+    <string name="save_activity_button_text">Salvar Actividad</string>
+    <string name="addNewItem">Añadir artículo</string>
+    <string name="workout_indicator">trabajo</string>
+    <string name="rest_indicator">descanso</string>
+    <string name="remaining_indicator">Restante</string>
+    <string name="chrono_insert_hint">Insertar un nombre (ej. Cubo de Rubik)</string>
+    <string name="INTERNAL_ERROR">ocurrió un error interno</string>
+    <string name="ADD_ACTIVITY_SUCCESS">Añadida con éxito!</string>
+    <string name="ADD_ACTIVITY_DB_ERROR">Error: este nombre ya existe!</string>
+    <string name="ADD_EMPTY_ACTIVITY">Error: la actividad no puede estar vacía</string>
+    <string name="DEL_ACTIVITY_SUCCESS">Eliminada con éxito!</string>
+    <string name="SAVE_TIMING_SUCCES">Tiempo guardado con éxito</string>
+    <string name="NUMBER_FORMAT_ERROR">Error: solo se aceptan números</string>
+    <string name="EMPTY_ITEM_FIELDS">Error: esta actividad no tiene ningún artículo!</string>
+    <string name="NO_SELECTED_ACTIVITY">" Error: selecciona una actividad"</string>
+    <string name="EMPTY_ACTIVITY_ON_START">¡Error! esta actividad no tiene temporizadores</string>
+</resources>
