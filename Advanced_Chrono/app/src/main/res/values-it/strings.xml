@@ -4,8 +4,8 @@
     <string name="chrono_tab_indicator">Conometro</string>
     <string name="timer_tab_indicator">Attvità del Timer</string>
     <string name="data_tab_indicator">Dati Personali</string>
-    <string name="test_yourself">Testa te stesso</string>
-    <string name="workout_timer">Timer per workout</string>
+    <string name="test_yourself">Mettiti alla Prova</string>
+    <string name="workout_timer">Workout Timer</string>
     <string name="settings">impostazioni</string>
     <string name="activity_indicator">attività</string>
     <string name="save_request">salva</string>
