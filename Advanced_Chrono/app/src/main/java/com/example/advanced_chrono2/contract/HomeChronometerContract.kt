@@ -11,7 +11,9 @@ interface HomeChronometerContract
 {
     interface IHomeModel : BaseModel
     {
-        fun addNewTiming(time: Long, timestamp: Long, activitiyId: Int): Boolean
+        fun addNewTiming(time: Long, timestamp: Long, activityId: Int): Boolean
+
+        fun getTimings(activityId: Int): ArrayList<Pair<Long, Int>>
 
     }
 

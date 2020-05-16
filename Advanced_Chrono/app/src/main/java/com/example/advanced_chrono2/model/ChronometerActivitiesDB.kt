@@ -56,9 +56,10 @@ class ChronometerActivitiesDB(context: Context) :
         private const val SQL_SELECT_ALL_ACTIVITIES_NO_TIMINGS =
             "SELECT * FROM $ACTIVITY_TABLE_NAME"
 
-        private const val SQL_SELECT_ALL_ACTIVITIES_AND_TIMINGS = "" +
-            "SELECT $KEY_NAME " +
-            "FROM $ACTIVITY_TABLE_NAME a JOIN $TIMING_TABLE_NAME t ON a.$KEY_ID = t.$KEY_ID_FOREIGN"
+        private const val SQL_SELECT_ACTIVITY_TIMINGS_AND_TIMESTAMPS =
+            "SELECT $KEY_TIME, $KEY_TIMESTAMP " +
+                    "FROM $TIMING_TABLE_NAME " +
+                    "WHERE $KEY_ID = ?"
 
     }
 
@@ -158,14 +159,14 @@ class ChronometerActivitiesDB(context: Context) :
         return id
     }
 
-    override fun addNewTiming(time: Long, timestamp: Long, activitiyId: Int): Boolean
+    override fun addNewTiming(time: Long, timestamp: Long, activityId: Int): Boolean
     {
         val db = this.writableDatabase
 
         val values = ContentValues()
         values.put(KEY_TIME, time)
         values.put(KEY_TIMESTAMP, timestamp)
-        values.put(KEY_ID_FOREIGN, activitiyId)
+        values.put(KEY_ID_FOREIGN, activityId)
 
         try {
 
@@ -179,8 +180,31 @@ class ChronometerActivitiesDB(context: Context) :
 
         db.close()
 
-        Log.d(TAG, "actitivity $activitiyId:  new timing:   $time. Its timestamp :     $timestamp")
+        Log.d(TAG, "actitivity $activityId:  new timing:   $time. Its timestamp :     $timestamp")
         return true
+    }
+
+    override fun getTimings(activityId: Int): ArrayList<Pair<Long, Int>>
+    {
+        val timings: ArrayList<Pair<Long, Int>> = ArrayList()
+
+        val db = this.writableDatabase
+        val cursor = db.rawQuery(SQL_SELECT_ACTIVITY_TIMINGS_AND_TIMESTAMPS, arrayOf("$activityId"))
+
+        if (cursor.moveToFirst())
+        {
+            do
+            {
+                timings.add(Pair(cursor.getLong(0), cursor.getInt(1)))
+                Log.d(TAG, "timing retrived:  $activityId:  timing:   ${cursor.getLong(0)}. Its timestamp :  ${cursor.getInt(0)}")
+            }
+            while (cursor.moveToNext())
+        }
+
+        cursor.close()
+        db.close()
+
+        return timings
     }
 
     //END INTERFACE FUNCITONS------------------------------------------------------------------------------------------------------------------------------------------------
