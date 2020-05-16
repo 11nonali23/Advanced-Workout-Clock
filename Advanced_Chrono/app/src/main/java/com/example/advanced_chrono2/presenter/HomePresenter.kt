@@ -1,31 +1,30 @@
 package com.example.advanced_chrono2.presenter
 
 import android.content.Context
+import android.util.Log
 import com.example.advanced_chrono2.R
 import com.example.advanced_chrono2.contract.HomeChronometerContract
-import com.example.advanced_chrono2.model.ChronoActivity
 import com.example.advanced_chrono2.model.ChronometerActivitiesDB
 import java.util.*
-import kotlin.collections.ArrayList
 
 
-import com.example.advanced_chrono2.contract.HomeChronometerContract.IHomePresenter.Companion.activitiesValue
+import com.example.advanced_chrono2.contract.HomeChronometerContract.IHomePresenter.Companion.activities
+import com.example.advanced_chrono2.contract.HomeChronometerContract.IHomePresenter.Companion.currentSelectedActivity
+import com.example.advanced_chrono2.model.ChronometerActivity
 
 class HomePresenter(val view: HomeChronometerContract.IHomeChronometerView) : HomeChronometerContract.IHomePresenter
 {
     private var model: ChronometerActivitiesDB? = null
-    private var activities: ArrayList<ChronoActivity>? = null  //List of activity names to pass to the activity
 
     companion object
     {
         private const val TAG = "HOME PRESENTER"
-
     }
 
     private lateinit var viewContext: Context
 
 
-    override fun onViewCreated(context: Context?)
+    override fun onViewCreated(context: Context?, currentActivityId: Int)
     {
         if(context != null)
         {
@@ -33,7 +32,10 @@ class HomePresenter(val view: HomeChronometerContract.IHomeChronometerView) : Ho
 
             model = ChronometerActivitiesDB(context)
             activities = model!!.getAllActivities()
-            view.setUpSpinnerView(this.activities!!)
+            view.setUpSpinnerView(activities!!)
+            //setting the current selected activity to be the first
+            if(activities!!.size > 0)
+                currentSelectedActivity = activities!![0]
         }
     }
 
@@ -52,8 +54,10 @@ class HomePresenter(val view: HomeChronometerContract.IHomeChronometerView) : Ho
                 {
                     activities?.add(newActivity)
                     view.displayResult(viewContext.getString(R.string.ADD_ACTIVITY_SUCCESS))
+                    //Todo check this passage
                     view.updateActivitiesView()
                     view.setNewItemAsSelected()
+                    currentSelectedActivity = newActivity
                     return
                 }
                 else
@@ -89,8 +93,13 @@ class HomePresenter(val view: HomeChronometerContract.IHomeChronometerView) : Ho
     }
 
     //saving a tempo is not an error than acan occur by the user input. It is only internal
-    override fun saveTempo(tempo: Long, activityId: Int)
+    override fun saveTempo(tempo: Long, activityId: Int?)
     {
+        if (activityId == null)
+        {
+            view.displayResult(viewContext.getString(R.string.NO_SELECTED_ACTIVITY))
+            return
+        }
         if (model != null)
         {
             if(model!!.addNewTiming(
@@ -99,6 +108,8 @@ class HomePresenter(val view: HomeChronometerContract.IHomeChronometerView) : Ho
                 activityId
                 ))
             {
+                //TODO add the timing to the current activity
+                //currentSelectedActivity?.timings_timestamp.add()
                 view.displayResult(viewContext.getString(R.string.SAVE_TIMING_SUCCES))
                 return
             }
@@ -106,25 +117,15 @@ class HomePresenter(val view: HomeChronometerContract.IHomeChronometerView) : Ho
         view.displayResult(viewContext.getString(R.string.INTERNAL_ERROR))
     }
 
-    /*override fun getActivityTimings(activityId: Int): ArrayList<Pair<Long, Int>>
+    //updates the current selected activity and add timings if weren't already
+    override fun handleNewSelectedActivity(activityId: Int)
     {
-        var value = activitiesValue[activityId]
+        Log.e(TAG, "retriving new activity")
+        activities?.forEach { if (it.id == activityId) currentSelectedActivity = it }
 
-        if (value != null)
-            return value
-
-
-        //If the HashMap does not have the values i will search on the DB.
-        else
+        if (model != null && currentSelectedActivity?.timings_timestamp == null)
         {
-            if (model != null)
-            {
-                value = model!!.getTimings(activityId)
-
-            }
-            else
-
+            currentSelectedActivity?.timings_timestamp =  model!!.getTimings(activityId)
         }
-        view.displayResult(viewContext.getString(R.string.INTERNAL_ERROR))
-    }*/
+    }
 }

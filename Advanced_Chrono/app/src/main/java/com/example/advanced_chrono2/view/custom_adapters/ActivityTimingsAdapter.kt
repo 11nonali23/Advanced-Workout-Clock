@@ -1,15 +1,20 @@
 package com.example.advanced_chrono2.view.custom_adapters
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.advanced_chrono2.R
+import com.example.advanced_chrono2.contract.HomeChronometerContract.IHomePresenter
 
-class DialogViewAdapter(private val timings: ArrayList<String>) : RecyclerView.Adapter<DialogViewAdapter.ItemViewHolder>()
+import com.example.advanced_chrono2.contract.HomeChronometerContract.IHomePresenter.Companion.currentSelectedActivity
+
+//Adapter used for the recyclerView in the dialog that contains the timings
+
+class ActivityTimingsAdapter : RecyclerView.Adapter<ActivityTimingsAdapter.ItemViewHolder>()
 {
+    private var currentTimings: ArrayList<Pair<Long, Int>>? = currentSelectedActivity?.timings_timestamp
 
     // Create new views (invoked by the layout manager)
     override fun onCreateViewHolder(parent: ViewGroup,
@@ -21,16 +26,17 @@ class DialogViewAdapter(private val timings: ArrayList<String>) : RecyclerView.A
     }
 
     override fun onBindViewHolder(holder: ItemViewHolder, position: Int) {
-        Log.e("adapter dialog", "bind view holder")
-        holder.textView.text = timings[position]
+        holder.textView.text = "${currentTimings?.get(position)?.second} ===> ${currentTimings?.get(position)?.first}"
     }
 
-    // Return the size of your dataset (invoked by the layout manager)
-    override fun getItemCount(): Int {
-        Log.e("adap dialog", "timing size ${timings.size}")
-        return timings.size
-    }
 
+    override fun getItemCount(): Int
+    {
+        if(currentTimings == null)
+            return 0
+
+        return currentTimings!!.size
+    }
 
     inner class ItemViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
     {

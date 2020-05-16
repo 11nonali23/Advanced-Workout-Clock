@@ -6,15 +6,14 @@ import android.os.Bundle
 import android.os.SystemClock
 import android.util.Log
 import android.view.*
+import android.widget.*
 import androidx.fragment.app.Fragment
-import android.widget.ArrayAdapter
-import android.widget.EditText
-import android.widget.Toast
 import com.example.advanced_chrono2.R
 import com.example.advanced_chrono2.contract.HomeChronometerContract
-import com.example.advanced_chrono2.model.ChronoActivity
+import com.example.advanced_chrono2.model.ChronometerActivity
 import com.example.advanced_chrono2.presenter.HomePresenter
 import com.example.advanced_chrono2.view.custom_views.CustomDialog
+import kotlinx.android.synthetic.main.add_activity_layout.*
 import kotlinx.android.synthetic.main.chrono_layout.*
 
 //ToDo implement the save button (only when you have the database)
@@ -31,7 +30,9 @@ class HomeChronometerFragment : Fragment(), HomeChronometerContract.IHomeChronom
     private val homePresenter: HomeChronometerContract.IHomePresenter = HomePresenter(this)
 
     //ADAPTERS
-    private lateinit var spinnerAdapter: ArrayAdapter<ChronoActivity>
+    private lateinit var spinnerAdapter: ArrayAdapter<ChronometerActivity>
+
+    private var customDialog: CustomDialog? = null
 
     companion object
     {
@@ -40,11 +41,11 @@ class HomeChronometerFragment : Fragment(), HomeChronometerContract.IHomeChronom
         //VIEW CHRONOMETER LOGIC
         private var pauseOffset: Long = 0L                              //is used to set the timer properly when restored from on pause and to take note of time
         private var progresssion :Int = -1                              //define the progression of the circular bar
-        private var chronoState: ChronoState = ChronoState.Resetted     //track the chronometer state
+        private var chronoState: ChronometerState = ChronometerState.Resetted     //track the chronometer state
     }
 
     //This enum stores the states of the chronometer
-    enum class ChronoState
+    enum class ChronometerState
     {
         Resetted, Paused, Running
     }
@@ -80,7 +81,7 @@ class HomeChronometerFragment : Fragment(), HomeChronometerContract.IHomeChronom
 
         updateUIButtons()
 
-        homePresenter.onViewCreated(this.lendContext())
+        homePresenter.onViewCreated(this.context, chrono_spinner.selectedItemPosition)
 
         //LISTENERS-----------------------------------------------------------------------------------------------------------------------------------
 
@@ -93,7 +94,7 @@ class HomeChronometerFragment : Fragment(), HomeChronometerContract.IHomeChronom
         chrono_start.setOnClickListener {
             chronometer_.base = SystemClock.elapsedRealtime() - pauseOffset //setting the base of chronometer removing the stopage time
             chronometer_.start()
-            chronoState = ChronoState.Running
+            chronoState = ChronometerState.Running
             updateUIButtons()
         }
 
@@ -105,7 +106,7 @@ class HomeChronometerFragment : Fragment(), HomeChronometerContract.IHomeChronom
             //because the base is setted when i start the chronometer
             pauseOffset = SystemClock.elapsedRealtime() - chronometer_.base
             Log.e(TAG, "$pauseOffset")
-            chronoState = ChronoState.Paused
+            chronoState = ChronometerState.Paused
             updateUIButtons()
         }
 
@@ -117,7 +118,7 @@ class HomeChronometerFragment : Fragment(), HomeChronometerContract.IHomeChronom
             progresssion = - 1
             progress_circular_chrono.progress = progresssion
 
-            chronoState = ChronoState.Resetted
+            chronoState = ChronometerState.Resetted
             updateUIButtons()
 
             //i also have to save data in case checbox is checked
@@ -136,12 +137,25 @@ class HomeChronometerFragment : Fragment(), HomeChronometerContract.IHomeChronom
         }
 
         show_timings_button.setOnClickListener{
-            CustomDialog(this.context!!).show()
+            customDialog = CustomDialog(this.context!!)
+            customDialog!!.show()
         }
 
         //save timing button
         chrono_save_btn.setOnClickListener {
             saveCurrentTiming()
+        }
+
+        //update the current selected activity of the presenter on change
+        chrono_spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener
+        {
+            override fun onNothingSelected(parent: AdapterView<*>?) {}
+
+            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long)
+            {
+                homePresenter.handleNewSelectedActivity((chrono_spinner.selectedItem as ChronometerActivity).id)
+            }
+
         }
 
         //LISTENERS-----------------------------------------------------------------------------------------------------------------------------------
@@ -156,7 +170,7 @@ class HomeChronometerFragment : Fragment(), HomeChronometerContract.IHomeChronom
 
     //INTERFACE FUNCTIONS------------------------------------------------------------------------------------------
 
-    override fun setUpSpinnerView(activities: List<ChronoActivity>)
+    override fun setUpSpinnerView(activities: List<ChronometerActivity>)
     {
         this.spinnerAdapter = ArrayAdapter(
             this.lendContext()!!,
@@ -170,6 +184,12 @@ class HomeChronometerFragment : Fragment(), HomeChronometerContract.IHomeChronom
     {
         spinnerAdapter.notifyDataSetChanged()
     }
+
+    override fun updateTimingsView()
+    {
+        customDialog?.updateAdapter()
+    }
+
 
     override fun setNewItemAsSelected() = chrono_spinner.setSelection(chrono_spinner.count - 1)
 
@@ -191,6 +211,8 @@ class HomeChronometerFragment : Fragment(), HomeChronometerContract.IHomeChronom
     {
         val dialogBuilder = AlertDialog.Builder(this.context, R.style.AlertDialogCustom)
         val dialogView = layoutInflater.inflate(R.layout.add_activity_layout, null)
+        //setting the hint of the text
+        dialogView.findViewById<TextView>(R.id.insertActivity).hint= getString(R.string.chrono_insert_hint)
         dialogBuilder.setView(dialogView)
 
         dialogBuilder.setPositiveButton(context?.getString(R.string.ADD_ACTIVITY_CONFIRM)) { _, _->
@@ -222,7 +244,7 @@ class HomeChronometerFragment : Fragment(), HomeChronometerContract.IHomeChronom
     }
 
 
-    private fun saveCurrentTiming() = homePresenter.saveTempo(pauseOffset, (chrono_spinner.selectedItem as ChronoActivity).id)
+    private fun saveCurrentTiming() = homePresenter.saveTempo(pauseOffset, (chrono_spinner.selectedItem as ChronometerActivity).id)
 
 
     //Update buttons of the user interface depending on the state of the chrono
@@ -230,13 +252,13 @@ class HomeChronometerFragment : Fragment(), HomeChronometerContract.IHomeChronom
     {
         when(chronoState)
         {
-            ChronoState.Running ->
+            ChronometerState.Running ->
             { chrono_start.isEnabled = false; chrono_pause.isEnabled = true; chrono_reset.isEnabled = false; chrono_save_btn.isEnabled = false }
 
-            ChronoState.Paused ->
+            ChronometerState.Paused ->
             {chrono_start.isEnabled = true; chrono_pause.isEnabled = false; chrono_reset.isEnabled = true; chrono_save_btn.isEnabled = true}
 
-            ChronoState.Resetted ->
+            ChronometerState.Resetted ->
             {chrono_start.isEnabled = true; chrono_pause.isEnabled = false; chrono_reset.isEnabled = false; chrono_save_btn.isEnabled = false}
         }
     }

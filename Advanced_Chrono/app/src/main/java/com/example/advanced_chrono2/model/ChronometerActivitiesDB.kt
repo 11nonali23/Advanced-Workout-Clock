@@ -53,7 +53,7 @@ class ChronometerActivitiesDB(context: Context) :
 
         private const val SQL_SELECT_MAX_ID = "SELECT MAX($KEY_ID) FROM $ACTIVITY_TABLE_NAME"
 
-        private const val SQL_SELECT_ALL_ACTIVITIES_NO_TIMINGS =
+        private const val SQL_SELECT_ALL_ACTIVITIES_ONLY_FIRST_TIMING =
             "SELECT * FROM $ACTIVITY_TABLE_NAME"
 
         private const val SQL_SELECT_ACTIVITY_TIMINGS_AND_TIMESTAMPS =
@@ -79,20 +79,20 @@ class ChronometerActivitiesDB(context: Context) :
         onCreate(db)
     }
 
-    override fun getAllActivities(): ArrayList<ChronoActivity>
+    override fun getAllActivities(): ArrayList<ChronometerActivity>
     {
-        val activities: ArrayList<ChronoActivity> = ArrayList()
+        val activities: ArrayList<ChronometerActivity> = ArrayList()
 
         val db = this.writableDatabase
-        val cursor = db.rawQuery(SQL_SELECT_ALL_ACTIVITIES_NO_TIMINGS, null)
+        val cursor = db.rawQuery(SQL_SELECT_ALL_ACTIVITIES_ONLY_FIRST_TIMING, null)
 
         if (cursor.moveToFirst())
         {
             do
             {
                 activities.add(
-                    ChronoActivity(
-                        cursor.getInt(0), cursor.getString(1), null)
+                    ChronometerActivity(
+                        cursor.getInt(0), cursor.getString(1), getTimings(cursor.getInt(0)))
                 )
             }
             while (cursor.moveToNext())
@@ -104,7 +104,7 @@ class ChronometerActivitiesDB(context: Context) :
 
     }
 
-    override fun addNewActivity(name: String): ChronoActivity?
+    override fun addNewActivity(name: String): ChronometerActivity?
     {
         val db = this.writableDatabase
 
@@ -125,7 +125,7 @@ class ChronometerActivitiesDB(context: Context) :
         }
 
         db.close()
-        return ChronoActivity(id, name, ArrayList())
+        return ChronometerActivity(id, name, ArrayList())
     }
 
     //TODO catch the error
@@ -186,7 +186,7 @@ class ChronometerActivitiesDB(context: Context) :
 
     override fun getTimings(activityId: Int): ArrayList<Pair<Long, Int>>?
     {
-        val timings = ArrayList<Pair<Long, Int>>()
+        val timings_timestamps = ArrayList<Pair<Long, Int>>()
 
         val db = this.writableDatabase
 
@@ -195,7 +195,7 @@ class ChronometerActivitiesDB(context: Context) :
         {
             do
             {
-                timings.add(Pair(cursor.getLong(1), cursor.getInt(2)))
+                timings_timestamps.add(Pair(cursor.getLong(1), cursor.getInt(2)))
                 Log.d(TAG, "timing retrived:  $activityId:  timing:   ${cursor.getLong(0)}. Its timestamp :  ${cursor.getInt(0)}")
             }
             while (cursor.moveToNext())
@@ -206,7 +206,8 @@ class ChronometerActivitiesDB(context: Context) :
         cursor.close()
         db.close()
 
-        return timings
+        //I return a blank name because it will never be used for this purpose
+        return timings_timestamps
     }
 
     //END INTERFACE FUNCITONS------------------------------------------------------------------------------------------------------------------------------------------------

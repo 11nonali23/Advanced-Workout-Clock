@@ -6,30 +6,25 @@ import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.InsetDrawable
 import android.os.Bundle
-import android.util.Log
 import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.advanced_chrono2.R
-import com.example.advanced_chrono2.view.custom_adapters.DialogViewAdapter
+import com.example.advanced_chrono2.view.custom_adapters.ActivityTimingsAdapter
 
 
 class CustomDialog(context: Context) : Dialog(context)
 {
     private lateinit var recyclerView: RecyclerView
-    private lateinit var viewAdapter: DialogViewAdapter
-
-    private val timings = arrayListOf("PROVA", "PROVA", "PROVA", "PROVA", "PROVA", "PROVA", "PROVA")
-
+    private lateinit var viewAdapter: ActivityTimingsAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        Log.e("dialog", "om create dialog custom, data size: ${timings.size}")
         setContentView(R.layout.custom_dialog_layout)
         setCanceledOnTouchOutside(true)
 
-        viewAdapter = DialogViewAdapter(timings)
+        viewAdapter = ActivityTimingsAdapter()
 
         recyclerView = findViewById(R.id.itemsList)
         recyclerView.adapter = viewAdapter
@@ -45,5 +40,10 @@ class CustomDialog(context: Context) : Dialog(context)
         val inset = InsetDrawable(back, 100)
         window?.setBackgroundDrawable(inset)
 
+    }
+
+    fun updateAdapter()
+    {
+        viewAdapter.notifyDataSetChanged()
     }
 }

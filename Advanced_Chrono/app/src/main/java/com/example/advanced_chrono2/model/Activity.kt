@@ -9,7 +9,10 @@ open class Activity (val id: Int, val name: String)
 
     override fun equals(other: Any?): Boolean
     {
-        if (other is ChronoActivity)
+        if (other is ChronometerActivity && this is ChronometerActivity)
+            return this.id == other.id
+
+        if(other is TimerActivity && this is TimerActivity)
             return this.id == other.id
 
         return false
