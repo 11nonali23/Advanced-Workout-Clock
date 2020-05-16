@@ -14,6 +14,7 @@ import com.example.advanced_chrono2.R
 import com.example.advanced_chrono2.contract.HomeChronometerContract
 import com.example.advanced_chrono2.model.ChronoActivity
 import com.example.advanced_chrono2.presenter.HomePresenter
+import com.example.advanced_chrono2.view.custom_views.CustomDialog
 import kotlinx.android.synthetic.main.chrono_layout.*
 
 //ToDo implement the save button (only when you have the database)
@@ -134,6 +135,10 @@ class HomeChronometerFragment : Fragment(), HomeChronometerContract.IHomeChronom
             showDeleteDialogBuilder()
         }
 
+        show_timings_button.setOnClickListener{
+            CustomDialog(this.context!!).show()
+        }
+
         //save timing button
         chrono_save_btn.setOnClickListener {
             saveCurrentTiming()
@@ -184,7 +189,7 @@ class HomeChronometerFragment : Fragment(), HomeChronometerContract.IHomeChronom
     //TODO center the buttons
     private fun showAddDialogBuilder()
     {
-        val dialogBuilder = AlertDialog.Builder(this.lendContext(), R.style.AlertDialogCustom)
+        val dialogBuilder = AlertDialog.Builder(this.context, R.style.AlertDialogCustom)
         val dialogView = layoutInflater.inflate(R.layout.add_activity_layout, null)
         dialogBuilder.setView(dialogView)
 
@@ -203,7 +208,7 @@ class HomeChronometerFragment : Fragment(), HomeChronometerContract.IHomeChronom
     //TODO center the buttons
     private fun showDeleteDialogBuilder()
     {
-        val dialogBuilder = AlertDialog.Builder(this.lendContext(), R.style.AlertDialogCustom)
+        val dialogBuilder = AlertDialog.Builder(this.context, R.style.AlertDialogCustom)
         dialogBuilder.setTitle(context?.getString(R.string.DEL_ACTIVITY_TITLE))
 
         dialogBuilder.setPositiveButton(context?.getString(R.string.DEL_ACTIVITY_CONFIRM)) { _, _->

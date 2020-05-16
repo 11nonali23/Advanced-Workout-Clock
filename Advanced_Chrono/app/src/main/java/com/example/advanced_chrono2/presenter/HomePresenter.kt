@@ -8,6 +8,9 @@ import com.example.advanced_chrono2.model.ChronometerActivitiesDB
 import java.util.*
 import kotlin.collections.ArrayList
 
+
+import com.example.advanced_chrono2.contract.HomeChronometerContract.IHomePresenter.Companion.activitiesValue
+
 class HomePresenter(val view: HomeChronometerContract.IHomeChronometerView) : HomeChronometerContract.IHomePresenter
 {
     private var model: ChronometerActivitiesDB? = null
@@ -102,4 +105,26 @@ class HomePresenter(val view: HomeChronometerContract.IHomeChronometerView) : Ho
         }
         view.displayResult(viewContext.getString(R.string.INTERNAL_ERROR))
     }
+
+    /*override fun getActivityTimings(activityId: Int): ArrayList<Pair<Long, Int>>
+    {
+        var value = activitiesValue[activityId]
+
+        if (value != null)
+            return value
+
+
+        //If the HashMap does not have the values i will search on the DB.
+        else
+        {
+            if (model != null)
+            {
+                value = model!!.getTimings(activityId)
+
+            }
+            else
+
+        }
+        view.displayResult(viewContext.getString(R.string.INTERNAL_ERROR))
+    }*/
 }

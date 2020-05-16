@@ -21,8 +21,6 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton
 when a change is done to the timer items in the activity also this list will change
  */
 
-//TODO when I selected an activity I have to change the list of items to the one related to the selected one
-
 
 //The field activitiesList of the companion object of ITimerActivitiesPresenter wil be renamed as presenterList
 import com.example.advanced_chrono2.contract.TimerActivitiesContract.ITimerActivitiesPresenter.Companion.activitiesList as presenterList
@@ -40,7 +38,6 @@ class TimerActivitiesAdapter (private val parentView: TimerActivitiesFragment
 
 
     /*Only one ViewHolder card can be selected. Done due to the proper work of the animation that lift the selected card*/
-    //TODO When i will implement the delete I need to change this field to a default value if the selected card is deleted
     private var selectedCard: CardView? = null  //null when no card is selected
 
     private var selectedActivityPosition: Int? = null
@@ -52,6 +49,7 @@ class TimerActivitiesAdapter (private val parentView: TimerActivitiesFragment
         return ActivityViewHolder(v)
     }
 
+    //ATTENTION: presenterList is imported before class declaration
     override fun getItemCount(): Int
     {
         return presenterList.size
@@ -60,14 +58,6 @@ class TimerActivitiesAdapter (private val parentView: TimerActivitiesFragment
     override fun onBindViewHolder(holder: ActivityViewHolder, position: Int)
     {
         holder.textView.text = presenterList[position].name
-
-        //TODO activity does not go up!!!
-        /*By default the selected card is the an at 0 postion
-        if (position == DEFAULT_ITEM_POS)
-        {
-            this.selectedCard = holder.card
-            this.selectedItemPosition = DEFAULT_ITEM_POS
-        }*/
     }
 
     fun getSelectedActivityPosition(): Int?

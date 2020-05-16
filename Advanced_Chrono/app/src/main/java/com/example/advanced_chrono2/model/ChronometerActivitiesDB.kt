@@ -57,9 +57,9 @@ class ChronometerActivitiesDB(context: Context) :
             "SELECT * FROM $ACTIVITY_TABLE_NAME"
 
         private const val SQL_SELECT_ACTIVITY_TIMINGS_AND_TIMESTAMPS =
-            "SELECT $KEY_TIME, $KEY_TIMESTAMP " +
+            "SELECT $KEY_ID_FOREIGN, $KEY_TIME, $KEY_TIMESTAMP " +
                     "FROM $TIMING_TABLE_NAME " +
-                    "WHERE $KEY_ID = ?"
+                    "WHERE $KEY_ID_FOREIGN = ?"
 
     }
 
@@ -184,22 +184,24 @@ class ChronometerActivitiesDB(context: Context) :
         return true
     }
 
-    override fun getTimings(activityId: Int): ArrayList<Pair<Long, Int>>
+    override fun getTimings(activityId: Int): ArrayList<Pair<Long, Int>>?
     {
-        val timings: ArrayList<Pair<Long, Int>> = ArrayList()
+        val timings = ArrayList<Pair<Long, Int>>()
 
         val db = this.writableDatabase
-        val cursor = db.rawQuery(SQL_SELECT_ACTIVITY_TIMINGS_AND_TIMESTAMPS, arrayOf("$activityId"))
 
+        val cursor = db.rawQuery(SQL_SELECT_ACTIVITY_TIMINGS_AND_TIMESTAMPS, arrayOf("$activityId"))
         if (cursor.moveToFirst())
         {
             do
             {
-                timings.add(Pair(cursor.getLong(0), cursor.getInt(1)))
+                timings.add(Pair(cursor.getLong(1), cursor.getInt(2)))
                 Log.d(TAG, "timing retrived:  $activityId:  timing:   ${cursor.getLong(0)}. Its timestamp :  ${cursor.getInt(0)}")
             }
             while (cursor.moveToNext())
         }
+        //If activity does not have timings I will inform the presenter returning null
+        else {  return null }
 
         cursor.close()
         db.close()

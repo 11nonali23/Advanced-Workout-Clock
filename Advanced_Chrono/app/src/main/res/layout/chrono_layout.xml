@@ -14,6 +14,14 @@
         android:elevation="0dp"
         android:orientation="horizontal">
 
+        <ImageButton
+            android:id="@+id/show_timings_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
+            android:backgroundTint="@color/white"
+            android:src="@drawable/ic_clock_black"/>
+
         <Spinner
             android:id="@+id/chrono_spinner"
             style="@style/Widget.AppCompat.DropDownItem.Spinner"

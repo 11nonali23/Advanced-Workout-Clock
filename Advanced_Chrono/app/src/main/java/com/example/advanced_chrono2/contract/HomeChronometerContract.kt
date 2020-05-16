@@ -13,7 +13,7 @@ interface HomeChronometerContract
     {
         fun addNewTiming(time: Long, timestamp: Long, activityId: Int): Boolean
 
-        fun getTimings(activityId: Int): ArrayList<Pair<Long, Int>>
+        fun getTimings(activityId: Int): ArrayList<Pair<Long, Int>>?
 
     }
 
@@ -33,6 +33,16 @@ interface HomeChronometerContract
 
     interface IHomePresenter
     {
+        companion object
+        {
+            /*centralized map of activities with their timings
+            This map contains only the activity that are selected previously from the user.
+            If user selected another activity the map adds the activity and its timings.
+            In this way I store only the activities the user work with and not the ones never selected */
+
+            var activitiesValue = HashMap<Int, ArrayList<Pair<Long, Int>>>()
+        }
+
         fun onViewCreated(context: Context?)
 
         fun addNewActivity(activityName: String)
@@ -40,6 +50,8 @@ interface HomeChronometerContract
         fun deleteActivity(activityName: String) //I can delete activity by name beacuase it is unique
 
         fun saveTempo(tempo: Long, activityId: Int)
+
+        //fun getActivityTimings(activityId: Int): ArrayList<Pair<Long, Int>>
     }
 
 }

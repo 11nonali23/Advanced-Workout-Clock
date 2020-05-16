@@ -1,0 +1,49 @@
+package com.example.advanced_chrono2.view.custom_views
+
+import android.app.Dialog
+import android.content.Context
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
+import android.graphics.drawable.InsetDrawable
+import android.os.Bundle
+import android.util.Log
+import android.view.ViewGroup
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.example.advanced_chrono2.R
+import com.example.advanced_chrono2.view.custom_adapters.DialogViewAdapter
+
+
+class CustomDialog(context: Context) : Dialog(context)
+{
+    private lateinit var recyclerView: RecyclerView
+    private lateinit var viewAdapter: DialogViewAdapter
+
+    private val timings = arrayListOf("PROVA", "PROVA", "PROVA", "PROVA", "PROVA", "PROVA", "PROVA")
+
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        Log.e("dialog", "om create dialog custom, data size: ${timings.size}")
+        setContentView(R.layout.custom_dialog_layout)
+        setCanceledOnTouchOutside(true)
+
+        viewAdapter = DialogViewAdapter(timings)
+
+        recyclerView = findViewById(R.id.itemsList)
+        recyclerView.adapter = viewAdapter
+        recyclerView.layoutManager = LinearLayoutManager(this.context)
+
+        //TODO set to match parent also height but make setCanceledOnTouchOutside work
+
+        window?.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
+
+        //setting the dialog to match parent. Margins wil be set up with inset
+        /*margins and color of the dialog*/
+        val back = ColorDrawable(Color.WHITE)
+        val inset = InsetDrawable(back, 100)
+        window?.setBackgroundDrawable(inset)
+
+    }
+}
