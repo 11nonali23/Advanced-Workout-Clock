@@ -13,7 +13,7 @@
     <string name="INTERNAL_ERROR">Désolé, une erreur interne s\'est produite</string>
     <string name="chrono_insert_hint">" Insérer un nom (ex: cube de Rubik)"</string>
     <string name="remaining_indicator">Restant</string>
-    <string name="rest_indicator">du repos</string>
+    <string name="rest_indicator">repos</string>
     <string name="workout_indicator">travail</string>
     <string name="addNewItem">Ajouter un item</string>
     <string name="save_activity_button_text">Enregistrer Activité</string>
@@ -23,7 +23,7 @@
     <string name="timer_label">activité de la minuterie</string>
     <string name="workout_circle_indicator">Travaille</string>
     <string name="rest_circle_indicator">Du repos</string>
-    <string name="save_on_pause_request">sauver  à la réinitialisation</string>
+    <string name="save_on_pause_request">sauver à la réinitialisation</string>
     <string name="save_request">sauver</string>
     <string name="activity_indicator">activité</string>
     <string name="settings">règlages</string>
@@ -32,4 +32,15 @@
     <string name="timer_tab_indicator">Minuterie Activitès</string>
     <string name="data_tab_indicator">Donnéèes Personelle</string>
     <string name="chrono_tab_indicator">Savauble Chrono</string>
+    <string name="ADD_ITEM_CONFIRM">ENREGISTRER DES ARTICLES</string>
+    <string name="DISMISS_DIALOG">ANNULER</string>
+    <string name="DEL_ACTIVITY_CONFIRM">SUPPRIMER</string>
+    <string name="DEL_ACTIVITY_TITLE">Êtes-vou sûr de supprimer cette activité?</string>
+    <string name="ADD_ACTIVITY_CONFIRM">ENREGISTRER L\'ACTIVITÉ</string>
+    <string name="WORKOUT_SEC_ONLY">travail %1$s</string>
+    <string name="WORKOUT_ONE_MINUTE">travail%1s</string>
+    <string name="WORKOUT_MINUTE_AND_SECS">travail %1$s %2$s</string>
+    <string name="REST_SEC_ONLY">repos %1s</string>
+    <string name="REST_ONE_MINUTE">repos%1s</string>
+    <string name="REST_MINUTE_AND_SECS">repos %1$s %2$s</string>
 </resources>

@@ -40,17 +40,6 @@ class HomeChronometerFragment : Fragment(), HomeChronometerContract.IHomeChronom
         private var pauseOffset: Long = 0L                              //is used to set the timer properly when restored from on pause and to take note of time
         private var progresssion :Int = -1                              //define the progression of the circular bar
         private var chronoState: ChronoState = ChronoState.Resetted     //track the chronometer state
-
-        //add activity dialog button messages
-        private const val ADD_ACTIVITY_CONFIRM = "SAVE ACTIVITY"
-
-        //delete activity dialog messages
-        private const val DEL_ACTIVITY_TITLE = "DELETE THE CURRENT ACIVITY?"
-        private const val DEL_ACTIVITY_CONFIRM = "DELETE"
-
-        private const val DISMISS_DIALOG = "CANCEL"
-
-
     }
 
     //This enum stores the states of the chronometer
@@ -199,12 +188,12 @@ class HomeChronometerFragment : Fragment(), HomeChronometerContract.IHomeChronom
         val dialogView = layoutInflater.inflate(R.layout.add_activity_layout, null)
         dialogBuilder.setView(dialogView)
 
-        dialogBuilder.setPositiveButton(ADD_ACTIVITY_CONFIRM) { _, _->
+        dialogBuilder.setPositiveButton(context?.getString(R.string.ADD_ACTIVITY_CONFIRM)) { _, _->
             val editText = dialogView.findViewById<EditText>(R.id.insertActivity)
             homePresenter.addNewActivity(editText.text.toString())
         }
 
-        dialogBuilder.setNegativeButton(DISMISS_DIALOG) { dialogInterface, _ ->
+        dialogBuilder.setNegativeButton(context?.getString(R.string.DISMISS_DIALOG)) { dialogInterface, _ ->
             dialogInterface.dismiss()
         }
 
@@ -215,13 +204,13 @@ class HomeChronometerFragment : Fragment(), HomeChronometerContract.IHomeChronom
     private fun showDeleteDialogBuilder()
     {
         val dialogBuilder = AlertDialog.Builder(this.lendContext(), R.style.AlertDialogCustom)
-        dialogBuilder.setTitle(DEL_ACTIVITY_TITLE)
+        dialogBuilder.setTitle(context?.getString(R.string.DEL_ACTIVITY_TITLE))
 
-        dialogBuilder.setPositiveButton(DEL_ACTIVITY_CONFIRM) { _, _->
+        dialogBuilder.setPositiveButton(context?.getString(R.string.DEL_ACTIVITY_CONFIRM)) { _, _->
             homePresenter.deleteActivity(chrono_spinner.selectedItem.toString())
         }
 
-        dialogBuilder.setNegativeButton(DISMISS_DIALOG) { dialogInterface, _ ->
+        dialogBuilder.setNegativeButton(context?.getString(R.string.DISMISS_DIALOG)) { dialogInterface, _ ->
             dialogInterface.dismiss()
         }
         dialogBuilder.show()

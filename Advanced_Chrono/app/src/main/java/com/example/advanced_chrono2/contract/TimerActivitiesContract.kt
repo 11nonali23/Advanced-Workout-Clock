@@ -35,7 +35,7 @@ interface TimerActivitiesContract
 
         fun changeTimerItemListView(position: Int?)
 
-        //The next for functions are MANDATORY to use when the data set of activities or items of an activity is changed
+        //The next four functions are MANDATORY to use when the data set of activities or items of an activity is changed
         fun activitiesDataSetChanged()
 
         fun activityRemovedFromDataSet(position: Int)

@@ -78,20 +78,21 @@ class TimerItemsAdapter(private val parent: TimerActivitiesFragment,
             //MINUTES
             if (curr.workoutSeconds > 60)
                 holder.workoutTextView.text =
-                    "work ${curr.workoutSeconds / 60}$MIN_SYMBOL ${curr.workoutSeconds % 60}$SEC_SYMBOL"
+                    parent.context?.getString(R.string.WORKOUT_MINUTE_AND_SECS, "${curr.workoutSeconds / 60}$MIN_SYMBOL", "${curr.workoutSeconds % 60}$SEC_SYMBOL")
+
             else if (curr.workoutSeconds == 60)
-                holder.workoutTextView.text = "work 1$MIN_SYMBOL"
+                holder.workoutTextView.text = parent.context?.getString(R.string.WORKOUT_ONE_MINUTE, MIN_SYMBOL)
             else
-                holder.workoutTextView.text = "work ${curr.workoutSeconds}$SEC_SYMBOL"
+                holder.workoutTextView.text = parent.context?.getString(R.string.WORKOUT_SEC_ONLY,"${curr.workoutSeconds}$SEC_SYMBOL")
 
             //SECONDS
             if (curr.restSeconds >= 60)
                 holder.restTextView.text =
-                    "rest ${curr.restSeconds / 60}$MIN_SYMBOL ${curr.restSeconds % 60}$SEC_SYMBOL"
+                    parent.context?.getString(R.string.REST_MINUTE_AND_SECS, "${curr.restSeconds / 60}$MIN_SYMBOL", "${curr.restSeconds % 60}$SEC_SYMBOL")
             else if (curr.restSeconds == 60)
-                holder.restTextView.text = "rest 1$MIN_SYMBOL"
+                holder.restTextView.text = parent.context?.getString(R.string.REST_ONE_MINUTE, MIN_SYMBOL)
             else
-                holder.restTextView.text = "rest ${curr.restSeconds}$SEC_SYMBOL"
+                holder.restTextView.text = parent.context?.getString(R.string.WORKOUT_SEC_ONLY,"${curr.restSeconds}$SEC_SYMBOL")
         }
     }
 

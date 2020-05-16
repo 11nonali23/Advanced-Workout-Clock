@@ -9,7 +9,7 @@
     <string name="settings">impostazioni</string>
     <string name="activity_indicator">attività</string>
     <string name="save_request">salva</string>
-    <string name="save_on_pause_request">salva sempre al reset</string>
+    <string name="save_on_pause_request">salva al reset</string>
     <string name="rest_circle_indicator">Riposo</string>
     <string name="workout_circle_indicator">Lavoro</string>
     <string name="timer_label">attività timer</string>
@@ -18,8 +18,8 @@
     <string name="rest_time_indicator">Tempo di Riposo</string>
     <string name="save_activity_button_text">Salva Attività</string>
     <string name="addNewItem">Aggiungi Elemento</string>
-    <string name="workout_indicator">Lavoro</string>
-    <string name="rest_indicator">Riposo</string>
+    <string name="workout_indicator">lavoro</string>
+    <string name="rest_indicator">riposo</string>
     <string name="remaining_indicator">Rimanenti</string>
     <string name="chrono_insert_hint">Inserisci un nome (es. Cubo di Rubik)</string>
     <string name="INTERNAL_ERROR">Errore interno!</string>
@@ -32,4 +32,15 @@
     <string name="EMPTY_ITEM_FIELDS">Errore l\' attività non ha elementi!</string>
     <string name="NO_SELECTED_ACTIVITY">Errore: seleziona un attività</string>
     <string name="EMPTY_ACTIVITY_ON_START">Errore: l\' attività non ha timer</string>
+    <string name="ADD_ACTIVITY_CONFIRM">SALVA L\'ATTIVITÀ</string>
+    <string name="DEL_ACTIVITY_TITLE">Sei sicuro di voler eliminare l\' attività?</string>
+    <string name="DEL_ACTIVITY_CONFIRM">ELIMINA</string>
+    <string name="DISMISS_DIALOG">CANCELLA</string>
+    <string name="ADD_ITEM_CONFIRM">SALVA GLI ELEMENTI</string>
+    <string name="WORKOUT_SEC_ONLY">lavoro %1$s</string>
+    <string name="WORKOUT_ONE_MINUTE">lavoro%1s</string>
+    <string name="WORKOUT_MINUTE_AND_SECS">lavoro %1$s %2$s</string>
+    <string name="REST_SEC_ONLY">riposo %1s</string>
+    <string name="REST_ONE_MINUTE">riposo%1s</string>
+    <string name="REST_MINUTE_AND_SECS">riposo %1$s %2$s</string>
 </resources>

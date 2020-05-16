@@ -11,7 +11,7 @@
     <string name="settings">settings</string>
     <string name="activity_indicator">Activity</string>
     <string name="save_request">Save</string>
-    <string name="save_on_pause_request">save always on reset</string>
+    <string name="save_on_pause_request">save on reset</string>
     <string name="rest_circle_indicator">Rest</string>
     <string name="workout_circle_indicator">Workout</string>
     <string name="timer_label">timer_activity</string>
@@ -31,10 +31,34 @@
     <!--String for outputs on fragments-->
     <string name="INTERNAL_ERROR">Sorry, Internal Error occurred</string>
 
+    <!--//add activity dialog button messages
+        private const val ADD_ACTIVITY_CONFIRM = "SAVE ACTIVITY"
+
+        //delete activity dialog messages
+        private const val DEL_ACTIVITY_TITLE = "DELETE THE CURRENT ACIVITY?"
+        private const val DEL_ACTIVITY_CONFIRM = "DELETE"
+
+        private const val DISMISS_DIALOG = "CANCEL"-->
+
+    <string name="ADD_ACTIVITY_CONFIRM">SAVE ACTIVITY</string>
+    <string name="DEL_ACTIVITY_TITLE">Are you sure to delete ths activity?</string>
+    <string name="DEL_ACTIVITY_CONFIRM">DELETE</string>
+    <string name="DISMISS_DIALOG">CANCEL</string>
+    <string name="ADD_ITEM_CONFIRM">SAVE ITEMS</string>
+
     <string name="ADD_ACTIVITY_SUCCESS">Successfully added!</string>
     <string name="ADD_ACTIVITY_DB_ERROR">Error: this name already exists!</string>
     <string name="ADD_EMPTY_ACTIVITY">Error: activity can\' t be empty</string>
     <string name="DEL_ACTIVITY_SUCCESS">Successfully deleted!</string>
+    
+    <!-- Strings for workout and rest on presenter-->
+    <string name="WORKOUT_SEC_ONLY">work %1$s</string>
+    <string name="WORKOUT_ONE_MINUTE">work 1%1s</string>
+    <string name="WORKOUT_MINUTE_AND_SECS">work %1$s %2$s</string>
+
+    <string name="REST_SEC_ONLY">rest %1$s</string>
+    <string name="REST_ONE_MINUTE">rest 1%1s</string>
+    <string name="REST_MINUTE_AND_SECS">rest %1$s %2$s</string>
 
 
     <!--HOME ACTIVITY SPECIFIC-->

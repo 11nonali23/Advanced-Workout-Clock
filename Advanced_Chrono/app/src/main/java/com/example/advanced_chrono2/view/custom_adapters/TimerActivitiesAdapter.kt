@@ -32,6 +32,13 @@ class TimerActivitiesAdapter (private val parentView: TimerActivitiesFragment
 
 {
 
+    companion object
+    {
+        private const val ACTIVIY_INDICATOR_INTENT = "ACTIVITY_NAME"
+        private const val TIMER_ITEMS_INDICATOR_INTENT = "TIMER_ITEMS"
+    }
+
+
     /*Only one ViewHolder card can be selected. Done due to the proper work of the animation that lift the selected card*/
     //TODO When i will implement the delete I need to change this field to a default value if the selected card is deleted
     private var selectedCard: CardView? = null  //null when no card is selected
@@ -98,8 +105,8 @@ class TimerActivitiesAdapter (private val parentView: TimerActivitiesFragment
                 val activityInfo = parentView.timerActivitiesPresenter.onActivityStart(absoluteAdapterPosition)
                 if(activityInfo != null)
                 {
-                    intent.putExtra("ACTIVITY_NAME", activityInfo.first)
-                    intent.putExtra("TIMER_ITEMS", activityInfo.second)
+                    intent.putExtra(ACTIVIY_INDICATOR_INTENT, activityInfo.first)
+                    intent.putExtra(TIMER_ITEMS_INDICATOR_INTENT, activityInfo.second)
                     v.context.startActivity(intent)
                 }
             }
