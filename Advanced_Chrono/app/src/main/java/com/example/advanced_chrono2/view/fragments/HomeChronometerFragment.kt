@@ -187,6 +187,9 @@ class HomeChronometerFragment : Fragment(), HomeChronometerContract.IHomeChronom
 
     override fun updateTimingsView()
     {
+        Log.e(TAG, "updating adapter of dialog")
+        if (customDialog == null)
+            Log.e(TAG, "dialog null")
         customDialog?.updateAdapter()
     }
 

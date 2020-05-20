@@ -10,7 +10,7 @@ import java.util.*
 
 import com.example.advanced_chrono2.contract.HomeChronometerContract.IHomePresenter.Companion.activities
 import com.example.advanced_chrono2.contract.HomeChronometerContract.IHomePresenter.Companion.currentSelectedActivity
-import com.example.advanced_chrono2.model.ChronometerActivity
+
 
 class HomePresenter(val view: HomeChronometerContract.IHomeChronometerView) : HomeChronometerContract.IHomePresenter
 {
@@ -32,10 +32,10 @@ class HomePresenter(val view: HomeChronometerContract.IHomeChronometerView) : Ho
 
             model = ChronometerActivitiesDB(context)
             activities = model!!.getAllActivities()
-            view.setUpSpinnerView(activities!!)
+            view.setUpSpinnerView(activities)
             //setting the current selected activity to be the first
-            if(activities!!.size > 0)
-                currentSelectedActivity = activities!![0]
+            if(activities.size > 0)
+                currentSelectedActivity = 0
         }
     }
 
@@ -52,12 +52,13 @@ class HomePresenter(val view: HomeChronometerContract.IHomeChronometerView) : Ho
 
                 if (newActivity != null)
                 {
-                    activities?.add(newActivity)
+                    activities.add(newActivity)
                     view.displayResult(viewContext.getString(R.string.ADD_ACTIVITY_SUCCESS))
                     //Todo check this passage
                     view.updateActivitiesView()
                     view.setNewItemAsSelected()
-                    currentSelectedActivity = newActivity
+                    //Last element added is the new current selected activity
+                    currentSelectedActivity = activities.size - 1
                     return
                 }
                 else
@@ -83,7 +84,7 @@ class HomePresenter(val view: HomeChronometerContract.IHomeChronometerView) : Ho
         {
             if(model!!.deleteActivity(activityName))
             {
-                activities?.removeAll{it.name == activityName}
+                activities.removeAll{it.name == activityName}
                 view.displayResult(viewContext.getString(R.string.DEL_ACTIVITY_SUCCESS))
                 view.updateActivitiesView()
                 return
@@ -120,12 +121,37 @@ class HomePresenter(val view: HomeChronometerContract.IHomeChronometerView) : Ho
     //updates the current selected activity and add timings if weren't already
     override fun handleNewSelectedActivity(activityId: Int)
     {
-        Log.e(TAG, "retriving new activity")
-        activities?.forEach { if (it.id == activityId) currentSelectedActivity = it }
-
-        if (model != null && currentSelectedActivity?.timings_timestamp == null)
+        if (model == null)
         {
-            currentSelectedActivity?.timings_timestamp =  model!!.getTimings(activityId)
+            view.displayResult(viewContext.getString(R.string.INTERNAL_ERROR))
+            return
         }
+
+        Log.e(TAG, "retriving new activity")
+        var activityPosition: Int? = null
+
+        //finding the position of the selected activity on the list
+        for (i in activities.indices)
+            if (activities[i].id == activityId)
+                activityPosition = i
+
+        if (activityPosition != null)
+        {
+            //if activity does not have the timings
+            if (activities == activities[activityPosition].timings_timestamp)
+                activities[activityPosition].timings_timestamp = model!!.getTimings(activityId)
+
+            //updating the current selected activity
+            currentSelectedActivity = activityPosition
+
+            view.updateTimingsView()
+        }
+        //user can't select an activity with an id that is out of the activity list. If this case occurs it can only be an internal error
+        else
+        {
+            view.displayResult(viewContext.getString(R.string.INTERNAL_ERROR))
+            return
+        }
+
     }
 }

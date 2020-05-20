@@ -39,9 +39,10 @@ interface HomeChronometerContract
             /*List of activities.
             At first they have all the timings null, but then when on is selected the timings are uploaded
             This helps not to load timings that will not be seen from the user in a session*/
-            var activities: ArrayList<ChronometerActivity>? = null
+            var activities: ArrayList<ChronometerActivity> = ArrayList()
 
-            var currentSelectedActivity: ChronometerActivity? = null
+            //default selected activity is 0. //TODO use shared preferences to save it in a better way
+            var currentSelectedActivity: Int? = null
         }
 
         fun onViewCreated(context: Context?, currentActivityId: Int)

@@ -6,6 +6,7 @@ import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.InsetDrawable
 import android.os.Bundle
+import android.util.Log
 import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -44,6 +45,8 @@ class CustomDialog(context: Context) : Dialog(context)
 
     fun updateAdapter()
     {
+        Log.e("dialog", "received update request")
+        viewAdapter.autoUpdateCurrentTimings()
         viewAdapter.notifyDataSetChanged()
     }
 }
