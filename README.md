@@ -8,14 +8,14 @@ This Android Application is meant to generate a clock with features to make any 
 
 * The user can create an activity for an interval timer and schedule the timings to do, that are also divided into work and rest.
 
-* The data stored for chronometer and for timer will be plotted into graphs. The graphs types are not chosen yet.
+* The data stored for the chronometer and for the timer will be plotted into graphs. The graphs types are not chosen yet.
 
 * The app support 4 languages: English (default), France, Spanish, Italian.
 
 
 ## Front-End
 
-The front-end is made by following material design guidelins for Android.
+The front-end is made by following **material design guidelines** for Android.
 
 * The application supports [ViewPager 2](https://developer.android.com/jetpack/androidx/releases/viewpager2) to show the fragments.
 
@@ -47,7 +47,7 @@ The only un-stateless parts of the presenter are connected to the db.
 override fun presenterExapmle(args)
 {
     if (model == null)
-    {   view.notifyUser(); return   }
+    {   view.notifyUserInternalError(); return   }
 
     if (checkConditions(args)== ERROR)
     {    view.displayTheError(); return }
