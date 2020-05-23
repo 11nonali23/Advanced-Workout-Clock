@@ -47,10 +47,10 @@ The only un-stateless parts of the presenter are connected to the db.
 override fun presenterExapmle(args)
 {
     if (model == null)
-        view.notifyUser()
+    {   view.notifyUser(); return   }
 
     if (checkConditions(args)== ERROR)
-        view.displayTheError()
+    {    view.displayTheError(); return }
 
     doSomeLogic()
 
