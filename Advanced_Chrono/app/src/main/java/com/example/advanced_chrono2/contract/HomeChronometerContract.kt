@@ -3,6 +3,8 @@ package com.example.advanced_chrono2.contract
 import android.content.Context
 import com.example.advanced_chrono2.model.BaseModel
 import com.example.advanced_chrono2.model.ChronometerActivity
+import java.util.*
+import kotlin.collections.ArrayList
 
 //This interface define a contract between the home view and the presenter related to it
 
@@ -10,9 +12,9 @@ interface HomeChronometerContract
 {
     interface IHomeModel : BaseModel
     {
-        fun addNewTiming(time: Long, timestamp: Long, activityId: Int): Boolean
+        fun addNewTiming(time: Long, timestamp: Long, activityId: Int): Pair<Long, GregorianCalendar>?
 
-        fun getTimings(activityId: Int) : ArrayList<Pair<Long, Int>>?
+        fun getTimings(activityId: Int) : ArrayList<Pair<Long, GregorianCalendar>>?
 
     }
 

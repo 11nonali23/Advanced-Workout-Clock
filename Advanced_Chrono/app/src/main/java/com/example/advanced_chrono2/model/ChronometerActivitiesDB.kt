@@ -7,13 +7,15 @@ import android.database.sqlite.SQLiteOpenHelper
 import android.util.Log
 import com.example.advanced_chrono2.contract.HomeChronometerContract
 import java.sql.SQLException
+import java.util.*
+import kotlin.collections.ArrayList
 
 class ChronometerActivitiesDB(context: Context) :
     SQLiteOpenHelper(context, DATABASE_NAME, null, DATABASE_VERSION),
     HomeChronometerContract.IHomeModel
 {
 
-    companion object
+    companion object DbContract
     {
         private const val TAG = "HOME DB"
 
@@ -23,7 +25,7 @@ class ChronometerActivitiesDB(context: Context) :
         //Name of activity table
         private const val ACTIVITY_TABLE_NAME = "chronometer_activity"
         //Keys of activity
-        private const val KEY_ID = "id"/*The protection from id overflow is intrinsic in the application. It is more than highly improbable that someone creates that much activities*/
+        private const val KEY_ID = "id"/*The protection from id overflow is intrinsic in the application. It is highly improbable that someone creates that much activities*/
         private const val KEY_NAME = "name"
 
         //name of timing table
@@ -63,7 +65,6 @@ class ChronometerActivitiesDB(context: Context) :
 
     }
 
-    //INTERFACE FUNCITONS------------------------------------------------------------------------------------------------------------------------------------------------
 
     override fun onCreate(db: SQLiteDatabase?)
     {
@@ -78,6 +79,8 @@ class ChronometerActivitiesDB(context: Context) :
 
         onCreate(db)
     }
+
+    //INTERFACE FUNCITONS------------------------------------------------------------------------------------------------------------------------------------------------
 
     override fun getAllActivities(): ArrayList<ChronometerActivity>
     {
@@ -159,8 +162,9 @@ class ChronometerActivitiesDB(context: Context) :
         return id
     }
 
-    override fun addNewTiming(time: Long, timestamp: Long, activityId: Int): Boolean
+    override fun addNewTiming(time: Long, timestamp: Long, activityId: Int): Pair<Long, GregorianCalendar>?
     {
+        var newItem: Pair<Long, GregorianCalendar>? = null
         val db = this.writableDatabase
 
         val values = ContentValues()
@@ -175,18 +179,22 @@ class ChronometerActivitiesDB(context: Context) :
         catch (sqlExc: SQLException) {
             db.close()
             Log.e(TAG, "${sqlExc.printStackTrace()}")
-            return false
+            return newItem
         }
 
         db.close()
-
         Log.d(TAG, "actitivity $activityId:  new timing:   $time. Its timestamp :     $timestamp")
-        return true
+
+        val createOn = GregorianCalendar()
+        createOn.timeInMillis = timestamp
+
+        newItem = Pair(time, createOn)
+        return newItem
     }
 
-    override fun getTimings(activityId: Int): ArrayList<Pair<Long, Int>>?
+    override fun getTimings(activityId: Int): ArrayList<Pair<Long, GregorianCalendar>>?
     {
-        val timings_timestamps = ArrayList<Pair<Long, Int>>()
+        val timings_timestamps = ArrayList<Pair<Long, GregorianCalendar>>()
 
         val db = this.writableDatabase
 
@@ -195,8 +203,11 @@ class ChronometerActivitiesDB(context: Context) :
         {
             do
             {
-                timings_timestamps.add(Pair(cursor.getLong(1), cursor.getInt(2)))
-                Log.d(TAG, "timing retrived:  $activityId:  timing:   ${cursor.getLong(0)}. Its timestamp :  ${cursor.getInt(0)}")
+                val createOn = GregorianCalendar()
+                createOn.timeInMillis = cursor.getLong(2)
+                timings_timestamps.add(Pair(cursor.getLong(1), createOn))
+
+                Log.d(TAG, "timing retrived:  $activityId:  timing:   ${cursor.getLong(0)}. Its timestamp :  ${cursor.getLong(2)}")
             }
             while (cursor.moveToNext())
         }
@@ -211,6 +222,4 @@ class ChronometerActivitiesDB(context: Context) :
     }
 
     //END INTERFACE FUNCITONS------------------------------------------------------------------------------------------------------------------------------------------------
-
-    //HELPER FUNCITONS------------------------------------------------------------------------------------------------------------------------------------------------
 }

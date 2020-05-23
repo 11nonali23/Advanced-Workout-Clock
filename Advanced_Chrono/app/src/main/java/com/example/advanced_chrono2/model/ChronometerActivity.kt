@@ -1,3 +1,8 @@
 package com.example.advanced_chrono2.model
 
-class ChronometerActivity(id: Int, name: String, var timings_timestamp: ArrayList<Pair<Long, Int>>?) : Activity(id, name)
+import java.util.*
+import kotlin.collections.ArrayList
+
+//first element of pair is timing and second is timestamp
+
+class ChronometerActivity(id: Int, name: String, var timings_timestamp: ArrayList<Pair<Long, GregorianCalendar>>?) : Activity(id, name)

@@ -93,7 +93,7 @@ class HomePresenter(val view: HomeChronometerContract.IHomeChronometerView) : Ho
         view.displayResult(viewContext.getString(R.string.INTERNAL_ERROR))
     }
 
-    //saving a tempo is not an error than acan occur by the user input. It is only internal
+
     override fun saveTempo(tempo: Long, activityId: Int?)
     {
         if (activityId == null)
@@ -103,14 +103,11 @@ class HomePresenter(val view: HomeChronometerContract.IHomeChronometerView) : Ho
         }
         if (model != null)
         {
-            if(model!!.addNewTiming(
-                tempo,
-                GregorianCalendar.getInstance().timeInMillis,
-                activityId
-                ))
+            val newItem = model!!.addNewTiming(tempo, System.currentTimeMillis(), activityId)
+            if(newItem != null)
             {
-                //TODO add the timing to the current activity
-                //currentSelectedActivity?.timings_timestamp.add()
+                if (currentSelectedActivity != null)
+                    activities[currentSelectedActivity!!].timings_timestamp!!.add(newItem)
                 view.displayResult(viewContext.getString(R.string.SAVE_TIMING_SUCCES))
                 return
             }

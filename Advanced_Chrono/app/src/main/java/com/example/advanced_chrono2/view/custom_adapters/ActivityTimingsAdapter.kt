@@ -10,12 +10,15 @@ import com.example.advanced_chrono2.R
 
 import com.example.advanced_chrono2.contract.HomeChronometerContract.IHomePresenter.Companion.activities //list of the activities
 import com.example.advanced_chrono2.contract.HomeChronometerContract.IHomePresenter.Companion.currentSelectedActivity
+import java.text.SimpleDateFormat
+import java.util.*
+import kotlin.collections.ArrayList
 
 //Adapter used for the recyclerView in the dialog that contains the timings.
 
 class ActivityTimingsAdapter : RecyclerView.Adapter<ActivityTimingsAdapter.ItemViewHolder>()
 {
-    private var currentTimings: ArrayList<Pair<Long, Int>>?
+    private var currentTimings: ArrayList<Pair<Long, GregorianCalendar>>?
 
     init
     {
@@ -34,8 +37,11 @@ class ActivityTimingsAdapter : RecyclerView.Adapter<ActivityTimingsAdapter.ItemV
         return ItemViewHolder(v)
     }
 
+    //TODO get the current locale
     override fun onBindViewHolder(holder: ItemViewHolder, position: Int) {
-        holder.textView.text = "${currentTimings?.get(position)?.second} ===> ${currentTimings?.get(position)?.first}"
+        //Setting the date with Gregorian Calendar and the timing
+        holder.textView.text = "${SimpleDateFormat("dd/MM/yyyy", Locale.ITALIAN).format(currentTimings?.get(position)?.second?.time)}" +
+                " ===> ${(currentTimings?.get(position)?.first)?.div(1000)}"
     }
 
 
