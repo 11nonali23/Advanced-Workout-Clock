@@ -52,8 +52,10 @@ override fun presenterExapmle(args)
     if (checkConditions(args)== ERROR)
         view.displayTheError()
 
-    doLogic()
+    doSomeLogic()
 
-    interactWithModel()
+    model!!.interactWithModel()
+
+    view.displayResults("R.string.SomeResultString")
 }
 ```
