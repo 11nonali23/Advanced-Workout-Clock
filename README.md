@@ -41,4 +41,19 @@ The only un-stateless parts of the presenter are connected to the db.
 
 ![MVP sequence_diagram](images/MVP_sequence.png)
 
+### Presenter pseudocode
 
+```
+override fun presenterExapmle(args)
+{
+    if (model == null)
+        view.notifyUser()
+
+    if (checkConditions(args)== ERROR)
+        view.displayTheError()
+
+    doLogic()
+
+    interactWithModel()
+}
+```
