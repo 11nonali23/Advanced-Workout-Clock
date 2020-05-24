@@ -43,7 +43,7 @@ class IntervalTimerActivity : AppCompatActivity()
         this.toolbar = toolBar
 
         toolbar.title = intent.getStringExtra("ACTIVITY_NAME")
-        toolbar.setNavigationIcon(R.drawable.ic_arrow_back_orange)
+        toolbar.setNavigationIcon(R.drawable.ic_arrow_back)
         setSupportActionBar(toolbar)
 
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
@@ -227,7 +227,7 @@ class IntervalTimerActivity : AppCompatActivity()
             timer_rest_indicator.setTextColor(Color.BLACK)
         }
         else{
-            timer_rest_indicator.setTextColor(ContextCompat.getColor(this, R.color.light_orange))
+            timer_rest_indicator.setTextColor(ContextCompat.getColor(this, R.color.super_light_orange))
             timer_workout_indicator.setTextColor(Color.BLACK)
         }
     }
@@ -235,7 +235,7 @@ class IntervalTimerActivity : AppCompatActivity()
 
     private fun setNewTimerAndProgressLength()
     {
-        val lengthInMinutes = TimerPrefUtilsManager.getTimerLength(this)
+        val lengthInMinutes = TimerPrefUtilsManager.getTimerLength()
 
         if (isWorkout)
         {

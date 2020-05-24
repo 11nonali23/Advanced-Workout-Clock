@@ -106,6 +106,7 @@ class HomePresenter(val view: HomeChronometerContract.IHomeChronometerView) : Ho
             val newItem = model!!.addNewTiming(tempo, System.currentTimeMillis(), activityId)
             if(newItem != null)
             {
+                //TODO retrieve timings and timestamps
                 if (currentSelectedActivity != null)
                     activities[currentSelectedActivity!!].timings_timestamp!!.add(newItem)
                 view.displayResult(viewContext.getString(R.string.SAVE_TIMING_SUCCES))

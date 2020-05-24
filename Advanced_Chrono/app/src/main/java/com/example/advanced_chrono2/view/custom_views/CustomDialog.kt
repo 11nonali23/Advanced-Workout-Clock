@@ -24,6 +24,11 @@ class CustomDialog(context: Context) : Dialog(context)
 
         setContentView(R.layout.custom_dialog_layout)
         setCanceledOnTouchOutside(true)
+        //setting rounded background
+        window?.setBackgroundDrawableResource(R.drawable.rounded_dialog)
+
+        //setting transparent background
+        window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
 
         viewAdapter = ActivityTimingsAdapter()
 

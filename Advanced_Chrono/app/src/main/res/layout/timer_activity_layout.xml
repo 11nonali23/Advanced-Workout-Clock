@@ -1,15 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 
-<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.cardview.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/activityCard"
     android:layout_width="@dimen/card_max_item"
     android:layout_height="@dimen/activity_card_height"
-    android:layout_marginLeft="10dp"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    app:cardCornerRadius="20dp"
+    android:layout_marginStart="10dp"
     android:layout_margin="10dp"
-    android:backgroundTint="@color/blood"
+    app:cardCornerRadius="20dp"
+    android:elevation="20dp"
+    android:backgroundTint="@color/colorSecondary"
     android:focusable="true"
     android:clickable="true"
     android:stateListAnimator="@animator/lift_on_touch">
@@ -46,7 +48,8 @@
             android:layout_marginBottom="8dp"
             android:backgroundTint="@color/white"
             android:src="@drawable/ic_play_arrow"
-            android:clickable="true"/>
+            android:clickable="true"
+            android:focusable="true" />
 
     </LinearLayout>
 

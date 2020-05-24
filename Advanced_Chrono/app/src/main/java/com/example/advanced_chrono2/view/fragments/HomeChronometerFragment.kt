@@ -174,7 +174,7 @@ class HomeChronometerFragment : Fragment(), HomeChronometerContract.IHomeChronom
     {
         this.spinnerAdapter = ArrayAdapter(
             this.lendContext()!!,
-            R.layout.support_simple_spinner_dropdown_item,
+            R.layout.spinner_text,
             activities)
 
         chrono_spinner.adapter = this.spinnerAdapter

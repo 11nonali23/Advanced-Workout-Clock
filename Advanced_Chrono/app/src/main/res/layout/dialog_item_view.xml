@@ -1,13 +1,69 @@
 <?xml version="1.0" encoding="utf-8"?>
-
-<TextView
+<com.example.advanced_chrono2.view.custom_views.CustomCardView
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/timingText"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="60dp"
-    android:layout_margin="20dp"
-    android:textSize="20sp"
-    android:gravity="center"
-    android:background="@color/super_light_orange">
-</TextView>
+    android:layout_height="wrap_content"
+    android:layout_marginTop="15dp"
+    android:layout_marginRight="15dp"
+    android:layout_marginLeft="15dp"
+    app:cardCornerRadius="10dp"
+    android:elevation="30dp"
+    card_view:cardBackgroundColor="@color/white">
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal"
+        android:layout_margin="10dp">
+
+        <ImageView
+            android:id="@+id/calendar_image"
+            android:layout_width="34dp"
+            android:layout_height="34dp"
+            android:layout_marginStart="5dp"
+            android:src="@drawable/ic_calendar"
+            android:padding="2dp"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center">
+
+            <TextView
+                android:id="@+id/daetText"
+                android:layout_width="wrap_content"
+                android:layout_height="30dp"
+                android:gravity="center"
+                android:layout_weight="1"
+                android:text="Line 1"
+                android:textSize="13sp"
+                android:textStyle="italic"
+                android:textColor="@color/black" />
+
+
+            <ImageView
+                android:id="@+id/timing_image"
+                android:layout_width="34dp"
+                android:layout_height="34dp"
+                android:layout_marginStart="5dp"
+                android:src="@drawable/ic_clock_black"
+                android:padding="2dp"/>
+
+            <TextView
+                android:id="@+id/timingText"
+                android:layout_width="wrap_content"
+                android:layout_height="30dp"
+                android:gravity="center"
+                android:layout_weight="1"
+                android:textSize="13sp"
+                android:text="Line"
+                android:textStyle="normal"
+                android:textColor="@color/black"/>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</com.example.advanced_chrono2.view.custom_views.CustomCardView>

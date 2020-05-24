@@ -130,15 +130,13 @@ class TimerItemsAdapter(private val parent: TimerActivitiesFragment,
 
     inner class SwipableItemsViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView), View.OnTouchListener,GestureDetector.OnGestureListener
     {
-        var imageView: ImageView
-        var workoutTextView: TextView
+        var imageView: ImageView = itemView.findViewById(R.id.timer_item_image)
+        var workoutTextView: TextView = itemView.findViewById(R.id.timer_item_text)
         var restTextView: TextView
-        var mGestureDetector: GestureDetector? = null
+        private var mGestureDetector: GestureDetector? = null
 
         init
         {
-            this.imageView = itemView.findViewById(R.id.timer_item_image)
-            this.workoutTextView = itemView.findViewById(R.id.timer_item_text)
             this.restTextView = itemView.findViewById(R.id.timer_item_text_rest)
             this.mGestureDetector = GestureDetector(itemView.context, this)
             itemView.setOnTouchListener(this)

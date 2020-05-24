@@ -32,7 +32,7 @@ class TimerPrefUtilsManager {
             PreferenceManager.getDefaultSharedPreferences(context).edit().clear().apply()
         }
 
-        fun getTimerLength(context: Context): Int {return 1}
+        fun getTimerLength(): Int {return 1}
 
 
         //setting and getting timer lenght of the previous timer

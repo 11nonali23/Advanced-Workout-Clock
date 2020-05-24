@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.example.advanced_chrono2.R
 
@@ -38,10 +39,12 @@ class ActivityTimingsAdapter : RecyclerView.Adapter<ActivityTimingsAdapter.ItemV
     }
 
     //TODO get the current locale
-    override fun onBindViewHolder(holder: ItemViewHolder, position: Int) {
-        //Setting the date with Gregorian Calendar and the timing
-        holder.textView.text = "${SimpleDateFormat("dd/MM/yyyy", Locale.ITALIAN).format(currentTimings?.get(position)?.second?.time)}" +
-                " ===> ${(currentTimings?.get(position)?.first)?.div(1000)}"
+    override fun onBindViewHolder(holder: ItemViewHolder, position: Int)
+    {
+        //Setting the date text with Gregorian Calendar
+        holder.dateText.text = SimpleDateFormat("dd/MM/yyyy", Locale.ITALIAN).format(currentTimings?.get(position)?.second?.time)
+
+        holder.timingText.text = ((currentTimings?.get(position)?.first)?.div(1000) as Long).toString()
     }
 
 
@@ -64,6 +67,7 @@ class ActivityTimingsAdapter : RecyclerView.Adapter<ActivityTimingsAdapter.ItemV
 
     inner class ItemViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
     {
-        val textView: TextView = itemView.findViewById(R.id.timingText)
+        val dateText: TextView = itemView.findViewById(R.id.daetText)
+        val timingText: TextView = itemView.findViewById(R.id.timingText)
     }
 }
