@@ -38,13 +38,12 @@ class CustomDialog(context: Context) : Dialog(context)
         recyclerView.layoutManager = LinearLayoutManager(this.context)
 
         //TODO set to match parent also height but make setCanceledOnTouchOutside work
-
         window?.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
 
         //setting the dialog to match parent. Margins wil be set up with inset
         /*margins and color of the dialog*/
         val back = ColorDrawable(Color.WHITE)
-        val inset = InsetDrawable(back, 100)
+        val inset = InsetDrawable(back, 120)
         window?.setBackgroundDrawable(inset)
 
     }

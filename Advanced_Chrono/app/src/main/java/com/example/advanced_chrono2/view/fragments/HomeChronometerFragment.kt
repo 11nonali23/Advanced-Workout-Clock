@@ -7,14 +7,12 @@ import android.os.SystemClock
 import android.util.Log
 import android.view.*
 import android.widget.*
-import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import com.example.advanced_chrono2.R
 import com.example.advanced_chrono2.contract.HomeChronometerContract
 import com.example.advanced_chrono2.model.ChronometerActivity
 import com.example.advanced_chrono2.presenter.HomePresenter
 import com.example.advanced_chrono2.view.custom_views.CustomDialog
-import kotlinx.android.synthetic.main.add_activity_layout.*
 import kotlinx.android.synthetic.main.chrono_layout.*
 
 //ToDo implement the save button (only when you have the database)

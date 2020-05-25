@@ -17,6 +17,7 @@ import kotlin.collections.ArrayList
 // in the real project data will be get from BUNDLE EXTRA on itent call
 
 @Suppress("UNCHECKED_CAST")
+
 class IntervalTimerActivity : AppCompatActivity()
 {
     private lateinit var toolbar: androidx.appcompat.widget.Toolbar

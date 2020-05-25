@@ -51,7 +51,7 @@
                 android:layout_height="0dp"
                 android:layout_weight="1"
                 android:elevation="10dp"
-                android:background="@color/white">
+                android:background="@color/lightPrimary">
 
                 <com.google.android.material.floatingactionbutton.FloatingActionButton
                     android:id="@+id/timer_items_button"
@@ -75,7 +75,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_weight="1"
-        android:background="@color/white"
+        android:background="@color/lightPrimary"
         android:elevation="10dp" />
 
 </LinearLayout>

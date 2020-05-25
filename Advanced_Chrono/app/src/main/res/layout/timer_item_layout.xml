@@ -34,12 +34,9 @@
             android:layout_height="30dp"
             android:gravity="center"
             android:layout_weight="1"
-            android:text="Line 1"
-            android:textSize="17sp"
-            android:textStyle="bold"
-            android:textColor="@color/black"
-            android:layout_alignParentTop="true"
-            android:layout_toEndOf="@id/timer_item_image"/>
+            android:textSize="14sp"
+            android:textStyle="italic|bold"
+            android:textColor="@color/black" />
 
             <View
                 android:layout_width="2dp"
@@ -52,12 +49,9 @@
                 android:layout_height="30dp"
                 android:gravity="center"
                 android:layout_weight="1"
-                android:text="Line 1"
-                android:textSize="17sp"
-                android:textStyle="bold"
-                android:textColor="@color/black"
-                android:layout_alignParentTop="true"
-                android:layout_toEndOf="@id/timer_item_image"/>
+                android:textSize="14sp"
+                android:textStyle="italic|bold"
+                android:textColor="@color/black"/>
 
         </LinearLayout>
 

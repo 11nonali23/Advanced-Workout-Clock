@@ -14,15 +14,13 @@
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
 
         <activity android:name=".IntervalTimerActivity"
             android:parentActivityName=".MainActivity"
-            android:label="@string/timer_label"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar">
+            android:label="@string/timer_label">
         </activity>
 
     </application>

@@ -65,7 +65,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginBottom="10dp"
+            android:layout_marginBottom="20dp"
             android:textColor="@color/colorSecondary"
             android:textSize="40sp" />
 
@@ -75,14 +75,13 @@
             android:layout_width="330dp"
             android:layout_height="330dp"
             android:layout_gravity="center"
-            android:layout_marginBottom="10dp"
+            android:layout_marginBottom="20dp"
             android:minWidth="330dp"
             android:minHeight="330dp"
             android:max="60"
             android:progress="60"
             app:mpb_progressTint="@color/colorPrimary"
-            app:mpb_progressStyle="circular"
-            android:progressDrawable="@drawable/ring"/>
+            app:mpb_progressStyle="circular"/>
 
     </FrameLayout>
 
@@ -91,15 +90,15 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:layout_gravity="bottom|center"
-        android:layout_marginLeft="40dp"
-        android:layout_marginRight="40dp"
-        android:layout_marginBottom="10dp">
+        android:background="@color/white">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:layout_marginTop="20dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
             app:layout_anchorGravity="center">
 
             <com.google.android.material.button.MaterialButton
@@ -107,43 +106,44 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:layout_margin="5dp"
-                android:backgroundTint="@color/white"
+                android:layout_margin="10dp"
+                android:backgroundTint="@color/lightSecondary"
                 android:textSize="30sp"
                 android:theme="@style/Theme.MaterialComponents"
-                app:cornerRadius="6dp"
+                app:cornerRadius="10dp"
+                android:elevation="20dp"
                 app:iconGravity="textEnd"
                 app:icon="@drawable/ic_play_arrow"
-                app:iconTint="@color/colorSecondary"/>
+                app:iconTint="@color/white"/>
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/chrono_pause"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight=".6"
-                android:layout_margin="5dp"
-                android:backgroundTint="@color/white"
+                android:layout_margin="10dp"
+                android:backgroundTint="@color/lightSecondary"
                 android:textSize="30sp"
                 android:theme="@style/Theme.MaterialComponents"
                 app:cornerRadius="6dp"
                 app:iconGravity="textEnd"
                 app:icon="@drawable/ic_pause"
-                app:iconTint="@color/colorSecondary"/>
+                app:iconTint="@color/white"/>
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/chrono_reset"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:layout_margin="5dp"
-                android:backgroundTint="@color/white"
+                android:layout_margin="10dp"
+                android:backgroundTint="@color/lightSecondary"
                 android:textColor="@color/white"
                 android:textSize="30sp"
                 android:theme="@style/Theme.MaterialComponents"
-                app:cornerRadius="6dp"
+                app:cornerRadius="10dp"
                 app:iconGravity="textEnd"
                 app:icon="@drawable/ic_stop"
-                app:iconTint="@color/colorSecondary"/>
+                app:iconTint="@color/white"/>
 
         </LinearLayout>
 
@@ -151,8 +151,9 @@
             android:id="@+id/save_container"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginEnd="20dp"
+            android:layout_marginStart="20dp"
             android:orientation="horizontal"
-            android:layout_marginTop="20dp"
             app:layout_anchorGravity="center">
 
             <com.google.android.material.button.MaterialButton
@@ -160,7 +161,7 @@
                 android:id="@+id/chrono_save_btn"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="5dp"
+                android:layout_margin="10dp"
                 android:layout_weight="0.6"
                 android:backgroundTint="@color/colorSecondary"
                 android:textColor="@color/black"
@@ -178,9 +179,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="0.6"
-                android:layout_marginTop="5dp"
-                android:layout_marginStart="50dp"
-                android:layout_marginBottom="25dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginRight="20dp"
+                android:gravity="end"
                 android:textSize="15sp"
                 android:text="@string/save_on_pause_request"
                 android:textColor="@color/black"/>
@@ -191,8 +192,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:layout_marginTop="5dp"
-                android:textColor="@color/white"
+                android:layout_marginTop="10dp"
                 android:theme="@style/Theme.MaterialComponents"
                 app:cornerRadius="6dp"
                 android:buttonTint="@color/colorSecondary"/>
