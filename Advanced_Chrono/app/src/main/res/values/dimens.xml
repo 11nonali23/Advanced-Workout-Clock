@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <dimen name="card_max_item">140dp</dimen>
+    <dimen name="card_max_item">130dp</dimen>
     <dimen name="max_container_height">254dp</dimen>
-    <dimen name="activity_card_height">170dp</dimen>
+    <dimen name="activity_card_height">150dp</dimen>
 </resources>

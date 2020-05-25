@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:bottom="110dp">
+    <item android:bottom="130dp">
         <shape
             android:shape="rectangle" >
             <corners android:bottomRightRadius="90dp"/>
-
             <!--maybe I will add a gradient-->
             <gradient
                 android:startColor="@color/colorPrimary"
@@ -12,17 +11,12 @@
                 android:angle="270" />
         </shape>
     </item>
-    <item android:top="370dp" >
+    <item android:top="770dp" >
         <shape android:shape="rectangle" >
-            <corners
-                android:bottomLeftRadius="8dip"
-                android:bottomRightRadius="8dip" />
-
             <gradient
                 android:startColor="@color/white"
                 android:endColor="@color/white"
                 android:angle="270" />
-            <size android:height="50dp" />
         </shape>
     </item>
 </layer-list>

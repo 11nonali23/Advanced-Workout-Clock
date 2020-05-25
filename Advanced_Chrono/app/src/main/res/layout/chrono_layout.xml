@@ -72,17 +72,17 @@
         <me.zhanghai.android.materialprogressbar.MaterialProgressBar
             android:id="@+id/progress_circular_chrono"
             style="@style/Widget.MaterialProgressBar.ProgressBar"
-            android:layout_width="370dp"
-            android:layout_height="370dp"
+            android:layout_width="330dp"
+            android:layout_height="330dp"
             android:layout_gravity="center"
             android:layout_marginBottom="10dp"
-            android:minWidth="370dp"
-            android:minHeight="370dp"
+            android:minWidth="330dp"
+            android:minHeight="330dp"
             android:max="60"
             android:progress="60"
-            app:layout_anchor="@+id/chronometer_"
-            app:layout_anchorGravity="center"
-            app:mpb_progressTint="@color/colorPrimary"/>
+            app:mpb_progressTint="@color/colorPrimary"
+            app:mpb_progressStyle="circular"
+            android:progressDrawable="@drawable/ring"/>
 
     </FrameLayout>
 

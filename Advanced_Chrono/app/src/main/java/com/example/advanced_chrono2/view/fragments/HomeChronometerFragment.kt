@@ -7,6 +7,7 @@ import android.os.SystemClock
 import android.util.Log
 import android.view.*
 import android.widget.*
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import com.example.advanced_chrono2.R
 import com.example.advanced_chrono2.contract.HomeChronometerContract
@@ -39,9 +40,9 @@ class HomeChronometerFragment : Fragment(), HomeChronometerContract.IHomeChronom
         private const val TAG = "HOME FRAGMENT"
 
         //VIEW CHRONOMETER LOGIC
-        private var pauseOffset: Long = 0L                              //is used to set the timer properly when restored from on pause and to take note of time
-        private var progresssion :Int = -1                              //define the progression of the circular bar
-        private var chronoState: ChronometerState = ChronometerState.Resetted     //track the chronometer state
+        private var pauseOffset: Long = 0L                                       //used to set the timer properly when restored from on pause and to take note of time
+        private var progresssion :Int = -1                                       //define the progression of the circular bar
+        private var chronoState: ChronometerState = ChronometerState.Resetted    //track the chronometer state
     }
 
     //This enum stores the states of the chronometer
@@ -98,7 +99,7 @@ class HomeChronometerFragment : Fragment(), HomeChronometerContract.IHomeChronom
             updateUIButtons()
         }
 
-        //Listener for start button
+        //Listener for start buttpp:mpb_showProgressBackground="true"on
         chrono_pause.setOnClickListener {
 
             chronometer_.stop()

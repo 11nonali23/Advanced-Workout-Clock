@@ -33,6 +33,7 @@ class CustomDialog(context: Context) : Dialog(context)
         viewAdapter = ActivityTimingsAdapter()
 
         recyclerView = findViewById(R.id.itemsList)
+        recyclerView.setHasFixedSize(true)
         recyclerView.adapter = viewAdapter
         recyclerView.layoutManager = LinearLayoutManager(this.context)
 
