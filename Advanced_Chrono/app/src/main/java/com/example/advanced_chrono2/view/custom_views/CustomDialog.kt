@@ -1,23 +1,29 @@
 package com.example.advanced_chrono2.view.custom_views
 
 import android.app.Dialog
-import android.content.Context
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.InsetDrawable
 import android.os.Bundle
 import android.util.Log
 import android.view.ViewGroup
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.advanced_chrono2.R
 import com.example.advanced_chrono2.view.custom_adapters.ActivityTimingsAdapter
+import com.example.advanced_chrono2.view.custom_adapters.OnlySwipeHelper
+import com.example.advanced_chrono2.view.fragments.HomeChronometerFragment
 
 
-class CustomDialog(context: Context) : Dialog(context)
+class CustomDialog(val parent: HomeChronometerFragment) : Dialog(parent.context!!)
 {
-    private lateinit var recyclerView: RecyclerView
+    private lateinit var timingsList: RecyclerView
     private lateinit var viewAdapter: ActivityTimingsAdapter
+    //properties for swipe
+    private lateinit var onlySwipeHelper: OnlySwipeHelper
+    private lateinit var itemTouchHelper: ItemTouchHelper
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -30,12 +36,12 @@ class CustomDialog(context: Context) : Dialog(context)
         //setting transparent background
         window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
 
-        viewAdapter = ActivityTimingsAdapter()
+        viewAdapter = ActivityTimingsAdapter(this)
 
-        recyclerView = findViewById(R.id.itemsList)
-        recyclerView.setHasFixedSize(true)
-        recyclerView.adapter = viewAdapter
-        recyclerView.layoutManager = LinearLayoutManager(this.context)
+        timingsList = findViewById(R.id.itemsList)
+        timingsList.setHasFixedSize(true)
+        timingsList.adapter = viewAdapter
+        timingsList.layoutManager = LinearLayoutManager(this.context)
 
         //TODO set to match parent also height but make setCanceledOnTouchOutside work
         window?.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
@@ -46,6 +52,22 @@ class CustomDialog(context: Context) : Dialog(context)
         val inset = InsetDrawable(back, 120)
         window?.setBackgroundDrawable(inset)
 
+        //itemMovementHelper defines behaviour of recyclerView on user inputs
+        onlySwipeHelper =
+            OnlySwipeHelper(
+                ItemTouchHelper.UP or ItemTouchHelper.DOWN,
+                ItemTouchHelper.LEFT or ItemTouchHelper.RIGHT,
+                viewAdapter
+            )
+
+        itemTouchHelper = ItemTouchHelper(onlySwipeHelper)
+
+        //Set the touch helper after beacuse the swipeDragCallbackHelper needs to know the adpater
+        viewAdapter.setItemTouchHelper(itemTouchHelper)
+
+        itemTouchHelper.attachToRecyclerView(timingsList)
+
+
     }
 
     fun updateAdapter()
@@ -54,4 +76,8 @@ class CustomDialog(context: Context) : Dialog(context)
         viewAdapter.autoUpdateCurrentTimings()
         viewAdapter.notifyDataSetChanged()
     }
+
+    fun notifyAdapterItemRemoved(itemPosition: Int) { viewAdapter.notifyItemRemoved(itemPosition)}
+
+    fun removeTiming(timingPosition: Int) {parent.deleteTiming(timingPosition)}
 }

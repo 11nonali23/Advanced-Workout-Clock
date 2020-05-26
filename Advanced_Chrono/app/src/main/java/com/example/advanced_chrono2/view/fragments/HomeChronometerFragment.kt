@@ -8,10 +8,12 @@ import android.util.Log
 import android.view.*
 import android.widget.*
 import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.ItemTouchHelper
 import com.example.advanced_chrono2.R
 import com.example.advanced_chrono2.contract.HomeChronometerContract
 import com.example.advanced_chrono2.model.ChronometerActivity
 import com.example.advanced_chrono2.presenter.HomePresenter
+import com.example.advanced_chrono2.view.custom_adapters.OnlySwipeHelper
 import com.example.advanced_chrono2.view.custom_views.CustomDialog
 import kotlinx.android.synthetic.main.chrono_layout.*
 
@@ -136,8 +138,11 @@ class HomeChronometerFragment : Fragment(), HomeChronometerContract.IHomeChronom
         }
 
         show_timings_button.setOnClickListener{
-            customDialog = CustomDialog(this.context!!)
-            customDialog!!.show()
+            if (this.context != null)
+            {
+                customDialog = CustomDialog(this)
+                customDialog!!.show()
+            }
         }
 
         //save timing button
@@ -195,6 +200,8 @@ class HomeChronometerFragment : Fragment(), HomeChronometerContract.IHomeChronom
 
     override fun setNewItemAsSelected() = chrono_spinner.setSelection(chrono_spinner.count - 1)
 
+    override fun itemRemovedFromDataSet(itemPosition: Int) {    customDialog?.notifyAdapterItemRemoved(itemPosition)    }
+
     override fun displayResult(result: String)
     {
         if (lendContext() != null)
@@ -204,6 +211,11 @@ class HomeChronometerFragment : Fragment(), HomeChronometerContract.IHomeChronom
     override fun lendContext(): Context? {return context}
 
     //END INTERFACE FUNCTIONS------------------------------------------------------------------------------------------
+
+    //FUNCTIONS FOR ADAPTERS------------------------------------------------------------------------------------------
+
+    fun deleteTiming(itemPosition: Int){  homePresenter.deleteTiming(itemPosition)}
+    //END FUNCTIONS FOR ADAPTERS------------------------------------------------------------------------------------------
 
 
     //VIEW HELPER FUNCTIONS------------------------------------------------------------------------------------------

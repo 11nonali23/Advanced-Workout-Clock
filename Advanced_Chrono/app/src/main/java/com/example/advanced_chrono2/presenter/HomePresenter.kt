@@ -5,8 +5,6 @@ import android.util.Log
 import com.example.advanced_chrono2.R
 import com.example.advanced_chrono2.contract.HomeChronometerContract
 import com.example.advanced_chrono2.model.ChronometerActivitiesDB
-import java.util.*
-
 
 import com.example.advanced_chrono2.contract.HomeChronometerContract.IHomePresenter.Companion.activities
 import com.example.advanced_chrono2.contract.HomeChronometerContract.IHomePresenter.Companion.currentSelectedActivity
@@ -52,6 +50,7 @@ class HomePresenter(val view: HomeChronometerContract.IHomeChronometerView) : Ho
 
                 if (newActivity != null)
                 {
+
                     activities.add(newActivity)
                     view.displayResult(viewContext.getString(R.string.ADD_ACTIVITY_SUCCESS))
                     //Todo check this passage
@@ -91,6 +90,85 @@ class HomePresenter(val view: HomeChronometerContract.IHomeChronometerView) : Ho
             }
         }
         view.displayResult(viewContext.getString(R.string.INTERNAL_ERROR))
+    }
+
+    override fun deleteTiming(itemPosition: Int)
+    {
+        Log.e(TAG, " delete timing: ITEM POSITION: $itemPosition")
+
+        //if no activity is selected it means that there is no activity
+        if (currentSelectedActivity == null)
+        {
+            view.displayResult(viewContext.getString(R.string.NO_SELECTED_ACTIVITY))
+            return
+        }
+
+        //checking if data structures and DB are initialized. If not it can't be a user error
+        if(model == null)
+        {
+            view.displayResult(viewContext.getString(R.string.INTERNAL_ERROR))
+            return
+        }
+
+        //check if activity posisition exists. If it doesn't it can be only an internal error. User can't select an unexisting item
+        if(currentSelectedActivity!! >= activities.size)
+        {
+            view.displayResult(viewContext.getString(R.string.INTERNAL_ERROR))
+            return
+        }
+
+        //if timings and timestamps are null it means i didn't handle correctly the addition mechanism
+        if (activities[currentSelectedActivity!!].timings_timestamp == null)
+        {
+            view.displayResult(viewContext.getString(R.string.INTERNAL_ERROR))
+            return
+        }
+
+        //check if item posisition exists. If it doesn't it can be only an internal error. User can't select an unexisting item
+        if(itemPosition >= activities[currentSelectedActivity!!].timings_timestamp!!.size)
+        {
+            view.displayResult(viewContext.getString(R.string.INTERNAL_ERROR))
+            return
+        }
+
+        /*If the parent ID isn't in the itemList it means i have an internal error! It can't be user fault.
+        *This is because the user can't handle the id's of the items*/
+        val parentActivityID: Int
+
+        try {
+            parentActivityID = activities[currentSelectedActivity!!].id
+        }
+        catch (exc: ArrayIndexOutOfBoundsException){
+            view.displayResult(viewContext.getString(R.string.INTERNAL_ERROR))
+            Log.e(TAG, "OUT OF BOUND FOR PARENT ACTIVITY")
+            return
+        }
+
+        //Same concepet of above for itemId
+        val timingId: Int
+
+        try {
+            timingId = activities[currentSelectedActivity!!].timings_timestamp!![itemPosition].id
+        }
+        catch (exc: Exception ){
+            view.displayResult(viewContext.getString(R.string.INTERNAL_ERROR))
+            Log.e(TAG, "OUT OF BOUND FOR CHILD ITEM")
+            return
+        }
+
+        Log.e(TAG, "ITEM ID: $timingId")
+
+        //when i have the two IDs i am ready to call the DB.
+
+        //If the model succesfully deletes the item i don't want to log nothing to the user. I just want to delete the item from the list
+        if(model!!.deleteTiming(timingId, parentActivityID))
+        {
+            activities[currentSelectedActivity!!].timings_timestamp!!.removeAt(itemPosition)
+            view.itemRemovedFromDataSet(itemPosition)
+            return
+        }
+        else
+            view.displayResult(viewContext.getString(R.string.INTERNAL_ERROR))
     }
 
 

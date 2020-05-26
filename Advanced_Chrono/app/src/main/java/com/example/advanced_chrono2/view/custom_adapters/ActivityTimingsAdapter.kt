@@ -1,25 +1,32 @@
 package com.example.advanced_chrono2.view.custom_adapters
 
+import android.annotation.SuppressLint
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.core.content.ContextCompat
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.example.advanced_chrono2.R
 
 import com.example.advanced_chrono2.contract.HomeChronometerContract.IHomePresenter.Companion.activities //list of the activities
 import com.example.advanced_chrono2.contract.HomeChronometerContract.IHomePresenter.Companion.currentSelectedActivity
+import com.example.advanced_chrono2.model.ActivityTiming
+import com.example.advanced_chrono2.view.custom_views.CustomDialog
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
 
 //Adapter used for the recyclerView in the dialog that contains the timings.
 
-class ActivityTimingsAdapter : RecyclerView.Adapter<ActivityTimingsAdapter.ItemViewHolder>()
+class ActivityTimingsAdapter(val parent: CustomDialog) : RecyclerView.Adapter<ActivityTimingsAdapter.ItemViewHolder>(), ItemTouchHelperAdapter
 {
-    private var currentTimings: ArrayList<Pair<Long, GregorianCalendar>>?
+
+    private var currentTimings: ArrayList<ActivityTiming>?
+    private lateinit var itemTouchHelper: ItemTouchHelper
+
 
     init
     {
@@ -39,12 +46,13 @@ class ActivityTimingsAdapter : RecyclerView.Adapter<ActivityTimingsAdapter.ItemV
     }
 
     //TODO get the current locale
+    @SuppressLint("SetTextI18n")
     override fun onBindViewHolder(holder: ItemViewHolder, position: Int)
     {
         //Setting the date text with Gregorian Calendar
-        holder.dateText.text = SimpleDateFormat("dd/MM/yyyy", Locale.ITALIAN).format(currentTimings?.get(position)?.second?.time)
+        holder.dateText.text = SimpleDateFormat("dd/MM/yyyy", Locale.ITALIAN).format(currentTimings?.get(position)?.createOn?.time)
 
-        holder.timingText.text = ((currentTimings?.get(position)?.first)?.div(1000) as Long).toString()
+        holder.timingText.text = (((currentTimings?.get(position)?.timing)?.div(1000)) as Long).toString() + ""
     }
 
 
@@ -65,9 +73,20 @@ class ActivityTimingsAdapter : RecyclerView.Adapter<ActivityTimingsAdapter.ItemV
             currentTimings = null
     }
 
+    fun setItemTouchHelper(itemTouchHelper: ItemTouchHelper) { this.itemTouchHelper = itemTouchHelper}
+
     inner class ItemViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView)
     {
         val dateText: TextView = itemView.findViewById(R.id.daetText)
         val timingText: TextView = itemView.findViewById(R.id.timingText)
+    }
+
+    //I don't want to move items becuse they are sorted by date
+    override fun onItemMove(fromPosition: Int, toPosition: Int) {}
+
+
+    override fun onItemDismiss(position: Int)
+    {
+        parent.removeTiming(position)
     }
 }

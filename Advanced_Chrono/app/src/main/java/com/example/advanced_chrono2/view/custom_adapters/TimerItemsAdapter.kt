@@ -18,17 +18,10 @@ import com.example.advanced_chrono2.contract.TimerActivitiesContract.ITimerActiv
 /*This adapter is used to manage the items of the activities.
  They can be swiped to be deleted and also dragged into another position*/
 
-//Interface for behaviour on item swiped and dragged
-interface ItemTouchHelperAdapter
-{
-    fun onItemMove(fromPosition: Int, toPosition: Int)
-    fun onItemDismiss(position: Int)
-}
-
 
 class TimerItemsAdapter(private val parent: TimerActivitiesFragment,
                         private var currentActivityPosition: Int?
-) : Adapter<TimerItemsAdapter.SwipableItemsViewHolder>(), ItemTouchHelperAdapter
+) : Adapter<TimerItemsAdapter.ItemsViewHolder>(), ItemTouchHelperAdapter
 
 {
 
@@ -40,10 +33,10 @@ class TimerItemsAdapter(private val parent: TimerActivitiesFragment,
 
     private lateinit var itemTouchHelper: ItemTouchHelper
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SwipableItemsViewHolder
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemsViewHolder
     {
         val v = LayoutInflater.from(parent.context).inflate(R.layout.timer_item_layout ,parent,false)
-        return SwipableItemsViewHolder(v)
+        return ItemsViewHolder(v)
     }
 
     override fun getItemCount(): Int
@@ -54,7 +47,7 @@ class TimerItemsAdapter(private val parent: TimerActivitiesFragment,
             0
     }
 
-    override fun onBindViewHolder(holder: SwipableItemsViewHolder, position: Int)
+    override fun onBindViewHolder(holder: ItemsViewHolder, position: Int)
     {
         if (currentActivityPosition != null)
         {
@@ -128,7 +121,7 @@ class TimerItemsAdapter(private val parent: TimerActivitiesFragment,
     }
     //END INTERFACE FUNCTIONS-----------------------------------------------------------------------------------------------
 
-    inner class SwipableItemsViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView), View.OnTouchListener,GestureDetector.OnGestureListener
+    inner class ItemsViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView), View.OnTouchListener,GestureDetector.OnGestureListener
     {
         var imageView: ImageView = itemView.findViewById(R.id.timer_item_image)
         var workoutTextView: TextView = itemView.findViewById(R.id.timer_item_text)

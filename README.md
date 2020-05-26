@@ -4,9 +4,9 @@ This Android Application is meant to generate a clock with features to make any 
 
 ## Basic features of the app
 
-* The user can create an activity for the chronometer and store the timings he does for the activities. The timings are   visible and customizable.
+* The user can create an activity for the chronometer and store the timings he does for the activities. The timings are visible and deletable.
 
-* The user can create an activity for an interval timer and schedule the timings to do, that are also divided into work and rest.
+* The user can create an activity for an interval timer and schedule the timings to do, that are also divided into work and rest. 
 
 * The data stored for the chronometer and for the timer will be plotted into graphs. The graphs types are not chosen yet.
 
@@ -52,7 +52,7 @@ override fun presenterExapmle(args)
     if (checkConditions(args)== ERROR)
     {    view.displayTheError(); return }
 
-    doSomeLogic()
+    doTheLogic()
 
     model!!.interactWithModel()
 

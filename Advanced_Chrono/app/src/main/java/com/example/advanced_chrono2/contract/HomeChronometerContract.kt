@@ -1,6 +1,7 @@
 package com.example.advanced_chrono2.contract
 
 import android.content.Context
+import com.example.advanced_chrono2.model.ActivityTiming
 import com.example.advanced_chrono2.model.BaseModel
 import com.example.advanced_chrono2.model.ChronometerActivity
 import java.util.*
@@ -12,9 +13,11 @@ interface HomeChronometerContract
 {
     interface IHomeModel : BaseModel
     {
-        fun addNewTiming(time: Long, timestamp: Long, activityId: Int): Pair<Long, GregorianCalendar>?
+        fun addNewTiming(time: Long, timestamp: Long, activityId: Int): ActivityTiming?
 
-        fun getTimings(activityId: Int) : ArrayList<Pair<Long, GregorianCalendar>>?
+        fun getTimings(activityId: Int) : ArrayList<ActivityTiming>
+
+        fun deleteTiming(timingId: Int, parentActivityId: Int): Boolean
 
     }
 
@@ -28,6 +31,8 @@ interface HomeChronometerContract
         fun updateTimingsView()
 
         fun setNewItemAsSelected()
+
+        fun itemRemovedFromDataSet(itemPosition: Int)
 
         fun displayResult(result: String)
 
@@ -52,6 +57,8 @@ interface HomeChronometerContract
         fun addNewActivity(activityName: String)
 
         fun deleteActivity(activityName: String) //I can delete activity by name beacuase it is unique
+
+        fun deleteTiming(itemPosition: Int)
 
         fun saveTempo(tempo: Long, activityId: Int?)
 

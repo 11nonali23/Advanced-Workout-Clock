@@ -19,7 +19,7 @@ class ChronometerActivitiesDB(context: Context) :
     {
         private const val TAG = "HOME DB"
 
-        private var DATABASE_VERSION = 4
+        private var DATABASE_VERSION = 5
         private const val DATABASE_NAME = "ChronometerDb"
 
         //Name of activity table
@@ -31,6 +31,7 @@ class ChronometerActivitiesDB(context: Context) :
         //name of timing table
         private const val TIMING_TABLE_NAME= "timing"
         //Keys of timing
+        private const val KEY_TIMING_ID = "id"
         private const val KEY_TIME = "time"
         private const val KEY_TIMESTAMP = "timestamp"
         private const val KEY_ID_FOREIGN = "activity_id"
@@ -44,6 +45,7 @@ class ChronometerActivitiesDB(context: Context) :
 
         private const val SQL_CREATE_TIMING_ENTRIES =
             "CREATE TABLE $TIMING_TABLE_NAME(" +
+                    "$KEY_TIMING_ID INTEGER PRIMARY KEY, " +
                     "$KEY_TIME REAL NOT NULL," +
                     "$KEY_TIMESTAMP INTEGER NOT NULL," +
                     "$KEY_ID_FOREIGN INTEGER NOT NULL," +
@@ -55,14 +57,15 @@ class ChronometerActivitiesDB(context: Context) :
 
         private const val SQL_SELECT_MAX_ID = "SELECT MAX($KEY_ID) FROM $ACTIVITY_TABLE_NAME"
 
-        private const val SQL_SELECT_ALL_ACTIVITIES_ONLY_FIRST_TIMING =
+        private const val SQL_SELECT_ALL_ACTIVITIES_ONLY_FIRST_WITH_TIMINGS =
             "SELECT * FROM $ACTIVITY_TABLE_NAME"
 
         private const val SQL_SELECT_ACTIVITY_TIMINGS_AND_TIMESTAMPS =
-            "SELECT $KEY_ID_FOREIGN, $KEY_TIME, $KEY_TIMESTAMP " +
+            "SELECT * " +
                     "FROM $TIMING_TABLE_NAME " +
                     "WHERE $KEY_ID_FOREIGN = ?"
 
+        private const val SQL_SELECT_MAX_TIMING_ID = "SELECT MAX($KEY_TIMING_ID) FROM $TIMING_TABLE_NAME"
     }
 
 
@@ -87,7 +90,7 @@ class ChronometerActivitiesDB(context: Context) :
         val activities: ArrayList<ChronometerActivity> = ArrayList()
 
         val db = this.writableDatabase
-        val cursor = db.rawQuery(SQL_SELECT_ALL_ACTIVITIES_ONLY_FIRST_TIMING, null)
+        val cursor = db.rawQuery(SQL_SELECT_ALL_ACTIVITIES_ONLY_FIRST_WITH_TIMINGS, null)
 
         if (cursor.moveToFirst())
         {
@@ -162,12 +165,16 @@ class ChronometerActivitiesDB(context: Context) :
         return id
     }
 
-    override fun addNewTiming(time: Long, timestamp: Long, activityId: Int): Pair<Long, GregorianCalendar>?
+    override fun addNewTiming(time: Long, timestamp: Long, activityId: Int): ActivityTiming?
     {
-        var newItem: Pair<Long, GregorianCalendar>? = null
+
+        var newItem: ActivityTiming? = null
         val db = this.writableDatabase
 
+        val newMaxId = getMaxTimingID()
+
         val values = ContentValues()
+        values.put(KEY_TIMING_ID, newMaxId)
         values.put(KEY_TIME, time)
         values.put(KEY_TIMESTAMP, timestamp)
         values.put(KEY_ID_FOREIGN, activityId)
@@ -188,37 +195,70 @@ class ChronometerActivitiesDB(context: Context) :
         val createOn = GregorianCalendar()
         createOn.timeInMillis = timestamp
 
-        newItem = Pair(time, createOn)
+        newItem = ActivityTiming(newMaxId, time, createOn)
         return newItem
     }
 
-    override fun getTimings(activityId: Int): ArrayList<Pair<Long, GregorianCalendar>>?
+    override fun getTimings(activityId: Int): ArrayList<ActivityTiming>
     {
-        val timings_timestamps = ArrayList<Pair<Long, GregorianCalendar>>()
+        val activityTimings: ArrayList<ActivityTiming> = ArrayList()
 
         val db = this.writableDatabase
 
         val cursor = db.rawQuery(SQL_SELECT_ACTIVITY_TIMINGS_AND_TIMESTAMPS, arrayOf("$activityId"))
+
         if (cursor.moveToFirst())
         {
             do
             {
                 val createOn = GregorianCalendar()
                 createOn.timeInMillis = cursor.getLong(2)
-                timings_timestamps.add(Pair(cursor.getLong(1), createOn))
+                activityTimings.add(ActivityTiming(cursor.getInt(0), cursor.getLong(1), createOn))
 
                 Log.d(TAG, "timing retrived:  $activityId:  timing:   ${cursor.getLong(0)}. Its timestamp :  ${cursor.getLong(2)}")
             }
             while (cursor.moveToNext())
         }
         //If activity does not have timings I will inform the presenter returning null
-        else {  return null }
+        else {  return activityTimings }
 
         cursor.close()
         db.close()
 
         //I return a blank name because it will never be used for this purpose
-        return timings_timestamps
+        return activityTimings
+    }
+
+    override fun deleteTiming(timingId: Int, parentActivityId: Int): Boolean
+    {
+        val db = this.writableDatabase
+
+        Log.e(TAG, "DB WILL DELETE: ITEM ID $timingId    PARENT ACTIVITY: $parentActivityId")
+
+        /*delete returns the number of rows affected if a whereClause is passed in, 0 otherwise.*/
+        val rowsDeleted = db.delete(
+            TIMING_TABLE_NAME,
+            "$KEY_TIMING_ID = ? AND $KEY_ID_FOREIGN = ?",
+            arrayOf(timingId.toString(), parentActivityId.toString())
+        )
+
+        db.close()
+
+        return rowsDeleted > 0
+    }
+
+    private fun getMaxTimingID(): Int
+    {
+        var id = 0
+        val cursor = writableDatabase.rawQuery(SQL_SELECT_MAX_TIMING_ID, null)
+        if (cursor.moveToFirst())
+            id = cursor.getInt(0) + 1
+
+        cursor.close()
+
+        Log.d(TAG, "new max id: $id")
+
+        return id
     }
 
     //END INTERFACE FUNCITONS------------------------------------------------------------------------------------------------------------------------------------------------
