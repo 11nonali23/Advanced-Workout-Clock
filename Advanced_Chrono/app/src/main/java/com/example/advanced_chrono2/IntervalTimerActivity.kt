@@ -1,38 +1,40 @@
 package com.example.advanced_chrono2
 
 import android.annotation.SuppressLint
-import androidx.core.content.ContextCompat
-import com.example.advanced_chrono2.model.TimerItem
-import com.example.advanced_chrono2.shared_preferences.TimerPrefUtilsManager
-import kotlinx.android.synthetic.main.timer_layout.*
 import android.graphics.Color
+import android.media.RingtoneManager
+import android.net.Uri
 import android.os.Bundle
 import android.os.CountDownTimer
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
+import com.example.advanced_chrono2.model.TimerItem
+import com.example.advanced_chrono2.shared_preferences.TimerPrefUtilsManager
+import kotlinx.android.synthetic.main.timer_layout.*
 import kotlinx.android.synthetic.main.toolbar_layout.*
 import java.util.*
-import kotlin.collections.ArrayList
 
-//TODO when in real activity upate the color of the rest or workout based of what is running
-// in the real project data will be get from BUNDLE EXTRA on itent call
+
+//this class is revisited from--> https://resocoder.com/category/tutorials/android/make-a-timer-app/
 
 @Suppress("UNCHECKED_CAST")
 
-class IntervalTimerActivity : AppCompatActivity()
-{
+class IntervalTimerActivity : AppCompatActivity() {
     private lateinit var toolbar: androidx.appcompat.widget.Toolbar
 
     private lateinit var timer: CountDownTimer
 
     private var currTimerLengthSeconds = 0L                 //tracks the length of the current timer
     private var timerState = TimerState.Stopped             //tracks the state of the timer
-    private var secondsRemaining = 0L                       //tracks the remining seconds to the end of the timer
+    private var secondsRemaining =
+        0L                       //tracks the remining seconds to the end of the timer
 
     private var timerItemList = LinkedList<TimerItem>()     //List of items to complete
-    private var isWorkout = true                            //tracks if activity has to set to show workout bar or rest
+    private var isWorkout =
+        true                            //tracks if activity has to set to show workout bar or rest
     private var isTimerListStarted = false                  //tracks if item list is started
-    private var currTimerItemData: TimerItem?  = null      //tracks the curent item to complete
+    private var currTimerItemData: TimerItem? = null      //tracks the curent item to complete
 
 
     enum class TimerState {
@@ -52,7 +54,8 @@ class IntervalTimerActivity : AppCompatActivity()
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setDisplayShowHomeEnabled(true)
 
-        val list: ArrayList<TimerItem> = intent.getSerializableExtra("TIMER_ITEMS") as ArrayList<TimerItem>
+        val list: ArrayList<TimerItem> =
+            intent.getSerializableExtra("TIMER_ITEMS") as ArrayList<TimerItem>
         list.forEach { timerItemList.add(it) }
 
         //getting first element of the list
@@ -100,8 +103,7 @@ class IntervalTimerActivity : AppCompatActivity()
         timer_text_remaining.text = timerItemList.size.toString()
     }
 
-    override fun onSupportNavigateUp(): Boolean
-    {
+    override fun onSupportNavigateUp(): Boolean {
         onBackPressed()
         return true
     }
@@ -131,20 +133,17 @@ class IntervalTimerActivity : AppCompatActivity()
     }
 
 
-    override fun onDestroy()
-    {
+    override fun onDestroy() {
         super.onDestroy()
         TimerPrefUtilsManager.clearAll(this)
     }
 
-    override fun onBackPressed()
-    {
+    override fun onBackPressed() {
         super.onBackPressed()
         TimerPrefUtilsManager.clearAll(this)
     }
 
-    private fun restartTimer()
-    {
+    private fun restartTimer() {
         timerState = TimerPrefUtilsManager.getTimerState(this)
         isTimerListStarted = TimerPrefUtilsManager.getIsTimerListStarted(this)
         isWorkout = TimerPrefUtilsManager.getIsWorkout(this)
@@ -169,8 +168,11 @@ class IntervalTimerActivity : AppCompatActivity()
     }
 
     //on finish of the timer. Manage the new Timer call
-    private fun onTimerEnded()
-    {
+    private fun onTimerEnded() {
+
+        //before everithing I have to play the ringtone
+        playAlarm()
+
         timerState = TimerState.Stopped
 
         //changing is workout every time i restart timer
@@ -187,7 +189,7 @@ class IntervalTimerActivity : AppCompatActivity()
             currTimerItemData = timerItemList.poll()
 
         if (currTimerItemData == null)
-            onActivityEnded()
+            //TODO onActivityEnded()
 
         TimerPrefUtilsManager.setSecondsRemaining(this, currTimerLengthSeconds)
         secondsRemaining = currTimerLengthSeconds
@@ -195,14 +197,12 @@ class IntervalTimerActivity : AppCompatActivity()
         startNewTimer()
     }
 
-    private fun startTimersFromList()
-    {
+    private fun startTimersFromList() {
         isTimerListStarted = true
         startNewTimer()
     }
 
-    private fun startNewTimer()
-    {
+    private fun startNewTimer() {
         //If the timer is started the progress bars will be 0 so i have to reset the current running one
         styleBeforeStart()
 
@@ -210,8 +210,7 @@ class IntervalTimerActivity : AppCompatActivity()
         updateUIButtons()
         updateTimerUI()
 
-        timer = object : CountDownTimer(secondsRemaining * 1000, 1000)
-        {
+        timer = object : CountDownTimer(secondsRemaining * 1000, 1000) {
             override fun onFinish() = onTimerEnded()
 
             override fun onTick(millisUntilFinished: Long) {
@@ -221,8 +220,7 @@ class IntervalTimerActivity : AppCompatActivity()
         }.start()
     }
 
-    private fun styleBeforeStart()
-    {
+    private fun styleBeforeStart() {
         //setting progress bar
         if (isWorkout)
             if (progress_circular_work.progress == progress_circular_work.max)
@@ -235,52 +233,46 @@ class IntervalTimerActivity : AppCompatActivity()
         if (isWorkout) {
             timer_workout_indicator.setTextColor(ContextCompat.getColor(this, R.color.deep_orange))
             timer_rest_indicator.setTextColor(Color.WHITE)
-        }
-        else{
+        } else {
             timer_rest_indicator.setTextColor(ContextCompat.getColor(this, R.color.accent_yellow))
             timer_workout_indicator.setTextColor(Color.WHITE)
         }
     }
 
 
-    private fun setNewTimerAndProgressLength()
-    {
+    private fun setNewTimerAndProgressLength() {
         val lengthInMinutes = TimerPrefUtilsManager.getTimerLength()
 
-        if (isWorkout)
-        {
-            currTimerLengthSeconds = ((lengthInMinutes * currTimerItemData!!.workoutSeconds).toLong())
+        if (isWorkout) {
+            currTimerLengthSeconds =
+                ((lengthInMinutes * currTimerItemData!!.workoutSeconds).toLong())
             progress_circular_work.max = currTimerLengthSeconds.toInt()
             progress_circular_work.progress = progress_circular_work.max
 
             progress_circular_rest.max = currTimerLengthSeconds.toInt()
             progress_circular_rest.progress = currTimerItemData!!.restSeconds.toInt()
-        }
-        else
-        {
+        } else {
             currTimerLengthSeconds = ((lengthInMinutes * currTimerItemData!!.restSeconds).toLong())
             progress_circular_rest.max = currTimerLengthSeconds.toInt()
         }
     }
 
-    private fun setPreviousTimerLength()
-    {
+    private fun setPreviousTimerLength() {
         Log.e("TIMER", "prev")
         currTimerLengthSeconds = TimerPrefUtilsManager.getPreviousTimerLenghtSeconds(this)
         progress_circular_work.max = currTimerLengthSeconds.toInt()
     }
 
     @SuppressLint("SetTextI18n")
-    private fun updateTimerUIOnlyText()
-    {
+    private fun updateTimerUIOnlyText() {
         val minutesUntilFinished = secondsRemaining / 60
         val secondsInMinuteUntilFinished = secondsRemaining - minutesUntilFinished * 60
         val secondsStr = secondsInMinuteUntilFinished.toString()
-        timer_text.text = "$minutesUntilFinished:${if (secondsStr.length == 2) secondsStr else "0$secondsStr"}"
+        timer_text.text =
+            "$minutesUntilFinished:${if (secondsStr.length == 2) secondsStr else "0$secondsStr"}"
     }
 
-    private fun updateTimerUI()
-    {
+    private fun updateTimerUI() {
         updateTimerUIOnlyText()
 
         if (isWorkout)
@@ -289,23 +281,37 @@ class IntervalTimerActivity : AppCompatActivity()
             progress_circular_rest.progress = (currTimerLengthSeconds - secondsRemaining).toInt()
     }
 
-    private fun updateUIButtons()
-    {
-        when(timerState)
-        {
-            TimerState.Running ->
-            { start.isEnabled = false; pause.isEnabled = true; reset.isEnabled = false; fast_forward.isEnabled = true }
+    private fun updateUIButtons() {
+        when (timerState) {
+            TimerState.Running -> {
+                start.isEnabled = false; pause.isEnabled = true; reset.isEnabled =
+                    false; fast_forward.isEnabled = true
+            }
 
-            TimerState.Paused ->
-            {start.isEnabled = true; pause.isEnabled = false; reset.isEnabled = true; fast_forward.isEnabled = false}
+            TimerState.Paused -> {
+                start.isEnabled = true; pause.isEnabled = false; reset.isEnabled =
+                    true; fast_forward.isEnabled = false
+            }
 
-            TimerState.Stopped ->
-            {start.isEnabled = true; pause.isEnabled = false; reset.isEnabled = false; fast_forward.isEnabled = false}
+            TimerState.Stopped -> {
+                start.isEnabled = true; pause.isEnabled = false; reset.isEnabled =
+                    false; fast_forward.isEnabled = false
+            }
         }
     }
 
-    private fun onActivityEnded()
+    private fun playAlarm()
     {
-        //TODO
+        //TODO create a sound
+        /*get default notificaition https://stackoverflow.com/questions/22503189/how-to-get-current-ringtone-in-android
+        val defaultRingtoneUri: Uri = RingtoneManager.getActualDefaultRingtoneUri(
+            this.applicationContext,
+            RingtoneManager.TYPE_NOTIFICATION
+        )
+        val defaultRingtone =
+            RingtoneManager.getRingtone(this, defaultRingtoneUri)
+
+        defaultRingtone.play()*/
     }
+
 }

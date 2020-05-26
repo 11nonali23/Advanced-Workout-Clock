@@ -1,13 +1,17 @@
 package com.example.advanced_chrono2
 
-import androidx.appcompat.app.AppCompatActivity
+import android.annotation.SuppressLint
+import android.os.Build
 import android.os.Bundle
+import android.view.View
+import androidx.appcompat.app.AppCompatActivity
 import androidx.viewpager2.widget.ViewPager2
 import com.example.advanced_chrono2.view.custom_adapters.ViewPagerAdapter
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.toolbar_layout.*
+
 
 class MainActivity : AppCompatActivity() {
 
@@ -42,5 +46,23 @@ class MainActivity : AppCompatActivity() {
                 2 -> tab.text = resources.getString(R.string.data_tab_indicator)
             }
         }.attach()
+    }
+
+    //basically this override function is used to hide the navigation bar
+    override fun onWindowFocusChanged(hasFocus: Boolean) {
+        super.onWindowFocusChanged(hasFocus)
+        hideNavBar()
+    }
+
+    private fun hideNavBar()
+    {
+        val currentApiVersion = Build.VERSION.SDK_INT
+
+        if (currentApiVersion >= Build.VERSION_CODES.KITKAT)
+        {
+            window.decorView.systemUiVisibility = (
+                    View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+                            or View.SYSTEM_UI_FLAG_HIDE_NAVIGATION)
+        }
     }
 }
