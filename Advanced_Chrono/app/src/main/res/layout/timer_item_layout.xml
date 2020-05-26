@@ -34,7 +34,7 @@
             android:layout_height="30dp"
             android:gravity="center"
             android:layout_weight="1"
-            android:textSize="14sp"
+            android:textSize="15sp"
             android:textStyle="italic|bold"
             android:textColor="@color/black" />
 
@@ -49,7 +49,7 @@
                 android:layout_height="30dp"
                 android:gravity="center"
                 android:layout_weight="1"
-                android:textSize="14sp"
+                android:textSize="15sp"
                 android:textStyle="italic|bold"
                 android:textColor="@color/black"/>
 

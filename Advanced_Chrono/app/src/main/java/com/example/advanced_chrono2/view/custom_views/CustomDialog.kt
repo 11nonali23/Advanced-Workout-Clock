@@ -11,7 +11,7 @@ import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.advanced_chrono2.R
-import com.example.advanced_chrono2.view.custom_adapters.ActivityTimingsAdapter
+import com.example.advanced_chrono2.view.custom_adapters.ChronometerTimingsAdapter
 import com.example.advanced_chrono2.view.custom_adapters.OnlySwipeHelper
 import com.example.advanced_chrono2.view.fragments.HomeChronometerFragment
 
@@ -19,7 +19,7 @@ import com.example.advanced_chrono2.view.fragments.HomeChronometerFragment
 class CustomDialog(val parent: HomeChronometerFragment) : Dialog(parent.context!!)
 {
     private lateinit var timingsList: RecyclerView
-    private lateinit var viewAdapter: ActivityTimingsAdapter
+    private lateinit var viewAdapter: ChronometerTimingsAdapter
     //properties for swipe
     private lateinit var onlySwipeHelper: OnlySwipeHelper
     private lateinit var itemTouchHelper: ItemTouchHelper
@@ -36,7 +36,7 @@ class CustomDialog(val parent: HomeChronometerFragment) : Dialog(parent.context!
         //setting transparent background
         window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
 
-        viewAdapter = ActivityTimingsAdapter(this)
+        viewAdapter = ChronometerTimingsAdapter(this)
 
         timingsList = findViewById(R.id.itemsList)
         timingsList.setHasFixedSize(true)

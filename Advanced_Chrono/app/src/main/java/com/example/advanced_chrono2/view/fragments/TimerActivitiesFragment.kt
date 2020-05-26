@@ -109,6 +109,9 @@ class TimerActivitiesFragment : Fragment(), TimerActivitiesContract.ITimerActivi
 
         setTimerItemListMovementBehaviour()
 
+        //hiding the add item button because at startup no activity is selected
+        setAddItemButtonVisible(false)
+
         this.settedUp = true
 
     }
@@ -145,6 +148,14 @@ class TimerActivitiesFragment : Fragment(), TimerActivitiesContract.ITimerActivi
 
     //END INTERFACE FUNCTIONS------------------------------------------------------------------------------------------
 
+    fun setAddItemButtonVisible (setVisible: Boolean)
+    {
+        if (setVisible)
+            timer_items_button.visibility = View.VISIBLE
+        else
+            timer_items_button.visibility = View.GONE
+    }
+
 
     //HELPER FUNCTIONS---------------------------------------------------------------------------------------------------
     private fun createActivityList()
@@ -173,7 +184,7 @@ class TimerActivitiesFragment : Fragment(), TimerActivitiesContract.ITimerActivi
             ) {
                 val cardHeight = 200
                 val containerHeight = resources.getDimensionPixelOffset(R.dimen.max_container_height)
-                var topBottomPadding = (containerHeight/2 - cardHeight)/2
+                val topBottomPadding = (containerHeight/2 - cardHeight)/2
                 outRect.set(10, topBottomPadding,10,topBottomPadding)
             }
         })

@@ -6,7 +6,7 @@ import androidx.recyclerview.widget.RecyclerView
 class OnlySwipeHelper(
     dragDirs: Int,
     swipeDirs: Int,
-    private val adapter: ActivityTimingsAdapter) : ItemTouchHelper.SimpleCallback(dragDirs, swipeDirs)
+    private val adapter: ChronometerTimingsAdapter) : ItemTouchHelper.SimpleCallback(dragDirs, swipeDirs)
 
 
 {

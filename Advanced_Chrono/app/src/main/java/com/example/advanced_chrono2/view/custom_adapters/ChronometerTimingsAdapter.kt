@@ -6,7 +6,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.example.advanced_chrono2.R
@@ -21,7 +20,7 @@ import kotlin.collections.ArrayList
 
 //Adapter used for the recyclerView in the dialog that contains the timings.
 
-class ActivityTimingsAdapter(val parent: CustomDialog) : RecyclerView.Adapter<ActivityTimingsAdapter.ItemViewHolder>(), ItemTouchHelperAdapter
+class ChronometerTimingsAdapter(val parent: CustomDialog) : RecyclerView.Adapter<ChronometerTimingsAdapter.ItemViewHolder>(), ItemTouchHelperAdapter
 {
 
     private var currentTimings: ArrayList<ActivityTiming>?

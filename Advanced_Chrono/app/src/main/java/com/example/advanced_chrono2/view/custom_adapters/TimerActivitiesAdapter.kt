@@ -44,7 +44,7 @@ class TimerActivitiesAdapter (private val parentView: TimerActivitiesFragment
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ActivityViewHolder
     {
-        var v = LayoutInflater.from(parent.context).inflate(R.layout.timer_activity_layout,parent,false)
+        val v = LayoutInflater.from(parent.context).inflate(R.layout.timer_activity_layout,parent,false)
 
         return ActivityViewHolder(v)
     }
@@ -71,13 +71,12 @@ class TimerActivitiesAdapter (private val parentView: TimerActivitiesFragment
 
     inner class ActivityViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView), View.OnClickListener
     {
-        var textView: TextView
+        var textView: TextView = itemView.findViewById(R.id.text_activity)
         private val fab = itemView.findViewById<FloatingActionButton>(R.id.start_timerActivity_button)
         val card = itemView.findViewById<CardView>(R.id.activityCard)
 
         init
         {
-            this.textView = itemView.findViewById(R.id.text_activity)
             itemView.setOnClickListener(this)
             fab.setOnClickListener(this)
             card.setOnClickListener(this)
@@ -119,7 +118,8 @@ class TimerActivitiesAdapter (private val parentView: TimerActivitiesFragment
                         //if i selected a card already selected no one will be selected
                         selectedCard!!.isSelected = !selectedCard!!.isSelected      //setting the current card as not selected anymore
                         selectedCard = null                                         //setting the current selected card as none
-                        selectedActivityPosition = null                                 //setting the current selected position as none
+                        selectedActivityPosition = null                             //setting the current selected position as none
+                        parentView.setAddItemButtonVisible(false)                   //hide the add items button
 
                     }
                 }
@@ -130,6 +130,7 @@ class TimerActivitiesAdapter (private val parentView: TimerActivitiesFragment
                     selectedCard!!.isSelected = true
                     //Setting the new selected item position
                     selectedActivityPosition = absoluteAdapterPosition
+                    parentView.setAddItemButtonVisible(true)
                 }
                 //update the item list
                 parentView.timerActivitiesPresenter.onSelectedActivityChange(selectedActivityPosition)
