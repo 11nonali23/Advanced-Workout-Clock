@@ -24,6 +24,7 @@ class IntervalTimerActivity : AppCompatActivity()
     private lateinit var toolbar: androidx.appcompat.widget.Toolbar
 
     private lateinit var timer: CountDownTimer
+
     private var currTimerLengthSeconds = 0L                 //tracks the length of the current timer
     private var timerState = TimerState.Stopped             //tracks the state of the timer
     private var secondsRemaining = 0L                       //tracks the remining seconds to the end of the timer
@@ -84,6 +85,13 @@ class IntervalTimerActivity : AppCompatActivity()
 
             updateTimerUI()
             updateUIButtons()
+        }
+
+        fast_forward.setOnClickListener {
+            secondsRemaining = 0 //fast forward delete seconds remaining
+            updateTimerUI()
+            timer.cancel()
+            timer.onFinish()
         }
 
         //TIMER LISTENERS-----------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -217,8 +225,8 @@ class IntervalTimerActivity : AppCompatActivity()
     {
         //setting progress bar
         if (isWorkout)
-            if (progress_circular.progress == progress_circular.max)
-                progress_circular.progress = 0
+            if (progress_circular_work.progress == progress_circular_work.max)
+                progress_circular_work.progress = 0
             else
                 if (progress_circular_rest.progress == progress_circular_rest.max)
                     progress_circular_rest.progress = 0
@@ -242,8 +250,8 @@ class IntervalTimerActivity : AppCompatActivity()
         if (isWorkout)
         {
             currTimerLengthSeconds = ((lengthInMinutes * currTimerItemData!!.workoutSeconds).toLong())
-            progress_circular.max = currTimerLengthSeconds.toInt()
-            progress_circular.progress = progress_circular.max
+            progress_circular_work.max = currTimerLengthSeconds.toInt()
+            progress_circular_work.progress = progress_circular_work.max
 
             progress_circular_rest.max = currTimerLengthSeconds.toInt()
             progress_circular_rest.progress = currTimerItemData!!.restSeconds.toInt()
@@ -259,7 +267,7 @@ class IntervalTimerActivity : AppCompatActivity()
     {
         Log.e("TIMER", "prev")
         currTimerLengthSeconds = TimerPrefUtilsManager.getPreviousTimerLenghtSeconds(this)
-        progress_circular.max = currTimerLengthSeconds.toInt()
+        progress_circular_work.max = currTimerLengthSeconds.toInt()
     }
 
     @SuppressLint("SetTextI18n")
@@ -276,7 +284,7 @@ class IntervalTimerActivity : AppCompatActivity()
         updateTimerUIOnlyText()
 
         if (isWorkout)
-            progress_circular.progress = (currTimerLengthSeconds - secondsRemaining).toInt()
+            progress_circular_work.progress = (currTimerLengthSeconds - secondsRemaining).toInt()
         else
             progress_circular_rest.progress = (currTimerLengthSeconds - secondsRemaining).toInt()
     }
@@ -286,13 +294,13 @@ class IntervalTimerActivity : AppCompatActivity()
         when(timerState)
         {
             TimerState.Running ->
-            { start.isEnabled = false; pause.isEnabled = true; reset.isEnabled = false }
+            { start.isEnabled = false; pause.isEnabled = true; reset.isEnabled = false; fast_forward.isEnabled = true }
 
             TimerState.Paused ->
-            {start.isEnabled = true; pause.isEnabled = false; reset.isEnabled = true}
+            {start.isEnabled = true; pause.isEnabled = false; reset.isEnabled = true; fast_forward.isEnabled = false}
 
             TimerState.Stopped ->
-            {start.isEnabled = true; pause.isEnabled = false; reset.isEnabled = false}
+            {start.isEnabled = true; pause.isEnabled = false; reset.isEnabled = false; fast_forward.isEnabled = false}
         }
     }
 

@@ -97,7 +97,7 @@
         app:mpb_progressTint="@color/accent_yellow"/>
 
     <me.zhanghai.android.materialprogressbar.MaterialProgressBar
-        android:id="@+id/progress_circular"
+        android:id="@+id/progress_circular_work"
         style="@style/Widget.MaterialProgressBar.ProgressBar"
         android:layout_width="366dp"
         android:layout_height="366dp"
@@ -109,37 +109,60 @@
         />
 
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/start"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom|start"
-        android:src="@drawable/ic_play_arrow"
-        android:backgroundTint="@color/white"
-        android:layout_margin="50dp"
-        app:borderWidth="0dp"
-        />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:orientation="horizontal"
+        android:layout_gravity="bottom"
+        android:layout_margin="20dp"
+        android:padding="1dp"
+        android:background="@color/white">
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/pause"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom|center"
-        android:src="@drawable/ic_pause"
-        android:backgroundTint="@color/white"
-        android:layout_margin="50dp"
-        app:borderWidth="0dp"
-        />
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/start"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            android:src="@drawable/ic_play_arrow"
+            android:backgroundTint="@color/white"
+            app:borderWidth="0dp"
+            />
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/reset"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom|end"
-        android:src="@drawable/ic_stop"
-        android:backgroundTint="@color/white"
-        android:layout_margin="50dp"
-        app:borderWidth="0dp"
-        />
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/pause"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginStart="21dp"
+            android:layout_marginEnd="21dp"
+            android:src="@drawable/ic_pause"
+            android:backgroundTint="@color/white"
+            app:borderWidth="0dp"
+            />
 
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/reset"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginStart="21dp"
+            android:layout_marginEnd="21dp"
+            android:src="@drawable/ic_stop"
+            android:backgroundTint="@color/white"
+            app:borderWidth="0dp"/>
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fast_forward"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginStart="21dp"
+            android:layout_marginEnd="21dp"
+            android:src="@drawable/ic_fast_forward"
+            android:backgroundTint="@color/white"
+            app:borderWidth="0dp"/>
+
+   </LinearLayout>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
