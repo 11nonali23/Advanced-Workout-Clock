@@ -80,7 +80,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="60dp"
         android:text="00:00"
         android:textSize="40sp"
         android:textColor="@color/black"/>
@@ -93,7 +93,6 @@
         android:minWidth="240dp"
         android:minHeight="240dp"
         app:layout_anchor="@+id/timer_text"
-        android:layout_marginTop="20dp"
         app:layout_anchorGravity="center"
         app:mpb_progressTint="@color/accent_yellow"/>
 
@@ -105,7 +104,6 @@
         android:minWidth="366dp"
         android:minHeight="366dp"
         app:layout_anchor="@+id/timer_text"
-        android:layout_marginTop="20dp"
         app:layout_anchorGravity="center"
         app:mpb_progressTint="@color/deep_orange"
         />

@@ -1,5 +1,6 @@
 package com.example.advanced_chrono2
 
+import android.annotation.SuppressLint
 import androidx.core.content.ContextCompat
 import com.example.advanced_chrono2.model.TimerItem
 import com.example.advanced_chrono2.shared_preferences.TimerPrefUtilsManager
@@ -261,12 +262,13 @@ class IntervalTimerActivity : AppCompatActivity()
         progress_circular.max = currTimerLengthSeconds.toInt()
     }
 
+    @SuppressLint("SetTextI18n")
     private fun updateTimerUIOnlyText()
     {
         val minutesUntilFinished = secondsRemaining / 60
         val secondsInMinuteUntilFinished = secondsRemaining - minutesUntilFinished * 60
         val secondsStr = secondsInMinuteUntilFinished.toString()
-        timer_text.text = "$minutesUntilFinished:${if (secondsStr.length == 2) secondsStr else "0" + secondsStr}"
+        timer_text.text = "$minutesUntilFinished:${if (secondsStr.length == 2) secondsStr else "0$secondsStr"}"
     }
 
     private fun updateTimerUI()

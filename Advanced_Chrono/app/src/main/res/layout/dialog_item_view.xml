@@ -37,7 +37,6 @@
                 android:layout_height="30dp"
                 android:gravity="center"
                 android:layout_weight="1"
-                android:text="Line 1"
                 android:textSize="13sp"
                 android:textStyle="italic"
                 android:textColor="@color/black" />
@@ -57,9 +56,8 @@
                 android:layout_height="30dp"
                 android:gravity="center"
                 android:layout_weight="1"
-                android:textSize="13sp"
-                android:text="Line"
-                android:textStyle="normal"
+                android:textSize="15sp"
+                android:textStyle="bold"
                 android:textColor="@color/black"/>
 
         </LinearLayout>
