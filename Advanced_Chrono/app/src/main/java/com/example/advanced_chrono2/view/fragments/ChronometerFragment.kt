@@ -27,7 +27,7 @@ import kotlinx.android.synthetic.main.chrono_layout.*
  */
 
 
-class HomeChronometerFragment : Fragment(), HomeChronometerContract.IHomeChronometerView
+class ChronometerFragment : Fragment(), HomeChronometerContract.IHomeChronometerView
 {
     private val homePresenter: HomeChronometerContract.IHomePresenter = HomePresenter(this)
 

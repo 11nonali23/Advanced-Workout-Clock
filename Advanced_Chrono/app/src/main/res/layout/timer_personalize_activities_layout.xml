@@ -38,6 +38,7 @@
                 android:id="@+id/activity_item_recycler"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
                 android:padding="4dp"
                 android:elevation="10dp"
                 android:scrollbars="vertical"

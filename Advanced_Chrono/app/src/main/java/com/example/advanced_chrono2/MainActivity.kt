@@ -42,8 +42,8 @@ class MainActivity : AppCompatActivity() {
         TabLayoutMediator(tabLayout, viewPager) { tab, position ->
             when(position)
             {
-                0 -> tab.text = resources.getString(R.string.chrono_tab_indicator)
-                1 -> tab.text = resources.getString(R.string.timer_tab_indicator)
+                0 -> tab.text = resources.getString(R.string.timer_tab_indicator)
+                1 -> tab.text = resources.getString(R.string.chrono_tab_indicator)
                 2 -> tab.text = resources.getString(R.string.data_tab_indicator)
             }
         }.attach()

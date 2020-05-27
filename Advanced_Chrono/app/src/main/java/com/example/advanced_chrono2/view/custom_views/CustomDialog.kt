@@ -13,10 +13,10 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.advanced_chrono2.R
 import com.example.advanced_chrono2.view.custom_adapters.ChronometerTimingsAdapter
 import com.example.advanced_chrono2.view.custom_adapters.OnlySwipeHelper
-import com.example.advanced_chrono2.view.fragments.HomeChronometerFragment
+import com.example.advanced_chrono2.view.fragments.ChronometerFragment
 
 
-class CustomDialog(val parent: HomeChronometerFragment) : Dialog(parent.context!!)
+class CustomDialog(val parent: ChronometerFragment) : Dialog(parent.context!!)
 {
     private lateinit var timingsList: RecyclerView
     private lateinit var viewAdapter: ChronometerTimingsAdapter

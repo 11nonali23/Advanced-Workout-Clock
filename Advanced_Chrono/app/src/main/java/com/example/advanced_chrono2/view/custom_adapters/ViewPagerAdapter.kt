@@ -5,7 +5,7 @@ import androidx.fragment.app.FragmentActivity
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.example.advanced_chrono2.view.fragments.DataFragment
 import com.example.advanced_chrono2.view.fragments.TimerActivitiesFragment
-import com.example.advanced_chrono2.view.fragments.HomeChronometerFragment
+import com.example.advanced_chrono2.view.fragments.ChronometerFragment
 
 
 class ViewPagerAdapter(fa: FragmentActivity)  : FragmentStateAdapter(fa)
@@ -18,10 +18,10 @@ class ViewPagerAdapter(fa: FragmentActivity)  : FragmentStateAdapter(fa)
     {
         return when (position)
         {
-            0 -> HomeChronometerFragment()
-            1 -> TimerActivitiesFragment()
+            0 -> TimerActivitiesFragment()
+            1 -> ChronometerFragment()
             2 -> DataFragment()
-            else -> HomeChronometerFragment()
+            else -> ChronometerFragment()
         }
     }
 }
