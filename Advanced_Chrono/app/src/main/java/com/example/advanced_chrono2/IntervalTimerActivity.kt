@@ -4,9 +4,11 @@ import android.annotation.SuppressLint
 import android.graphics.Color
 import android.media.RingtoneManager
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.os.CountDownTimer
 import android.util.Log
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import com.example.advanced_chrono2.model.TimerItem
@@ -101,6 +103,8 @@ class IntervalTimerActivity : AppCompatActivity() {
 
         //updating the remaining text
         timer_text_remaining.text = timerItemList.size.toString()
+
+        setNavigationBarButtonsColor()
     }
 
     override fun onSupportNavigateUp(): Boolean {
@@ -312,6 +316,22 @@ class IntervalTimerActivity : AppCompatActivity() {
             RingtoneManager.getRingtone(this, defaultRingtoneUri)
 
         defaultRingtone.play()*/
+    }
+
+
+    //the navigation bar is white so I need dark button color
+    //https://stackoverflow.com/questions/44905749/navigation-bar-buttons-color
+    private fun setNavigationBarButtonsColor()
+    {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
+        {
+            val decorView: View = this.window.decorView
+            var flags = decorView.systemUiVisibility
+
+            flags = flags or View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR
+
+            decorView.systemUiVisibility = flags
+        }
     }
 
 }
