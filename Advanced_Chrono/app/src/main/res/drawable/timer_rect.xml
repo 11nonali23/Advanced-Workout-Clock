@@ -11,7 +11,7 @@
                 android:angle="270" />
         </shape>
     </item>
-    <item android:top="290dp" >
+    <item android:top="330dp" >
         <shape android:shape="rectangle" >
             <gradient
                 android:startColor="@color/white"

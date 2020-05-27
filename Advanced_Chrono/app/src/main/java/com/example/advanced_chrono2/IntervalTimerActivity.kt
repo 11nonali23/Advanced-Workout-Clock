@@ -2,8 +2,7 @@ package com.example.advanced_chrono2
 
 import android.annotation.SuppressLint
 import android.graphics.Color
-import android.media.RingtoneManager
-import android.net.Uri
+import android.media.MediaPlayer
 import android.os.Build
 import android.os.Bundle
 import android.os.CountDownTimer
@@ -174,9 +173,6 @@ class IntervalTimerActivity : AppCompatActivity() {
     //on finish of the timer. Manage the new Timer call
     private fun onTimerEnded() {
 
-        //before everithing I have to play the ringtone
-        playAlarm()
-
         timerState = TimerState.Stopped
 
         //changing is workout every time i restart timer
@@ -219,6 +215,9 @@ class IntervalTimerActivity : AppCompatActivity() {
 
             override fun onTick(millisUntilFinished: Long) {
                 secondsRemaining = millisUntilFinished / 1000
+                //i play alarm 1 seconds before the end to fit better the timing
+                if (secondsRemaining == 1L)
+                    playAlarm()
                 updateTimerUI()
             }
         }.start()
@@ -304,19 +303,7 @@ class IntervalTimerActivity : AppCompatActivity() {
         }
     }
 
-    private fun playAlarm()
-    {
-        //TODO create a sound
-        /*get default notificaition https://stackoverflow.com/questions/22503189/how-to-get-current-ringtone-in-android
-        val defaultRingtoneUri: Uri = RingtoneManager.getActualDefaultRingtoneUri(
-            this.applicationContext,
-            RingtoneManager.TYPE_NOTIFICATION
-        )
-        val defaultRingtone =
-            RingtoneManager.getRingtone(this, defaultRingtoneUri)
-
-        defaultRingtone.play()*/
-    }
+    private fun playAlarm(){ MediaPlayer.create(this, R.raw.end_timer_sound).start() }
 
 
     //the navigation bar is white so I need dark button color
