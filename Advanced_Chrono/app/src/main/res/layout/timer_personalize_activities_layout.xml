@@ -34,8 +34,6 @@
                 android:padding="4dp"
                 android:background="@drawable/activitites_rect"/>
 
-
-
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/activity_item_recycler"
                 android:layout_width="match_parent"

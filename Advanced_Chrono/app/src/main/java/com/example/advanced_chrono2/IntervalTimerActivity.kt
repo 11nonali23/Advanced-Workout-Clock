@@ -105,6 +105,7 @@ class IntervalTimerActivity : AppCompatActivity() {
         timer_text_remaining.text = timerItemList.size.toString()
 
         setNavigationBarButtonsColor()
+        window.navigationBarColor = ContextCompat.getColor(this, R.color.white)
     }
 
     override fun onSupportNavigateUp(): Boolean {
@@ -114,7 +115,6 @@ class IntervalTimerActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
-
         restartTimer()
     }
 

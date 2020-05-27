@@ -6,12 +6,13 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import com.example.advanced_chrono2.R
 
 /**
  * A simple [Fragment] subclass.
  */
-class DataFragment() : Fragment() {
+class DataFragment: Fragment() {
 
     companion object
     {
@@ -32,5 +33,13 @@ class DataFragment() : Fragment() {
         super.onCreate(savedInstanceState)
         Log.d(TAG, "FRAGMENT HOME CREATED")
     }
+
+    override fun onResume()
+    {
+        super.onResume()
+        if (this.context != null)
+            activity?.window?.navigationBarColor = ContextCompat.getColor(this.context!!, R.color.white)
+    }
+
 
 }

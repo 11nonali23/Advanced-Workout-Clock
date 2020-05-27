@@ -9,6 +9,7 @@ import android.view.*
 import android.widget.EditText
 import android.widget.NumberPicker
 import android.widget.Toast
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -97,7 +98,13 @@ class TimerActivitiesFragment : Fragment(), TimerActivitiesContract.ITimerActivi
         }
     }
 
-
+    //LISTENERS-----------------------------------------------------------------------------------------------------------------------------------
+    override fun onResume()
+    {
+        super.onResume()
+        if (context != null)
+            activity?.window?.navigationBarColor = ContextCompat.getColor(this.context!!, R.color.lightPrimary)
+    }
 
     //INTERFACE FUNCTIONS------------------------------------------------------------------------------------------
 

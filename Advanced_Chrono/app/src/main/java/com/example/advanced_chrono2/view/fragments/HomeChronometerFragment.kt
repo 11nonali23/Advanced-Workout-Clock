@@ -7,6 +7,7 @@ import android.os.SystemClock
 import android.util.Log
 import android.view.*
 import android.widget.*
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.ItemTouchHelper
 import com.example.advanced_chrono2.R
@@ -161,15 +162,14 @@ class HomeChronometerFragment : Fragment(), HomeChronometerContract.IHomeChronom
             }
 
         }
-
-        //LISTENERS-----------------------------------------------------------------------------------------------------------------------------------
     }
 
-    //The fragment calls on resume when user swipe into it
+    //LISTENERS-----------------------------------------------------------------------------------------------------------------------------------
     override fun onResume()
     {
         super.onResume()
-        Log.e(TAG, "RESUMED")
+        if (this.context != null)
+            activity?.window?.navigationBarColor = ContextCompat.getColor(this.context!!, R.color.white)
     }
 
     //INTERFACE FUNCTIONS------------------------------------------------------------------------------------------
