@@ -27,7 +27,7 @@ interface TimerActivitiesContract
     interface ITimerActivitiesView
     {
         //Logo accessible for every class that needs it
-        companion object { const val itemLogo = R.drawable.ic_clock_black }
+        companion object { const val itemLogo = R.mipmap.ic_workout_logo_round }
 
         fun setUpView()
 

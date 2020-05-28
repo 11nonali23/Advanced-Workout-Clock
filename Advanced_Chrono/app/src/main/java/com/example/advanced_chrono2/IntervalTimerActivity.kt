@@ -223,6 +223,8 @@ class IntervalTimerActivity : AppCompatActivity() {
         }.start()
     }
 
+
+
     private fun styleBeforeStart() {
         //setting progress bar
         if (isWorkout)
