@@ -8,7 +8,7 @@
     android:orientation="vertical">
 
 
-    <com.example.advanced_chrono2.view.custom_views.CustomNestedScrollView
+    <com.andrea.advanced_workout_clock.view.custom_views.CustomNestedScrollView
         android:id="@+id/nested_scw"
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
@@ -70,7 +70,7 @@
 
         </LinearLayout>
 
-    </com.example.advanced_chrono2.view.custom_views.CustomNestedScrollView>
+    </com.andrea.advanced_workout_clock.view.custom_views.CustomNestedScrollView>
 
     <FrameLayout
         android:layout_width="match_parent"

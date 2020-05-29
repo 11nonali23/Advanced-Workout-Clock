@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest
     xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.advanced_chrono2"
+    package="com.andrea.advanced_workout_clock"
     android:versionCode="1">
 
 
@@ -14,15 +14,15 @@
         android:theme="@style/AppTheme"
         android:hardwareAccelerated="true">
 
-        <activity android:name=".MainActivity">
+        <activity android:name="com.andrea.advanced_workout_clock.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
 
-        <activity android:name=".IntervalTimerActivity"
-            android:parentActivityName=".MainActivity"
+        <activity android:name="com.andrea.advanced_workout_clock.IntervalTimerActivity"
+            android:parentActivityName="com.andrea.advanced_workout_clock.MainActivity"
             android:label="@string/timer_label">
         </activity>
 
