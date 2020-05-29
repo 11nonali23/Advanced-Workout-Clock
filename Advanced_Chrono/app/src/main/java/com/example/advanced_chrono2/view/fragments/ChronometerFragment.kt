@@ -9,12 +9,10 @@ import android.view.*
 import android.widget.*
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
-import androidx.recyclerview.widget.ItemTouchHelper
 import com.example.advanced_chrono2.R
 import com.example.advanced_chrono2.contract.HomeChronometerContract
 import com.example.advanced_chrono2.model.ChronometerActivity
-import com.example.advanced_chrono2.presenter.HomePresenter
-import com.example.advanced_chrono2.view.custom_adapters.OnlySwipeHelper
+import com.example.advanced_chrono2.presenter.ChronometerPresenter
 import com.example.advanced_chrono2.view.custom_views.CustomDialog
 import kotlinx.android.synthetic.main.chrono_layout.*
 
@@ -29,7 +27,7 @@ import kotlinx.android.synthetic.main.chrono_layout.*
 
 class ChronometerFragment : Fragment(), HomeChronometerContract.IHomeChronometerView
 {
-    private val homePresenter: HomeChronometerContract.IHomePresenter = HomePresenter(this)
+    private val homePresenter: HomeChronometerContract.IHomePresenter = ChronometerPresenter(this)
 
     //ADAPTERS
     private lateinit var spinnerAdapter: ArrayAdapter<ChronometerActivity>
@@ -258,7 +256,13 @@ class ChronometerFragment : Fragment(), HomeChronometerContract.IHomeChronometer
     }
 
 
-    private fun saveCurrentTiming() = homePresenter.saveTempo(pauseOffset, (chrono_spinner.selectedItem as ChronometerActivity).id)
+    private fun saveCurrentTiming()
+    {
+        if (chrono_spinner.selectedItem != null)
+            homePresenter.saveTempo(pauseOffset, (chrono_spinner.selectedItem as ChronometerActivity).id)
+        else
+            homePresenter.saveTempo(pauseOffset, null)
+    }
 
 
     //Update buttons of the user interface depending on the state of the chrono

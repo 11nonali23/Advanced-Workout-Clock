@@ -10,7 +10,7 @@ import com.example.advanced_chrono2.contract.HomeChronometerContract.IHomePresen
 import com.example.advanced_chrono2.contract.HomeChronometerContract.IHomePresenter.Companion.currentSelectedActivity
 
 
-class HomePresenter(val view: HomeChronometerContract.IHomeChronometerView) : HomeChronometerContract.IHomePresenter
+class ChronometerPresenter(val view: HomeChronometerContract.IHomeChronometerView) : HomeChronometerContract.IHomePresenter
 {
     private var model: ChronometerActivitiesDB? = null
 
