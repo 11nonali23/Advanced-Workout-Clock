@@ -59,4 +59,4 @@ override fun presenterExapmle(args)
 
 ### Database Design Document
 
-![MVP sequence_diagram](/home/andrea/AndroidStudioProjects/Advanced-Workout-Clock/images/DB_DOC.jpg)
+![Database Design Doc](images/DB_DOC.jpg)
