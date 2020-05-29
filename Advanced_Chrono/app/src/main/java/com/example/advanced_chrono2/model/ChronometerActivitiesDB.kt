@@ -4,7 +4,6 @@ import android.content.ContentValues
 import android.content.Context
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
-import android.util.Log
 import com.example.advanced_chrono2.contract.HomeChronometerContract
 import java.sql.SQLException
 import java.util.*
@@ -160,8 +159,6 @@ class ChronometerActivitiesDB(context: Context) :
 
         cursor.close()
 
-        Log.d(TAG, "new max id: $id")
-
         return id
     }
 
@@ -185,12 +182,10 @@ class ChronometerActivitiesDB(context: Context) :
         }
         catch (sqlExc: SQLException) {
             db.close()
-            Log.e(TAG, "${sqlExc.printStackTrace()}")
             return newItem
         }
 
         db.close()
-        Log.d(TAG, "actitivity $activityId:  new timing:   $time. Its timestamp :     $timestamp")
 
         val createOn = GregorianCalendar()
         createOn.timeInMillis = timestamp
@@ -214,8 +209,6 @@ class ChronometerActivitiesDB(context: Context) :
                 val createOn = GregorianCalendar()
                 createOn.timeInMillis = cursor.getLong(2)
                 activityTimings.add(ActivityTiming(cursor.getInt(0), cursor.getLong(1), createOn))
-
-                Log.d(TAG, "timing retrived:  $activityId:  timing:   ${cursor.getLong(0)}. Its timestamp :  ${cursor.getLong(2)}")
             }
             while (cursor.moveToNext())
         }
@@ -232,8 +225,6 @@ class ChronometerActivitiesDB(context: Context) :
     override fun deleteTiming(timingId: Int, parentActivityId: Int): Boolean
     {
         val db = this.writableDatabase
-
-        Log.e(TAG, "DB WILL DELETE: ITEM ID $timingId    PARENT ACTIVITY: $parentActivityId")
 
         /*delete returns the number of rows affected if a whereClause is passed in, 0 otherwise.*/
         val rowsDeleted = db.delete(
@@ -255,8 +246,6 @@ class ChronometerActivitiesDB(context: Context) :
             id = cursor.getInt(0) + 1
 
         cursor.close()
-
-        Log.d(TAG, "new max id: $id")
 
         return id
     }

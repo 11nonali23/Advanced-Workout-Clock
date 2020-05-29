@@ -4,7 +4,6 @@ import android.content.ContentValues
 import android.content.Context
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
-import android.util.Log
 import com.example.advanced_chrono2.contract.TimerActivitiesContract
 import java.sql.SQLException
 
@@ -97,7 +96,6 @@ class TimerActivitiesDB(context: Context) :
         {
             do
             {
-                Log.e(TAG, "ACTIVTY ID: ${cursor.getInt(0)}")
                 activities.add(
                     TimerActivity(
                         cursor.getInt(0), cursor.getString(1), getAllTimerItems(cursor.getInt(0)))
@@ -160,8 +158,6 @@ class TimerActivitiesDB(context: Context) :
 
         cursor.close()
 
-        Log.d(TAG, "new max id: $id")
-
         return id
     }
 
@@ -183,7 +179,6 @@ class TimerActivitiesDB(context: Context) :
                         cursor.getInt(2)
                     )
                 )
-                Log.e(TAG, "DB RETRIVING ITEM : work = ${cursor.getInt(1)}     rest = ${cursor.getInt(2)}")
             }while (cursor.moveToNext())
         }
 
@@ -215,16 +210,12 @@ class TimerActivitiesDB(context: Context) :
 
         db.close()
 
-        Log.e(TAG, "new item added---> $id:  workout:   $workoutSeconds. rest :     $restSeconds")
-
         return TimerItem(id, TimerActivitiesContract.ITimerActivitiesView.itemLogo, workoutSeconds, restSeconds)
     }
 
     override fun delTimerItem(activityId: Int, itemId: Int) : Boolean
     {
         val db = this.writableDatabase
-
-        Log.e(TAG, "DB WILL DELETE: ITEM ID $itemId    PARENT ACTIVITY: $activityId")
 
         /*delete returns the number of rows affected if a whereClause is passed in, 0 otherwise.*/
         val rowsDeleted = db.delete(
@@ -246,8 +237,6 @@ class TimerActivitiesDB(context: Context) :
             id = cursor.getInt(0) + 1
 
         cursor.close()
-
-        Log.d(TAG, "new max id: $id")
 
         return id
     }

@@ -43,4 +43,5 @@
     <string name="REST_SEC_ONLY">repos %1s</string>
     <string name="REST_ONE_MINUTE">repos%1s</string>
     <string name="REST_MINUTE_AND_SECS">repos %1$s %2$s</string>
+    <string name="Version_Name">UNE</string>
 </resources>

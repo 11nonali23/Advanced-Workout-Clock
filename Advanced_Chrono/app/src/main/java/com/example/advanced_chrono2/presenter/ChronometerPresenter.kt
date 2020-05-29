@@ -1,7 +1,6 @@
 package com.example.advanced_chrono2.presenter
 
 import android.content.Context
-import android.util.Log
 import com.example.advanced_chrono2.R
 import com.example.advanced_chrono2.contract.HomeChronometerContract
 import com.example.advanced_chrono2.model.ChronometerActivitiesDB
@@ -94,8 +93,6 @@ class ChronometerPresenter(val view: HomeChronometerContract.IHomeChronometerVie
 
     override fun deleteTiming(itemPosition: Int)
     {
-        Log.e(TAG, " delete timing: ITEM POSITION: $itemPosition")
-
         //if no activity is selected it means that there is no activity
         if (currentSelectedActivity == null)
         {
@@ -140,7 +137,6 @@ class ChronometerPresenter(val view: HomeChronometerContract.IHomeChronometerVie
         }
         catch (exc: ArrayIndexOutOfBoundsException){
             view.displayResult(viewContext.getString(R.string.INTERNAL_ERROR))
-            Log.e(TAG, "OUT OF BOUND FOR PARENT ACTIVITY")
             return
         }
 
@@ -152,14 +148,10 @@ class ChronometerPresenter(val view: HomeChronometerContract.IHomeChronometerVie
         }
         catch (exc: Exception ){
             view.displayResult(viewContext.getString(R.string.INTERNAL_ERROR))
-            Log.e(TAG, "OUT OF BOUND FOR CHILD ITEM")
             return
         }
 
-        Log.e(TAG, "ITEM ID: $timingId")
-
         //when i have the two IDs i am ready to call the DB.
-
         //If the model succesfully deletes the item i don't want to log nothing to the user. I just want to delete the item from the list
         if(model!!.deleteTiming(timingId, parentActivityID))
         {
@@ -203,7 +195,6 @@ class ChronometerPresenter(val view: HomeChronometerContract.IHomeChronometerVie
             return
         }
 
-        Log.e(TAG, "retriving new activity")
         var activityPosition: Int? = null
 
         //finding the position of the selected activity on the list

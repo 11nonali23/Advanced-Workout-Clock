@@ -1,7 +1,6 @@
 package com.example.advanced_chrono2.presenter
 
 import android.content.Context
-import android.util.Log
 import com.example.advanced_chrono2.R
 import com.example.advanced_chrono2.contract.TimerActivitiesContract
 import com.example.advanced_chrono2.model.TimerActivitiesDB
@@ -177,7 +176,6 @@ class TimerActivitiesPresenter(val view: TimerActivitiesContract.ITimerActivitie
 
         if (newItem != null)
         {
-            Log.e(TAG, "adding new item :  work = ${newItem.workoutSeconds}          rest = ${newItem.restSeconds}")
             activities.forEach { if (it.id == parentActivityID) it.timerItems.add(newItem) }
             view.itemDataSetChanged()
             return
@@ -189,9 +187,6 @@ class TimerActivitiesPresenter(val view: TimerActivitiesContract.ITimerActivitie
 
     override fun deleteItem(selectedActivityPosition: Int?, itemPosition: Int)
     {
-
-        Log.e(TAG, "PARENT ACTIVITY POSITION: $selectedActivityPosition ITEM POSITION: $itemPosition")
-
         //checking if data structures and DB are initialized. If not it can't be a user error
         if(model == null)
         {
@@ -228,12 +223,8 @@ class TimerActivitiesPresenter(val view: TimerActivitiesContract.ITimerActivitie
         }
         catch (exc: ArrayIndexOutOfBoundsException){
             view.displayResult(viewContext.getString(R.string.INTERNAL_ERROR))
-            Log.e(TAG, "OUT OF BOUND FOR PARENT ACTIVITY")
             return
         }
-
-        Log.e(TAG, "PARENT ACTIVITY ID: $parentActivityID")
-
 
         //Same concepet of above for itemId
         val itemID: Int
@@ -243,11 +234,8 @@ class TimerActivitiesPresenter(val view: TimerActivitiesContract.ITimerActivitie
         }
         catch (exc: Exception ){
             view.displayResult(viewContext.getString(R.string.INTERNAL_ERROR))
-            Log.e(TAG, "OUT OF BOUND FOR CHILD ITEM")
             return
         }
-
-        Log.e(TAG, "ITEM ID: $itemID")
 
         //when i have the two IDs i am ready to call the DB.
 

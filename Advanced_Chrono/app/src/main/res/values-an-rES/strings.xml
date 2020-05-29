@@ -43,4 +43,5 @@
     <string name="REST_SEC_ONLY">descanso %1s</string>
     <string name="REST_ONE_MINUTE">descanso%1s</string>
     <string name="REST_MINUTE_AND_SECS">descanso %1$s %2$s</string>
+    <string name="Version_Name">UNO</string>
 </resources>

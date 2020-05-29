@@ -59,6 +59,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="bottom|end"
                     android:layout_margin="5dp"
+                    android:visibility="invisible"
                     android:elevation="0dp"
                     android:backgroundTint="@color/colorSecondary"
                     android:src="@drawable/ic_add_light"

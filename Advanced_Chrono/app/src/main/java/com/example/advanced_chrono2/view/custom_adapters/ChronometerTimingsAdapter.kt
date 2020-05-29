@@ -1,7 +1,6 @@
 package com.example.advanced_chrono2.view.custom_adapters
 
 import android.annotation.SuppressLint
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -77,7 +76,6 @@ class ChronometerTimingsAdapter(val parent: CustomDialog) : RecyclerView.Adapter
     //called before notifyDataSetChange to update the list of elements
     fun autoUpdateCurrentTimings()
     {
-        Log.e("ADAP TIMINGS" ,"updating timings: current selected activity: $currentSelectedActivity")
         if (currentSelectedActivity != null)
             currentTimings = activities.get(currentSelectedActivity!!).timings_timestamp
         else

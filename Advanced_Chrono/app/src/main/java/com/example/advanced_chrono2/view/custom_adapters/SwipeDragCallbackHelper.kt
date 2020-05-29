@@ -1,7 +1,6 @@
 package com.example.advanced_chrono2.view.custom_adapters
 
 import android.graphics.Color
-import android.util.Log
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 
@@ -67,7 +66,6 @@ class SwipeDragCallbackHelper(
         target: RecyclerView.ViewHolder
     ): Boolean
     {
-        Log.e("CALLBACK", "I WILL HANDLE MOVEMENT")
         adapter.onItemMove(viewHolder.layoutPosition, target.layoutPosition)
         return true
     }

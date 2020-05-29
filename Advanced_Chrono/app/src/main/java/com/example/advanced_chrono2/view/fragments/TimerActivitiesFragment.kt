@@ -141,6 +141,7 @@ class TimerActivitiesFragment : Fragment(), TimerActivitiesContract.ITimerActivi
     }
 
     override fun itemRemovedFromDataSet(position: Int) {
+        activity_item_recycler.removeViewAt(position)
         timerItemAdapter.notifyItemRemoved(position)
     }
 
@@ -160,7 +161,7 @@ class TimerActivitiesFragment : Fragment(), TimerActivitiesContract.ITimerActivi
         if (setVisible)
             timer_items_button.visibility = View.VISIBLE
         else
-            timer_items_button.visibility = View.GONE
+            timer_items_button.visibility = View.INVISIBLE
     }
 
 

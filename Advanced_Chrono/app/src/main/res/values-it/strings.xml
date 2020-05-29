@@ -43,4 +43,5 @@
     <string name="REST_SEC_ONLY">riposo %1s</string>
     <string name="REST_ONE_MINUTE">riposo%1s</string>
     <string name="REST_MINUTE_AND_SECS">riposo %1$s %2$s</string>
+    <string name="Version_Name">UNO</string>
 </resources>

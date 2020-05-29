@@ -6,7 +6,6 @@ import android.media.MediaPlayer
 import android.os.Build
 import android.os.Bundle
 import android.os.CountDownTimer
-import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
@@ -215,14 +214,28 @@ class IntervalTimerActivity : AppCompatActivity() {
 
             override fun onTick(millisUntilFinished: Long) {
                 secondsRemaining = millisUntilFinished / 1000
-                //i play alarm 1 seconds before the end to fit better the timing
-                if (secondsRemaining == 1L)
-                    playAlarm()
+                //playing the alarm
+                if (secondsRemaining <= 3L)
+                    if (isWorkout)
+                        playAlarm(currTimerItemData?.workoutSeconds)
+                    else
+                        playAlarm(currTimerItemData?.restSeconds)
                 updateTimerUI()
             }
         }.start()
     }
 
+    //if timer seconds are too short I want to play the short sound track
+    private fun playAlarm(itemSeconds: Int?)
+    {
+        if (itemSeconds == null) return
+
+        if (itemSeconds < 3 && secondsRemaining == 1L)
+            MediaPlayer.create(this, R.raw.end_timer_sound).start()
+
+        if (itemSeconds >= 3 && secondsRemaining == 3L)
+            MediaPlayer.create(this, R.raw.three_seconds_end_timer_sound).start()
+    }
 
 
     private fun styleBeforeStart() {
@@ -263,7 +276,6 @@ class IntervalTimerActivity : AppCompatActivity() {
     }
 
     private fun setPreviousTimerLength() {
-        Log.e("TIMER", "prev")
         currTimerLengthSeconds = TimerPrefUtilsManager.getPreviousTimerLenghtSeconds(this)
         progress_circular_work.max = currTimerLengthSeconds.toInt()
     }
@@ -304,8 +316,6 @@ class IntervalTimerActivity : AppCompatActivity() {
             }
         }
     }
-
-    private fun playAlarm(){ MediaPlayer.create(this, R.raw.end_timer_sound).start() }
 
 
     //the navigation bar is white so I need dark button color

@@ -1,7 +1,6 @@
 package com.example.advanced_chrono2.view.custom_adapters
 
 import com.example.advanced_chrono2.view.fragments.TimerActivitiesFragment
-import android.util.Log
 import android.view.*
 import android.widget.ImageView
 import android.widget.TextView
@@ -53,17 +52,6 @@ class TimerItemsAdapter(private val parent: TimerActivitiesFragment,
         {
             val curr = presenterList[currentActivityPosition!!].timerItems[position]
 
-            Log.e(
-                "TIMER ITEM ADAP",
-                "size of list ${presenterList[currentActivityPosition!!].timerItems.size}"
-            )
-
-            Log.e(
-                "TIMER ITEM ADAP",
-                "item at $position : id = ${curr.id}         work = ${curr.workoutSeconds}     rest = ${curr.restSeconds}"
-            )
-
-
             holder.imageView.setImageResource(curr.imageResource)
 
             //setting timer item view text with minutes (if seconds > 60) and seconds
@@ -106,8 +94,6 @@ class TimerItemsAdapter(private val parent: TimerActivitiesFragment,
     //when the user swaps to items, since the list is the one passed by reference from the presenter, I don't need to advise the presenter directly! ==>TODO it' wrong!!!!!
     override fun onItemMove(fromPosition: Int, toPosition: Int)
     {
-        Log.e("TIMER ITEM ADAPTER", "from : $fromPosition , to: $toPosition")
-
         //If an item is moved it is impossible that no items are showing
         Collections.swap(presenterList[currentActivityPosition!!].timerItems, fromPosition, toPosition)
 
