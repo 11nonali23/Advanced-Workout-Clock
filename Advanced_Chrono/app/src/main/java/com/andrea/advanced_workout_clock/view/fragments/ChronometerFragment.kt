@@ -246,7 +246,11 @@ class ChronometerFragment : Fragment(), HomeChronometerContract.IHomeChronometer
         dialogBuilder.setTitle(context?.getString(R.string.DEL_ACTIVITY_TITLE))
 
         dialogBuilder.setPositiveButton(context?.getString(R.string.DEL_ACTIVITY_CONFIRM)) { _, _->
-            homePresenter.deleteActivity(chrono_spinner.selectedItem.toString())
+            if (chrono_spinner.selectedItem != null)
+                homePresenter.deleteActivity(chrono_spinner.selectedItem.toString())
+            else
+                homePresenter.deleteActivity(null)
+
         }
 
         dialogBuilder.setNegativeButton(context?.getString(R.string.DISMISS_DIALOG)) { dialogInterface, _ ->

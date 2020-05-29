@@ -55,7 +55,7 @@ interface HomeChronometerContract
 
         fun addNewActivity(activityName: String)
 
-        fun deleteActivity(activityName: String) //I can delete activity by name beacuase it is unique
+        fun deleteActivity(activityName: String?) //I can delete activity by name beacuase it is unique
 
         fun deleteTiming(itemPosition: Int)
 
