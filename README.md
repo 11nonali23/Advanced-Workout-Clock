@@ -16,6 +16,8 @@ This Android Application is meant to generate a clock with features to make any 
 
 The front-end is made by following **material design guidelines** for Android.
 
+You can check a front-end presentation here: https://www.youtube.com/watch?v=GXI3JSY52rQ
+
 * The application supports [ViewPager 2](https://developer.android.com/jetpack/androidx/releases/viewpager2) to show the fragments.
 
 * The item list of the timer supports **swipe and drag callbacks** with RecyclerView and it has a customized NestedScrollView in the timer acivities tab to optimize the space taken.
