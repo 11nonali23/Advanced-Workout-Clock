@@ -12,7 +12,6 @@ This Android Application is meant to generate a clock with features to make any 
 
 * The app support 4 languages: English (default), France, Spanish, Italian.
 
-
 ## Front-End
 
 The front-end is made by following **material design guidelines** for Android.
@@ -26,8 +25,6 @@ The front-end is made by following **material design guidelines** for Android.
 ![chronometer front end](images/chrono_front_end.png) ![timer front end](images/timer_front_end.png)
 
 ![timer activities front end](images/timerActivities_fron_end.png)
-
-
 
 ## Back-End
 
@@ -59,3 +56,7 @@ override fun presenterExapmle(args)
     view.displayResults("R.string.SomeResultString")
 }
 ```
+
+### Database Design Document
+
+![MVP sequence_diagram](/home/andrea/AndroidStudioProjects/Advanced-Workout-Clock/images/DB_DOC.jpg)
