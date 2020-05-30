@@ -1,6 +1,7 @@
 package com.andrea.advanced_workout_clock.view.custom_adapters
 
 import android.content.Intent
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -24,6 +25,7 @@ when a change is done to the timer items in the activity also this list will cha
 
 //The field activitiesList of the companion object of ITimerActivitiesPresenter wil be renamed as presenterList
 import com.andrea.advanced_workout_clock.contract.TimerActivitiesContract.ITimerActivitiesPresenter.Companion.activitiesList as presenterList
+import com.andrea.advanced_workout_clock.contract.TimerActivitiesContract.ITimerActivitiesPresenter.Companion.currentActivityPosition as selectedActivityPosition
 
 class TimerActivitiesAdapter (private val parentView: TimerActivitiesFragment
 ) : RecyclerView.Adapter<TimerActivitiesAdapter.ActivityViewHolder>()
@@ -40,8 +42,6 @@ class TimerActivitiesAdapter (private val parentView: TimerActivitiesFragment
     /*Only one ViewHolder card can be selected. Done due to the proper work of the animation that lift the selected card*/
     private var selectedCard: CardView? = null  //null when no card is selected
 
-    private var selectedActivityPosition: Int? = null
-
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ActivityViewHolder
     {
         val v = LayoutInflater.from(parent.context).inflate(R.layout.timer_activity_layout,parent,false)
@@ -55,9 +55,25 @@ class TimerActivitiesAdapter (private val parentView: TimerActivitiesFragment
         return presenterList.size
     }
 
-    override fun onBindViewHolder(holder: ActivityViewHolder, position: Int)
-    {
+    override fun onBindViewHolder(holder: ActivityViewHolder, position: Int) {
         holder.textView.text = presenterList[position].name
+
+        Log.e("ada", "selected activyt position = $selectedActivityPosition")
+
+        //setting the selected activity only if it is in the right position
+        if (selectedActivityPosition != null)
+        {
+            if (position == selectedActivityPosition)
+            {
+                Log.e("ada", "$position = $selectedActivityPosition")
+                selectedCard = holder.card
+                selectedCard!!.isSelected = true
+            }
+            else {
+                Log.e("ada", "$position != $selectedActivityPosition")
+                holder.card.isSelected = false
+            }
+        }
     }
 
     fun getSelectedActivityPosition(): Int?
@@ -67,6 +83,13 @@ class TimerActivitiesAdapter (private val parentView: TimerActivitiesFragment
         else
             null
     }
+
+    /*new activity is the last one in the list
+    fun setNewActivityAsSelected(): Int?
+    {
+        this.selectedActivityPosition = presenterList.size - 1
+        return this.selectedActivityPosition
+    }*/
 
 
     inner class ActivityViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView), View.OnClickListener

@@ -13,6 +13,9 @@ import kotlin.collections.ArrayList
 //The field activitiesList of the companion object of ITimerActivitiesPresenter wil be renamed as activities
 import com.andrea.advanced_workout_clock.contract.TimerActivitiesContract.ITimerActivitiesPresenter.Companion.activitiesList as activities
 
+import com.andrea.advanced_workout_clock.contract.TimerActivitiesContract.ITimerActivitiesPresenter.Companion.currentActivityPosition as selectedActivityPosition
+
+
 class TimerActivitiesPresenter(val view: TimerActivitiesContract.ITimerActivitiesView) : ITimerActivitiesPresenter
 {
 
@@ -53,11 +56,15 @@ class TimerActivitiesPresenter(val view: TimerActivitiesContract.ITimerActivitie
                 if (newActivity != null)
                 {
                     activities.add(newActivity)
+                    selectedActivityPosition = activities.size - 1 //new activity will be selected
+
                     view.displayResult(viewContext.getString(R.string.ADD_ACTIVITY_SUCCESS))
 
                     //If it is the first activity added i have to set up the view
                     if(!view.isViewSetUp())
                         view.setUpView()
+
+                    view.changeAddItemButtonVisibility(true) //set add item button as visible
                     view.activitiesDataSetChanged()
                     view.itemDataSetChanged()
                     return
@@ -78,35 +85,39 @@ class TimerActivitiesPresenter(val view: TimerActivitiesContract.ITimerActivitie
     }
 
     //TODO refactor it
-    override fun deleteActivity(position: Int?)
+    override fun deleteActivity(position: Int?): Boolean
     {
         if (model == null)
         {
             view.displayResult(viewContext.getString(R.string.INTERNAL_ERROR))
-            return
+            return false
         }
         //If position is null the user didn't select a possition
         if(position == null)
         {
             view.displayResult(viewContext.getString(R.string.NO_SELECTED_ACTIVITY))
-            return
+            return false
         }
         //There's no such case that the user selects an out of bounds exception. It can only be a system error
         if(position >= activities.size)
         {
             view.displayResult(viewContext.getString(R.string.INTERNAL_ERROR))
-            return
+            return false
         }
 
         if(model!!.deleteActivity(activities[position].name))
         {
             activities.removeAt(position)
+            selectedActivityPosition = null
             view.displayResult(viewContext.getString(R.string.DEL_ACTIVITY_SUCCESS))
             view.activityRemovedFromDataSet(position)
-            return
+            view.itemDataSetChanged()
+            view.changeAddItemButtonVisibility(false)
+            return true
         }
 
         view.displayResult(viewContext.getString(R.string.INTERNAL_ERROR))
+        return false
     }
 
     override fun addNewTimerItem(
@@ -260,7 +271,8 @@ class TimerActivitiesPresenter(val view: TimerActivitiesContract.ITimerActivitie
             return
         }
 
-        view.changeTimerItemListView(position)
+        selectedActivityPosition = position
+        //view.changeTimerItemListView(position)
         view.itemDataSetChanged()
     }
 

@@ -103,7 +103,7 @@ class TimerActivitiesFragment : Fragment(), TimerActivitiesContract.ITimerActivi
     {
         super.onResume()
         if (context != null)
-            activity?.window?.navigationBarColor = ContextCompat.getColor(this.context!!, R.color.lightPrimary)
+            activity?.window?.navigationBarColor = ContextCompat.getColor(this.requireContext(), R.color.lightPrimary)
     }
 
     //INTERFACE FUNCTIONS------------------------------------------------------------------------------------------
@@ -145,10 +145,7 @@ class TimerActivitiesFragment : Fragment(), TimerActivitiesContract.ITimerActivi
         timerItemAdapter.notifyItemRemoved(position)
     }
 
-    override fun changeTimerItemListView(position: Int?)
-    {
-        this.timerItemAdapter.changeCurrentActivityPosition(position)
-    }
+    override fun changeAddItemButtonVisibility(isVisible: Boolean) = setAddItemButtonVisible(isVisible)
 
     override fun displayResult(message: String) = Toast.makeText(this.lendContext(), message, Toast.LENGTH_LONG).show()
 
@@ -176,26 +173,6 @@ class TimerActivitiesFragment : Fragment(), TimerActivitiesContract.ITimerActivi
 
         activityItemAdapter = TimerActivitiesAdapter(this)
         activityList.adapter = activityItemAdapter
-
-        setActivityListDecoration()
-    }
-
-    private fun setActivityListDecoration()
-    {
-        //setting a dynamic center for horizontal activity
-        activityList.addItemDecoration(object : RecyclerView.ItemDecoration() {
-            override fun getItemOffsets(
-                outRect: Rect,
-                view: View,
-                parent: RecyclerView,
-                state: RecyclerView.State
-            ) {
-                val cardHeight = 200
-                val containerHeight = resources.getDimensionPixelOffset(R.dimen.max_container_height)
-                val topBottomPadding = (containerHeight/2 - cardHeight)/2
-                outRect.set(10, topBottomPadding,10,topBottomPadding)
-            }
-        })
     }
 
 
@@ -205,7 +182,7 @@ class TimerActivitiesFragment : Fragment(), TimerActivitiesContract.ITimerActivi
         activityItemList = activity_item_recycler
 
         //TODO mak a better showing position
-        timerItemAdapter = TimerItemsAdapter(this,null)
+        timerItemAdapter = TimerItemsAdapter(this)
 
         activityItemList.layoutManager = LinearLayoutManager(this.lendContext())
         activityItemList.adapter = timerItemAdapter
@@ -301,7 +278,13 @@ class TimerActivitiesFragment : Fragment(), TimerActivitiesContract.ITimerActivi
         dialogBuilder.setTitle(context?.getString(R.string.DEL_ACTIVITY_TITLE))
 
         dialogBuilder.setPositiveButton(context?.getString(R.string.DEL_ACTIVITY_CONFIRM)) { _, _->
-            timerActivitiesPresenter.deleteActivity(activityItemAdapter.getSelectedActivityPosition())
+            if (activityItemAdapter.getSelectedActivityPosition() != null) {
+                if (timerActivitiesPresenter.deleteActivity(activityItemAdapter.getSelectedActivityPosition())) {
+                    activity_item_recycler.removeAllViews()
+                }
+            }
+            else
+                timerActivitiesPresenter.deleteActivity(null)
         }
 
         dialogBuilder.setNegativeButton(context?.getString(R.string.DISMISS_DIALOG)) { dialogInterface, _ ->

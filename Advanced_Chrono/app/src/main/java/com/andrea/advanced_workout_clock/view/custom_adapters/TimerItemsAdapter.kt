@@ -13,14 +13,13 @@ import java.util.*
 
 //The field activitiesList of the companion object of ITimerActivitiesPresenter wil be renamed as presenterList
 import com.andrea.advanced_workout_clock.contract.TimerActivitiesContract.ITimerActivitiesPresenter.Companion.activitiesList as presenterList
+import com.andrea.advanced_workout_clock.contract.TimerActivitiesContract.ITimerActivitiesPresenter.Companion.currentActivityPosition as selectedActivityPosition
 
 /*This adapter is used to manage the items of the activities.
  They can be swiped to be deleted and also dragged into another position*/
 
 
-class TimerItemsAdapter(private val parent: TimerActivitiesFragment,
-                        private var currentActivityPosition: Int?
-) : Adapter<TimerItemsAdapter.ItemsViewHolder>(), ItemTouchHelperAdapter
+class TimerItemsAdapter(private val parent: TimerActivitiesFragment) : Adapter<TimerItemsAdapter.ItemsViewHolder>(), ItemTouchHelperAdapter
 
 {
 
@@ -40,17 +39,17 @@ class TimerItemsAdapter(private val parent: TimerActivitiesFragment,
 
     override fun getItemCount(): Int
     {
-        return if (currentActivityPosition != null)
-            presenterList[currentActivityPosition!!].timerItems.size
+        return if (selectedActivityPosition != null)
+            presenterList[selectedActivityPosition!!].timerItems.size
         else
             0
     }
 
     override fun onBindViewHolder(holder: ItemsViewHolder, position: Int)
     {
-        if (currentActivityPosition != null)
+        if (selectedActivityPosition != null)
         {
-            val curr = presenterList[currentActivityPosition!!].timerItems[position]
+            val curr = presenterList[selectedActivityPosition!!].timerItems[position]
 
             holder.imageView.setImageResource(curr.imageResource)
 
@@ -86,8 +85,6 @@ class TimerItemsAdapter(private val parent: TimerActivitiesFragment,
         this.itemTouchHelper = itemTouchHelper
     }
 
-    fun changeCurrentActivityPosition(position: Int?) {currentActivityPosition = position}
-
 
     //INTERFACE FUNCTIONS-----------------------------------------------------------------------------------------------
 
@@ -95,7 +92,7 @@ class TimerItemsAdapter(private val parent: TimerActivitiesFragment,
     override fun onItemMove(fromPosition: Int, toPosition: Int)
     {
         //If an item is moved it is impossible that no items are showing
-        Collections.swap(presenterList[currentActivityPosition!!].timerItems, fromPosition, toPosition)
+        Collections.swap(presenterList[selectedActivityPosition!!].timerItems, fromPosition, toPosition)
 
         notifyItemMoved(fromPosition, toPosition)
     }
@@ -103,7 +100,7 @@ class TimerItemsAdapter(private val parent: TimerActivitiesFragment,
     override fun onItemDismiss(position: Int)
     {
         //If an item is deleted it is impossible that no items are showing
-        parent.timerActivitiesPresenter.deleteItem(currentActivityPosition, position)
+        parent.timerActivitiesPresenter.deleteItem(selectedActivityPosition, position)
     }
     //END INTERFACE FUNCTIONS-----------------------------------------------------------------------------------------------
 

@@ -33,8 +33,6 @@ interface TimerActivitiesContract
 
         fun isViewSetUp(): Boolean
 
-        fun changeTimerItemListView(position: Int?)
-
         //The next four functions are MANDATORY to use when the data set of activities or items of an activity is changed
         fun activitiesDataSetChanged()
 
@@ -43,6 +41,8 @@ interface TimerActivitiesContract
         fun itemDataSetChanged()
 
         fun itemRemovedFromDataSet(position: Int)
+
+        fun changeAddItemButtonVisibility(isVisible: Boolean)
         //--------------------------------------------------------------------------------------------------------------
 
         fun displayResult(message: String)
@@ -56,6 +56,8 @@ interface TimerActivitiesContract
         {
             //the presenter has a unique list list of all the activities accessible for View and Adapters as a model
             var activitiesList: ArrayList<TimerActivity> = ArrayList()
+
+            var currentActivityPosition: Int? = null
         }
 
         //first steps to do when a view is created
@@ -63,7 +65,7 @@ interface TimerActivitiesContract
 
         fun addNewActivity(activityName: String)
 
-        fun deleteActivity(position: Int?)
+        fun deleteActivity(position: Int?): Boolean //true if item are deleted
 
 
         fun addNewTimerItem(selectedActivityPosition: Int?,
