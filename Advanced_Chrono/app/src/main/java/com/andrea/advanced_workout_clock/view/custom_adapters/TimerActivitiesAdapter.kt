@@ -1,7 +1,6 @@
 package com.andrea.advanced_workout_clock.view.custom_adapters
 
 import android.content.Intent
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -58,22 +57,18 @@ class TimerActivitiesAdapter (private val parentView: TimerActivitiesFragment
     override fun onBindViewHolder(holder: ActivityViewHolder, position: Int) {
         holder.textView.text = presenterList[position].name
 
-        Log.e("ada", "selected activyt position = $selectedActivityPosition")
-
         //setting the selected activity only if it is in the right position
         if (selectedActivityPosition != null)
         {
             if (position == selectedActivityPosition)
-            {
-                Log.e("ada", "$position = $selectedActivityPosition")
-                selectedCard = holder.card
-                selectedCard!!.isSelected = true
-            }
-            else {
-                Log.e("ada", "$position != $selectedActivityPosition")
+            {    selectedCard = holder.card; selectedCard!!.isSelected = true;  }
+            else
                 holder.card.isSelected = false
-            }
         }
+        else
+            holder.card.isSelected = false
+
+
     }
 
     fun getSelectedActivityPosition(): Int?
@@ -83,14 +78,6 @@ class TimerActivitiesAdapter (private val parentView: TimerActivitiesFragment
         else
             null
     }
-
-    /*new activity is the last one in the list
-    fun setNewActivityAsSelected(): Int?
-    {
-        this.selectedActivityPosition = presenterList.size - 1
-        return this.selectedActivityPosition
-    }*/
-
 
     inner class ActivityViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView), View.OnClickListener
     {
@@ -133,7 +120,7 @@ class TimerActivitiesAdapter (private val parentView: TimerActivitiesFragment
                     {
                         selectedCard?.isSelected = false
                         selectedCard = v as CardView
-                        selectedCard?.isSelected = true
+                        selectedCard!!.isSelected = true
                         //Setting the new selected item position
                         selectedActivityPosition = absoluteAdapterPosition
                     } else

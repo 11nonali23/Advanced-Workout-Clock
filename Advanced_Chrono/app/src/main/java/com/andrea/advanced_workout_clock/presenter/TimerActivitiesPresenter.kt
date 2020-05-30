@@ -111,6 +111,7 @@ class TimerActivitiesPresenter(val view: TimerActivitiesContract.ITimerActivitie
             selectedActivityPosition = null
             view.displayResult(viewContext.getString(R.string.DEL_ACTIVITY_SUCCESS))
             view.activityRemovedFromDataSet(position)
+            view.activitiesDataSetChanged()
             view.itemDataSetChanged()
             view.changeAddItemButtonVisibility(false)
             return true
@@ -272,7 +273,8 @@ class TimerActivitiesPresenter(val view: TimerActivitiesContract.ITimerActivitie
         }
 
         selectedActivityPosition = position
-        //view.changeTimerItemListView(position)
+        if (position != null)
+            view.changeAddItemButtonVisibility(true)
         view.itemDataSetChanged()
     }
 

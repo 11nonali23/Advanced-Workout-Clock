@@ -2,6 +2,7 @@ package com.andrea.advanced_workout_clock.model
 
 import android.content.ContentValues
 import android.content.Context
+import android.database.sqlite.SQLiteConstraintException
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
 import com.andrea.advanced_workout_clock.contract.TimerActivitiesContract
@@ -124,7 +125,7 @@ class TimerActivitiesDB(context: Context) :
         try {
             db.insertOrThrow(ACTIVITY_TABLE_NAME, null, values)
         }
-        catch (sqlExc: SQLException) {
+        catch (sqlExc: SQLiteConstraintException) {
             db.close()
             return null
         }
