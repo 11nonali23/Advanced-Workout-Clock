@@ -278,7 +278,7 @@ class TimerActivitiesFragment : Fragment(), TimerActivitiesContract.ITimerActivi
         dialogBuilder.setTitle(context?.getString(R.string.DEL_ACTIVITY_TITLE))
 
         dialogBuilder.setPositiveButton(context?.getString(R.string.DEL_ACTIVITY_CONFIRM)) { _, _->
-            if (activityItemAdapter.getSelectedActivityPosition() != null) {
+            if (this::activityItemAdapter.isInitialized && activityItemAdapter.getSelectedActivityPosition() != null) {
                 if (timerActivitiesPresenter.deleteActivity(activityItemAdapter.getSelectedActivityPosition())) {
                     activity_item_recycler.removeAllViews()
                 }
