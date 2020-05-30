@@ -78,21 +78,20 @@ class ChronometerPresenter(val view: HomeChronometerContract.IHomeChronometerVie
     {
         /*If an activity isn't deleted it can't be an error of the user:
         the only deletable activities are the one already added!*/
-        if (model != null)
+        if (model == null)
+        {   view.displayResult(viewContext.getString(R.string.INTERNAL_ERROR)); return  }
+
+        if (activityName == null)
+        {   view.displayResult(viewContext.getString(R.string.NO_SELECTED_ACTIVITY)); return }
+
+        if (model!!.deleteActivity(activityName))
         {
-            if (activityName != null)
-            {
-                if (model!!.deleteActivity(activityName))
-                {
-                    activities.removeAll { it.name == activityName }
-                    view.displayResult(viewContext.getString(R.string.DEL_ACTIVITY_SUCCESS))
-                    view.updateActivitiesView()
-                    return
-                }
-            }
+            activities.removeAll { it.name == activityName }
+            view.displayResult(viewContext.getString(R.string.DEL_ACTIVITY_SUCCESS))
+            view.updateActivitiesView()
         }
-        view.displayResult(viewContext.getString(R.string.INTERNAL_ERROR))
     }
+
 
     override fun deleteTiming(itemPosition: Int)
     {
