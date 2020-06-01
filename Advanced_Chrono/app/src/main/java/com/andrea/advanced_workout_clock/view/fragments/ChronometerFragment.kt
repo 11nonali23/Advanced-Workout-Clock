@@ -4,6 +4,7 @@ import android.app.AlertDialog
 import android.content.Context
 import android.os.Bundle
 import android.os.SystemClock
+import android.util.Log
 import android.view.*
 import android.widget.*
 import androidx.core.content.ContextCompat
@@ -83,8 +84,8 @@ class ChronometerFragment : Fragment(), HomeChronometerContract.IHomeChronometer
 
         homePresenter.onViewCreated(this.context, chrono_spinner.selectedItemPosition)
 
+        //removing the progress bar if the screen is too little
         val dm = resources.displayMetrics
-
         val density = dm.density * 160.toDouble()
         val x = (dm.widthPixels / density).pow(2.0)
         val y = (dm.heightPixels / density).pow(2.0)
@@ -97,7 +98,8 @@ class ChronometerFragment : Fragment(), HomeChronometerContract.IHomeChronometer
 
         //Listener to update progression bar
         chronometer_.setOnChronometerTickListener {
-            progress_circular_chrono.progress = progresssion++ % 60
+            progresssion++
+            progress_circular_chrono.progress = (progresssion)%60
         }
 
         //Listener for pause button
@@ -124,7 +126,7 @@ class ChronometerFragment : Fragment(), HomeChronometerContract.IHomeChronometer
             chronometer_.base = SystemClock.elapsedRealtime() //set the base to the elapsed time
             pauseOffset = 0L    //reset the offset
             //restart the bar of the chronometer from zero
-            progresssion = - 1
+            progresssion = -1
             progress_circular_chrono.progress = progresssion
 
             chronoState = ChronometerState.Resetted

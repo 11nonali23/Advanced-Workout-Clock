@@ -53,14 +53,15 @@ class ChronometerTimingsAdapter(val parent: CustomDialog) : RecyclerView.Adapter
         holder.dateText.text = SimpleDateFormat("dd/MM/yyyy", Locale.ITALIAN).format(currentTimings?.get(position)?.createOn?.time!!)
 
         //setting the timing. If timing is more than one minute the seconds will be the rest of division by 60 and the minutes will be the division with 60
-        if (currentTimings?.get(position)?.timing!! < 6000L)
+        if (currentTimings?.get(position)?.timing!! < 60000L)
                 holder.timingText.text = (((currentTimings?.get(position)?.timing)?.div(1000)) as Long).toString() + SECONDS_INDICATOR
-        else if (currentTimings?.get(position)?.timing!! == 6000L)
+        else if (currentTimings?.get(position)?.timing!! == 60000L)
             holder.timingText.text = "1$SECONDS_INDICATOR"
         else
         {
-            val minutes = ((currentTimings?.get(position)?.timing!!).div(1000))/60
-            val seconds = minutes%60
+            val timing = ((currentTimings?.get(position)?.timing))
+            val minutes = timing?.div(60000L)
+            val seconds = timing?.rem(60000L)?.div(1000L)
             holder.timingText.text = "$minutes$MINUTES_INDICATOR $seconds$SECONDS_INDICATOR"
         }
     }
