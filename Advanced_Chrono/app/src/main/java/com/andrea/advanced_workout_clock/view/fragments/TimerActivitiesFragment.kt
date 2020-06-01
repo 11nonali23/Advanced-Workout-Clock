@@ -4,7 +4,6 @@ import android.app.AlertDialog
 import android.content.Context
 import android.graphics.Rect
 import android.os.Bundle
-import android.util.Log
 import android.view.*
 import android.widget.EditText
 import android.widget.NumberPicker
@@ -20,6 +19,7 @@ import com.andrea.advanced_workout_clock.view.custom_adapters.SwipeDragCallbackH
 import com.andrea.advanced_workout_clock.contract.TimerActivitiesContract
 import com.andrea.advanced_workout_clock.presenter.TimerActivitiesPresenter
 import com.andrea.advanced_workout_clock.view.custom_adapters.TimerItemsAdapter
+import kotlinx.android.synthetic.main.chrono_layout.*
 import kotlinx.android.synthetic.main.timer_personalize_activities_layout.*
 
 class TimerActivitiesFragment : Fragment(), TimerActivitiesContract.ITimerActivitiesView
@@ -47,7 +47,6 @@ class TimerActivitiesFragment : Fragment(), TimerActivitiesContract.ITimerActivi
     override fun onCreate(savedInstanceState: Bundle?)
     {
         super.onCreate(savedInstanceState)
-        Log.d(TAG, "FRAGMENT TIMER CREATED")
         setHasOptionsMenu(true)
     }
 

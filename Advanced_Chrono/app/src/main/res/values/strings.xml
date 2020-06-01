@@ -70,6 +70,7 @@
     <string name="NO_SELECTED_ACTIVITY">Error: Please select an activity</string>
     <string name="EMPTY_ACTIVITY_ON_START">Error! this activity has no timers</string>
     <string name="Version_Name">ONE</string>
+    <string name="graphs_indicator">Soon graphs will arrive</string>
 
     <!--CHRONOMETER TIMES
     <string name="TIME_AND_TIMESTAMP" translatable="false">%1$s ==> %2$s</string> -->

@@ -1,7 +1,6 @@
 package com.andrea.advanced_workout_clock.view.fragments
 
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -31,14 +30,13 @@ class DataFragment: Fragment() {
     override fun onCreate(savedInstanceState: Bundle?)
     {
         super.onCreate(savedInstanceState)
-        Log.d(TAG, "FRAGMENT HOME CREATED")
     }
 
     override fun onResume()
     {
         super.onResume()
         if (this.context != null)
-            activity?.window?.navigationBarColor = ContextCompat.getColor(this.context!!, R.color.white)
+            activity?.window?.navigationBarColor = ContextCompat.getColor(this.requireContext(), R.color.white)
     }
 
 

@@ -13,7 +13,7 @@
         android:gravity="center"
         android:textColor="@color/colorPrimary"
         android:textSize="35sp"
-        android:text="Soon graphs will arrive"/>
+        android:text="@string/graphs_indicator"/>
 
     <View
         android:layout_height="70dp"

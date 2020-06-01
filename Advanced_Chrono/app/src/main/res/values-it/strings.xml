@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Advanced Workout Clock</string>
-    <string name="chrono_tab_indicator">Conometro</string>
+    <string name="chrono_tab_indicator">Cronometro</string>
     <string name="timer_tab_indicator">Attvità del Timer</string>
     <string name="data_tab_indicator">Dati Personali</string>
     <string name="test_yourself">Mettiti alla Prova</string>
@@ -44,4 +44,5 @@
     <string name="REST_ONE_MINUTE">riposo%1s</string>
     <string name="REST_MINUTE_AND_SECS">riposo %1$s %2$s</string>
     <string name="Version_Name">UNO</string>
+    <string name="graphs_indicator">" Presto arriveranno i grafici"</string>
 </resources>

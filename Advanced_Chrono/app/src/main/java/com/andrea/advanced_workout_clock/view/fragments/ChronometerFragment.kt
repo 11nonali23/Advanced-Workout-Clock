@@ -4,7 +4,6 @@ import android.app.AlertDialog
 import android.content.Context
 import android.os.Bundle
 import android.os.SystemClock
-import android.util.Log
 import android.view.*
 import android.widget.*
 import androidx.core.content.ContextCompat
@@ -15,6 +14,8 @@ import com.andrea.advanced_workout_clock.model.ChronometerActivity
 import com.andrea.advanced_workout_clock.presenter.ChronometerPresenter
 import com.andrea.advanced_workout_clock.view.custom_views.CustomDialog
 import kotlinx.android.synthetic.main.chrono_layout.*
+import kotlin.math.pow
+
 
 //ToDo implement the save button (only when you have the database)
 
@@ -64,7 +65,6 @@ class ChronometerFragment : Fragment(), HomeChronometerContract.IHomeChronometer
     override fun onCreate(savedInstanceState: Bundle?)
     {
         super.onCreate(savedInstanceState)
-        Log.d(TAG, "FRAGMENT HOME CREATED")
         setHasOptionsMenu(true)
     }
 
@@ -82,6 +82,16 @@ class ChronometerFragment : Fragment(), HomeChronometerContract.IHomeChronometer
         updateUIButtons()
 
         homePresenter.onViewCreated(this.context, chrono_spinner.selectedItemPosition)
+
+        val dm = resources.displayMetrics
+
+        val density = dm.density * 160.toDouble()
+        val x = (dm.widthPixels / density).pow(2.0)
+        val y = (dm.heightPixels / density).pow(2.0)
+        val screenInches = Math.sqrt(x + y)
+
+        if (screenInches < 5.3)
+            progress_circular_chrono.visibility = View.INVISIBLE
 
         //LISTENERS-----------------------------------------------------------------------------------------------------------------------------------
 
@@ -105,7 +115,6 @@ class ChronometerFragment : Fragment(), HomeChronometerContract.IHomeChronometer
             //removing from the elapsed time the base of the chronometer: this will make the chrono find the offset of the pause
             //because the base is setted when i start the chronometer
             pauseOffset = SystemClock.elapsedRealtime() - chronometer_.base
-            Log.e(TAG, "$pauseOffset")
             chronoState = ChronometerState.Paused
             updateUIButtons()
         }
@@ -167,7 +176,7 @@ class ChronometerFragment : Fragment(), HomeChronometerContract.IHomeChronometer
     {
         super.onResume()
         if (this.context != null)
-            activity?.window?.navigationBarColor = ContextCompat.getColor(this.context!!, R.color.white)
+            activity?.window?.navigationBarColor = ContextCompat.getColor(this.requireContext(), R.color.white)
     }
 
     //INTERFACE FUNCTIONS------------------------------------------------------------------------------------------
@@ -187,13 +196,7 @@ class ChronometerFragment : Fragment(), HomeChronometerContract.IHomeChronometer
         spinnerAdapter.notifyDataSetChanged()
     }
 
-    override fun updateTimingsView()
-    {
-        Log.e(TAG, "updating adapter of dialog")
-        if (customDialog == null)
-            Log.e(TAG, "dialog null")
-        customDialog?.updateAdapter()
-    }
+    override fun updateTimingsView() { customDialog?.updateAdapter() }
 
 
     override fun setNewItemAsSelected() = chrono_spinner.setSelection(chrono_spinner.count - 1)

@@ -12,6 +12,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_weight="0"
         android:layout_marginTop="10dp"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
@@ -57,7 +58,7 @@
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
+        android:layout_weight="2"
         android:orientation="vertical"
         android:layout_gravity="center">
 
@@ -66,19 +67,17 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginBottom="20dp"
             android:textColor="@color/colorSecondary"
             android:textSize="40sp" />
 
         <me.zhanghai.android.materialprogressbar.MaterialProgressBar
             android:id="@+id/progress_circular_chrono"
             style="@style/Widget.MaterialProgressBar.ProgressBar"
-            android:layout_width="280dp"
-            android:layout_height="280dp"
+            android:layout_width="330dp"
+            android:layout_height="330dp"
             android:layout_gravity="center"
-            android:layout_marginBottom="20dp"
-            android:minWidth="280dp"
-            android:minHeight="280dp"
+            android:minWidth="330dp"
+            android:minHeight="330dp"
             android:max="60"
             android:progress="60"
             app:mpb_progressTint="@color/colorPrimary"
@@ -89,62 +88,63 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
         android:layout_gravity="bottom|center"
-        android:background="@color/white">
+        android:layout_weight="0"
+        android:background="@color/white"
+        android:orientation="vertical">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_marginTop="20dp"
             android:layout_marginStart="20dp"
+            android:layout_marginTop="20dp"
             android:layout_marginEnd="20dp"
+            android:orientation="horizontal"
             app:layout_anchorGravity="center">
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/chrono_start"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
                 android:layout_margin="10dp"
+                android:layout_weight="1"
                 android:backgroundTint="@color/lightSecondary"
+                android:elevation="20dp"
                 android:textSize="30sp"
                 android:theme="@style/Theme.MaterialComponents"
                 app:cornerRadius="10dp"
-                android:elevation="20dp"
-                app:iconGravity="textEnd"
                 app:icon="@drawable/ic_play_arrow"
-                app:iconTint="@color/white"/>
+                app:iconGravity="textEnd"
+                app:iconTint="@color/white" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/chrono_pause"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight=".6"
                 android:layout_margin="10dp"
+                android:layout_weight=".6"
                 android:backgroundTint="@color/lightSecondary"
                 android:textSize="30sp"
                 android:theme="@style/Theme.MaterialComponents"
                 app:cornerRadius="6dp"
-                app:iconGravity="textEnd"
                 app:icon="@drawable/ic_pause"
-                app:iconTint="@color/white"/>
+                app:iconGravity="textEnd"
+                app:iconTint="@color/white" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/chrono_reset"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
                 android:layout_margin="10dp"
+                android:layout_weight="1"
                 android:backgroundTint="@color/lightSecondary"
                 android:textColor="@color/white"
                 android:textSize="30sp"
                 android:theme="@style/Theme.MaterialComponents"
                 app:cornerRadius="10dp"
-                app:iconGravity="textEnd"
                 app:icon="@drawable/ic_stop"
-                app:iconTint="@color/white"/>
+                app:iconGravity="textEnd"
+                app:iconTint="@color/white" />
 
         </LinearLayout>
 
@@ -152,52 +152,52 @@
             android:id="@+id/save_container"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="20dp"
             android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
             android:orientation="horizontal"
             app:layout_anchorGravity="center">
 
             <com.google.android.material.button.MaterialButton
-                style="@style/Widget.MaterialComponents.ExtendedFloatingActionButton.Icon"
                 android:id="@+id/chrono_save_btn"
+                style="@style/Widget.MaterialComponents.ExtendedFloatingActionButton.Icon"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"
                 android:layout_weight="0.6"
                 android:backgroundTint="@color/colorSecondary"
+                android:clickable="false"
+                android:text="@string/save_request"
                 android:textColor="@color/black"
                 android:textSize="12sp"
-                android:text="@string/save_request"
                 android:theme="@style/Theme.MaterialComponents"
-                android:clickable="false"
                 app:cornerRadius="6dp"
                 app:icon="@drawable/ic_check_black"
-                app:iconTint="@color/black"
-                app:iconGravity="textEnd"/>
+                app:iconGravity="textEnd"
+                app:iconTint="@color/black" />
 
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="0.6"
                 android:layout_marginTop="10dp"
                 android:layout_marginEnd="20dp"
+                android:layout_weight="0.6"
                 android:gravity="end"
-                android:textSize="15sp"
                 android:text="@string/save_on_pause_request"
                 android:textColor="@color/black"
-                android:textStyle="italic"/>
+                android:textSize="15sp"
+                android:textStyle="italic" />
 
             <com.google.android.material.checkbox.MaterialCheckBox
                 android:id="@+id/chrono_check"
                 style="@style/Widget.AppCompat.CompoundButton.CheckBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
                 android:layout_marginTop="10dp"
+                android:layout_weight="1"
+                android:buttonTint="@color/colorSecondary"
                 android:theme="@style/Theme.MaterialComponents"
-                app:cornerRadius="6dp"
-                android:buttonTint="@color/colorSecondary"/>
+                app:cornerRadius="6dp" />
 
         </LinearLayout>
 
