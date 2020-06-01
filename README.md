@@ -1,6 +1,7 @@
 # Advanced Workout Clock
 
 This Android Application is meant to generate a clock with features to make any work-out related activity more efficent.
+The app is offically on the app store [Link to app](https://play.google.com/store/apps/details?id=com.andrea.advanced_workout_clock)
 
 ## Basic features of the app
 
@@ -12,6 +13,7 @@ This Android Application is meant to generate a clock with features to make any 
 
 * The app support 4 languages: English (default), France, Spanish, Italian.
 
+* The app supports different screen size: normal, large, x-large
 ## Front-End
 
 The front-end is made by following **material design guidelines** for Android.
