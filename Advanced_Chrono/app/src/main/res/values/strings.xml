@@ -61,8 +61,9 @@
     <string name="REST_MINUTE_AND_SECS">rest %1$s %2$s</string>
 
 
-    <!--HOME ACTIVITY SPECIFIC-->
+    <!--CHRONOMETER ACTIVITY SPECIFIC-->
     <string name="SAVE_TIMING_SUCCES">Timing saved successfully</string>
+    <string name="CREATE_ACTIVITY_HINT">Create an activity to save timings</string>
 
     <!--TIMER ACTIVITIES SPECIFIC-->
     <string name="NUMBER_FORMAT_ERROR">Error: only numbers are accepted</string>

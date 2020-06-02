@@ -37,7 +37,9 @@ class ChronometerFragment : Fragment(), ChronometerContract.IHomeChronometerView
     private val homePresenter: ChronometerContract.IHomePresenter = ChronometerPresenter(this)
     //ADAPTERS
     private lateinit var spinnerAdapter: ArrayAdapter<ChronometerActivity>
+    //DIALOGS
     private var customDialog: CustomDialog? = null
+
 
     private lateinit var objectAnimator: ObjectAnimator
 
@@ -234,6 +236,8 @@ class ChronometerFragment : Fragment(), ChronometerContract.IHomeChronometerView
             Toast.makeText(this.lendContext(), result, Toast.LENGTH_LONG).show()
     }
 
+    override fun showNewActivityDialog() = showAddDialogBuilderAndSaveTempo()
+
     override fun lendContext(): Context? {return context}
 
     //END INTERFACE FUNCTIONS------------------------------------------------------------------------------------------
@@ -258,6 +262,31 @@ class ChronometerFragment : Fragment(), ChronometerContract.IHomeChronometerView
         dialogBuilder.setPositiveButton(context?.getString(R.string.ADD_ACTIVITY_CONFIRM)) { _, _->
             val editText = dialogView.findViewById<EditText>(R.id.insertActivity)
             homePresenter.addNewActivity(editText.text.toString())
+        }
+
+        dialogBuilder.setNegativeButton(context?.getString(R.string.DISMISS_DIALOG)) { dialogInterface, _ ->
+            dialogInterface.dismiss()
+        }
+
+        dialogBuilder.setOnDismissListener {endRotation(add_activity_button)}
+
+        dialogBuilder.show()
+    }
+
+    //TODO center the buttons
+    private fun showAddDialogBuilderAndSaveTempo()
+    {
+        val dialogBuilder = AlertDialog.Builder(this.context, R.style.AlertDialogCustom)
+        val dialogView = layoutInflater.inflate(R.layout.add_activity_layout, null)
+        //setting the hint of the text
+        dialogView.findViewById<TextView>(R.id.insertActivity).hint= getString(R.string.chrono_insert_hint)
+        dialogBuilder.setView(dialogView)
+
+        dialogBuilder.setPositiveButton(context?.getString(R.string.ADD_ACTIVITY_CONFIRM)) { _, _->
+            val editText = dialogView.findViewById<EditText>(R.id.insertActivity)
+
+            if (homePresenter.addNewActivity(editText.text.toString()))
+                saveCurrentTiming()
         }
 
         dialogBuilder.setNegativeButton(context?.getString(R.string.DISMISS_DIALOG)) { dialogInterface, _ ->

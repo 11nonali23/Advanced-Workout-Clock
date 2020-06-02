@@ -43,6 +43,7 @@
     <string name="REST_SEC_ONLY">riposo %1s</string>
     <string name="REST_ONE_MINUTE">riposo%1s</string>
     <string name="REST_MINUTE_AND_SECS">riposo %1$s %2$s</string>
-    <string name="graphs_indicator">" Presto arriveranno i grafici"</string>
+    <string name="graphs_indicator">Presto arriveranno i grafici</string>
     <string name="TOO_LONG_ACTIVITY_NAME">Errore! nome troppo lungo: massimo 15 lettere</string>
+    <string name="CREATE_ACTIVITY_HINT">Crea un\'attività per salvare i tempi</string>
 </resources>

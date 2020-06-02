@@ -8,7 +8,7 @@ import kotlin.math.sqrt
 
 object ScreenInchesDeterminator
 {
-    const val ADMITTED_INCHES_FULL_LAYOUT = 5.342670889302929
+    const val ADMITTED_INCHES_FULL_LAYOUT = 5.342670889302929 //empiric value
 
     //returns true if full layout display is admitted
     fun canDisplayFullLayout(dm: DisplayMetrics): Boolean

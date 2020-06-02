@@ -38,7 +38,7 @@ class ChronometerPresenter(val view: ChronometerContract.IHomeChronometerView) :
 
     //Add new activity from model. It creates a new ActividyData provided a string and pass to the database
     //If the database add it successfully it will be addedd also in the local list
-    override fun addNewActivity(activityName: String)
+    override fun addNewActivity(activityName: String): Boolean
     {
         if (model != null)
         {
@@ -57,21 +57,22 @@ class ChronometerPresenter(val view: ChronometerContract.IHomeChronometerView) :
                     view.setNewItemAsSelected()
                     //Last element added is the new current selected activity
                     currentSelectedActivity = activities.size - 1
-                    return
+                    return true
                 }
                 else
                 {
                     view.displayResult(viewContext.getString(R.string.ADD_ACTIVITY_DB_ERROR))
-                    return
+                    return false
                 }
             }
             else
             {
                 view.displayResult(viewContext.getString(R.string.ADD_EMPTY_ACTIVITY))
-                return
+                return false
             }
         }
         view.displayResult(viewContext.getString(R.string.INTERNAL_ERROR))
+        return false
     }
 
     override fun deleteActivity(activityName: String?)
@@ -168,9 +169,11 @@ class ChronometerPresenter(val view: ChronometerContract.IHomeChronometerView) :
 
     override fun saveTempo(tempo: Long, activityId: Int?)
     {
+        //if no activity is selected I will ask the user to create one to store the timings
         if (activityId == null)
         {
-            view.displayResult(viewContext.getString(R.string.NO_SELECTED_ACTIVITY))
+            view.displayResult(viewContext.getString(R.string.CREATE_ACTIVITY_HINT))
+            view.showNewActivityDialog()
             return
         }
         if (model != null)

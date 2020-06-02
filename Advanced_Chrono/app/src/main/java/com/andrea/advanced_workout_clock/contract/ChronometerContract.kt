@@ -35,6 +35,8 @@ interface ChronometerContract
 
         fun displayResult(result: String)
 
+        fun showNewActivityDialog()
+
         fun lendContext(): Context?
     }
 
@@ -53,7 +55,7 @@ interface ChronometerContract
 
         fun onViewCreated(context: Context?, currentActivityId: Int)
 
-        fun addNewActivity(activityName: String)
+        fun addNewActivity(activityName: String): Boolean
 
         fun deleteActivity(activityName: String?) //I can delete activity by name beacuase it is unique
 
