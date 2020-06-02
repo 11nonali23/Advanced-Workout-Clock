@@ -37,7 +37,7 @@ class ChronometerFragment : Fragment(), ChronometerContract.IHomeChronometerView
     private var customDialog: CustomDialog? = null
 
 
-    private lateinit var objectAnimator: ObjectAnimator
+    private lateinit var saveButtonAnimator: ObjectAnimator
 
     companion object
     {
@@ -98,14 +98,14 @@ class ChronometerFragment : Fragment(), ChronometerContract.IHomeChronometerView
             progress_circular_chrono.visibility = View.INVISIBLE
 
         //set up object animator
-        objectAnimator = ObjectAnimator.ofPropertyValuesHolder(
+        saveButtonAnimator = ObjectAnimator.ofPropertyValuesHolder(
             chrono_save_btn,
             PropertyValuesHolder.ofFloat("scaleX", 1.1f),
             PropertyValuesHolder.ofFloat("scaleY", 1.1f))
 
-        objectAnimator.duration = PULSATE_DURATION;
-        objectAnimator.repeatCount = PULSATE_TIME
-        objectAnimator.repeatMode = ObjectAnimator.REVERSE;
+        saveButtonAnimator.duration = PULSATE_DURATION;
+        saveButtonAnimator.repeatCount = PULSATE_TIME
+        saveButtonAnimator.repeatMode = ObjectAnimator.REVERSE
 
         //LISTENERS-----------------------------------------------------------------------------------------------------------------------------------
 
@@ -134,7 +134,7 @@ class ChronometerFragment : Fragment(), ChronometerContract.IHomeChronometerView
             updateUIButtons()
 
             //start the animation
-            objectAnimator.start()
+            saveButtonAnimator.start()
         }
 
         chrono_reset.setOnClickListener {

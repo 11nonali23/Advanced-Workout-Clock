@@ -1,5 +1,7 @@
 package com.andrea.advanced_workout_clock
 
+import android.animation.ObjectAnimator
+import android.animation.PropertyValuesHolder
 import android.annotation.SuppressLint
 import android.graphics.Color
 import android.media.MediaPlayer
@@ -32,11 +34,20 @@ class IntervalTimerActivity : AppCompatActivity() {
     private var secondsRemaining = 0L                       //tracks the remining seconds to the end of the timer
 
     private var timerItemList = LinkedList<TimerItem>()     //List of items to complete
-    private var isWorkout = true                            //tracks if activity has to set to show workout bar or rest
+    private var isWorkout = false                            //tracks if activity has to set to show workout bar or rest
     private var isTimerListStarted = false                  //tracks if item list is started
     private var currTimerItemData: TimerItem? = null        //tracks the curent item to complete
 
     private var isFullLayout by Delegates.notNull<Boolean>()
+
+    //animation
+    private lateinit var textRemainingAnimator: ObjectAnimator
+
+    companion object{
+        //animation properties
+        private const val PULSATE_DURATION = 600L
+        private const val PULSATE_TIME = 1
+    }
 
 
     enum class TimerState {
@@ -55,6 +66,16 @@ class IntervalTimerActivity : AppCompatActivity() {
 
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setDisplayShowHomeEnabled(true)
+
+        //set up object animator
+        textRemainingAnimator = ObjectAnimator.ofPropertyValuesHolder(
+            timer_text_remaining,
+            PropertyValuesHolder.ofFloat("scaleX", 2f),
+            PropertyValuesHolder.ofFloat("scaleY", 2f))
+
+        textRemainingAnimator.duration = PULSATE_DURATION;
+        textRemainingAnimator.repeatCount = PULSATE_TIME
+        textRemainingAnimator.repeatMode = ObjectAnimator.REVERSE
 
         //removing the rectangle of the background if layout is too little
         if(ScreenInchesDeterminator.canDisplayFullLayout(resources.displayMetrics))
@@ -118,7 +139,7 @@ class IntervalTimerActivity : AppCompatActivity() {
         //TIMER LISTENERS-----------------------------------------------------------------------------------------------------------------------------------------------------------
 
         //updating the remaining text
-        timer_text_remaining.text = timerItemList.size.toString()
+        timer_text_remaining.text = (timerItemList.size + 1).toString()
 
         setNavigationBarButtonsColor()
         window.navigationBarColor = ContextCompat.getColor(this, R.color.white)
@@ -147,7 +168,7 @@ class IntervalTimerActivity : AppCompatActivity() {
         TimerPrefUtilsManager.setPreviousTimerLengthSeconds(this, currTimerLengthSeconds)
         TimerPrefUtilsManager.setSecondsRemaining(this, secondsRemaining)
         TimerPrefUtilsManager.setTimerState(this, timerState)
-        TimerPrefUtilsManager.setTimerItemDatasList(this, timerItemList)
+        TimerPrefUtilsManager.setTimerItemDataList(this, timerItemList)
         TimerPrefUtilsManager.setIsTimerListStarted(this, isTimerListStarted)
         TimerPrefUtilsManager.setIsWorkout(this, isWorkout)
     }
@@ -190,23 +211,19 @@ class IntervalTimerActivity : AppCompatActivity() {
     //on finish of the timer. Manage the new Timer call
     private fun onTimerEnded() {
 
-        timerState = TimerState.Stopped
-
-        //changing is workout every time i restart timer
-        isWorkout = !isWorkout
-
-        //set the length of the timer to be the one set in SettingsActivity
-        //if the length was changed when the timer was running
-        setNewTimerAndProgressLength()
-
-        //set the remaining text
-        timer_text_remaining.text = timerItemList.size.toString()
-
-        if (!isWorkout)
+        if(!isWorkout)
+        {
             currTimerItemData = timerItemList.poll()
+            timer_text_remaining.text = (timerItemList.size + 1).toString()
+            textRemainingAnimator.start()
+        }
 
         if (currTimerItemData == null)
-            //TODO onActivityEnded()
+            finish()
+
+        isWorkout = !isWorkout
+
+        setNewTimerAndProgressLength()
 
         TimerPrefUtilsManager.setSecondsRemaining(this, currTimerLengthSeconds)
         secondsRemaining = currTimerLengthSeconds
@@ -243,18 +260,6 @@ class IntervalTimerActivity : AppCompatActivity() {
         }.start()
     }
 
-    //if timer seconds are too short I want to play the short sound track
-    private fun playAlarm(itemSeconds: Int?)
-    {
-        if (itemSeconds == null) return
-
-        if (itemSeconds < 3 && secondsRemaining == 1L)
-            MediaPlayer.create(this, R.raw.end_timer_sound).start()
-
-        if (itemSeconds >= 3 && secondsRemaining == 3L)
-            MediaPlayer.create(this, R.raw.three_seconds_end_timer_sound).start()
-    }
-
 
     private fun styleBeforeStart() {
         //setting progress bar
@@ -284,9 +289,23 @@ class IntervalTimerActivity : AppCompatActivity() {
         }
     }
 
+    //if timer seconds are too short I want to play the short sound track
+    private fun playAlarm(itemSeconds: Int?)
+    {
+        if (itemSeconds == null) return
+
+        if (itemSeconds < 3 && secondsRemaining == 1L)
+            MediaPlayer.create(this, R.raw.end_timer_sound).start()
+
+        if (itemSeconds >= 3 && secondsRemaining == 3L)
+            MediaPlayer.create(this, R.raw.three_seconds_end_timer_sound).start()
+    }
+
 
     private fun setNewTimerAndProgressLength() {
         val lengthInMinutes = TimerPrefUtilsManager.getTimerLength()
+
+        if (currTimerItemData == null) return
 
         if (isWorkout) {
             currTimerLengthSeconds =
@@ -295,7 +314,7 @@ class IntervalTimerActivity : AppCompatActivity() {
             progress_circular_work.progress = progress_circular_work.max
 
             progress_circular_rest.max = currTimerLengthSeconds.toInt()
-            progress_circular_rest.progress = currTimerItemData!!.restSeconds.toInt()
+            progress_circular_rest.progress = currTimerItemData!!.restSeconds
         } else {
             currTimerLengthSeconds = ((lengthInMinutes * currTimerItemData!!.restSeconds).toLong())
             progress_circular_rest.max = currTimerLengthSeconds.toInt()

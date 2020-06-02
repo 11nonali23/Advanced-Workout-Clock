@@ -88,19 +88,7 @@ class TimerPrefUtilsManager {
         //TODO remember it returns null as default value
         private const val TIMER_ITEMS_LIST_ID = "com.timer.item_list"
 
-        fun getTimerItemDataList(context: Context): LinkedList<TimerItem>{
-            val preferences = PreferenceManager.getDefaultSharedPreferences(context)
-
-            val json = preferences.getString(TIMER_ITEMS_LIST_ID, null)
-
-            if (json == null)
-                return LinkedList<TimerItem>()
-
-            val timerItemList: LinkedList<TimerItem> = gson.fromJson(json, type)
-            return timerItemList
-        }
-
-        fun setTimerItemDatasList(context: Context, timerItemList: LinkedList<TimerItem>){
+        fun setTimerItemDataList(context: Context, timerItemList: LinkedList<TimerItem>){
             val editor = PreferenceManager.getDefaultSharedPreferences(context).edit()
 
             editor.putString(TIMER_ITEMS_LIST_ID, gson.toJson(timerItemList))
