@@ -8,7 +8,6 @@ import android.media.MediaPlayer
 import android.os.Build
 import android.os.Bundle
 import android.os.CountDownTimer
-import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
@@ -68,15 +67,7 @@ class IntervalTimerActivity : AppCompatActivity() {
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setDisplayShowHomeEnabled(true)
 
-        //set up object animator
-        textRemainingAnimator = ObjectAnimator.ofPropertyValuesHolder(
-            timer_text_remaining,
-            PropertyValuesHolder.ofFloat("scaleX", 2f),
-            PropertyValuesHolder.ofFloat("scaleY", 2f))
-
-        textRemainingAnimator.duration = PULSATE_DURATION;
-        textRemainingAnimator.repeatCount = PULSATE_TIME
-        textRemainingAnimator.repeatMode = ObjectAnimator.REVERSE
+        setUpTextAnimators()
 
         //removing the rectangle of the background if layout is too little
         if(ScreenInchesDeterminator.canDisplayFullLayout(resources.displayMetrics))
@@ -105,7 +96,7 @@ class IntervalTimerActivity : AppCompatActivity() {
             if (isTimerListStarted) {
                 startNewTimer(); updateUIButtons()
             } else {
-                //if the timer is ended I want that the user can restart it
+                //if the timer is ended I want the user to be able to restart it another time
                 if (timerState == TimerState.Ended) {
                     buildTimerItemList()
                 }
@@ -149,11 +140,23 @@ class IntervalTimerActivity : AppCompatActivity() {
         window.navigationBarColor = ContextCompat.getColor(this, R.color.white)
     }
 
+    //This function build the timer item list from the arrayList passed with the intent. It can do this multiple times
     private fun buildTimerItemList()
     {
         val list: ArrayList<TimerItem> =
             intent.getSerializableExtra("TIMER_ITEMS") as ArrayList<TimerItem>
         list.forEach { timerItemList.add(it) }
+    }
+    
+    private fun setUpTextAnimators()
+    {
+        val propertyValuesHolder_x = PropertyValuesHolder.ofFloat("scaleX", 2f)
+        val propertyValuesHolder_y =  PropertyValuesHolder.ofFloat("scaleY", 2f)
+        
+        textRemainingAnimator = ObjectAnimator.ofPropertyValuesHolder(timer_text_remaining, propertyValuesHolder_x, propertyValuesHolder_y)
+        textRemainingAnimator.duration = PULSATE_DURATION;
+        textRemainingAnimator.repeatCount = PULSATE_TIME
+        textRemainingAnimator.repeatMode = ObjectAnimator.REVERSE
     }
 
     override fun onSupportNavigateUp(): Boolean {
@@ -195,6 +198,7 @@ class IntervalTimerActivity : AppCompatActivity() {
         TimerPrefUtilsManager.clearAll(this)
     }
 
+    //this funtion restart the timer when it was already started
     private fun restartTimer() {
         timerState = TimerPrefUtilsManager.getTimerState(this)
         isTimerListStarted = TimerPrefUtilsManager.getIsTimerListStarted(this)
@@ -221,9 +225,6 @@ class IntervalTimerActivity : AppCompatActivity() {
 
     //on finish of the timer. Manage the new Timer call
     private fun onTimerEnded() {
-
-        Log.e("kk", "timer ended")
-
         if(!isWorkout)
         {
             currTimerItemData = timerItemList.poll()
@@ -231,6 +232,8 @@ class IntervalTimerActivity : AppCompatActivity() {
             textRemainingAnimator.start()
         }
 
+        //if the item is null it means that the timer is ended. I have to cancel the timer. 
+        // If the user wants to restart the timer he can just play start and the list will be rebuilt
         if (currTimerItemData == null)
         {
             timer_text_remaining.text = "0";
@@ -279,8 +282,8 @@ class IntervalTimerActivity : AppCompatActivity() {
             }
         }.start()
     }
-
-
+    
+    //set the progress bar and the text colors
     private fun styleBeforeStart() {
         //setting progress bar
         if (isWorkout)
@@ -324,9 +327,7 @@ class IntervalTimerActivity : AppCompatActivity() {
 
     private fun setNewTimerAndProgressLength() {
         val lengthInMinutes = TimerPrefUtilsManager.getTimerLength()
-
-        if (currTimerItemData == null){ timer.cancel(); Log.e("kk", "timer item data null"); return; }
-
+        
         if (isWorkout) {
             currTimerLengthSeconds =
                 ((lengthInMinutes * currTimerItemData!!.workoutSeconds).toLong())

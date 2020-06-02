@@ -16,6 +16,8 @@ import com.andrea.advanced_workout_clock.contract.ChronometerContract
 import com.andrea.advanced_workout_clock.model.ChronometerActivity
 import com.andrea.advanced_workout_clock.presenter.ChronometerPresenter
 import com.andrea.advanced_workout_clock.view.custom_views.CustomDialog
+import com.google.android.material.button.MaterialButton
+import com.google.android.material.checkbox.MaterialCheckBox
 import kotlinx.android.synthetic.main.chrono_layout.*
 
 
@@ -51,8 +53,9 @@ class ChronometerFragment : Fragment(), ChronometerContract.IHomeChronometerView
         //animation constants
         private const val ROTATION_ANGLE = 45F
         private const val ROTATION_DURATION = 450L
-        private const val PULSATE_DURATION = 600L
-        private const val PULSATE_TIME = 1
+        private const val ROTATION_CHECKBOX = 1080F
+        private const val PULSATE_DURATION = 200L
+        private const val PULSATE_TIME = 3
     }
 
     //This enum stores the states of the chronometer
@@ -151,6 +154,13 @@ class ChronometerFragment : Fragment(), ChronometerContract.IHomeChronometerView
             //i also have to save data in case checbox is checked
             if (chrono_check.isChecked)
                 saveCurrentTiming()
+        }
+
+        chrono_check.setOnCheckedChangeListener() { _ , isChecked ->
+            if (isChecked)
+                startRotation(chrono_check)
+            else
+                rollBack(chrono_check)
         }
 
         //add new activity
@@ -346,13 +356,19 @@ class ChronometerFragment : Fragment(), ChronometerContract.IHomeChronometerView
     private fun startRotation(isPositiveAngle: Boolean, imageButton: ImageButton)
     {
         if (isPositiveAngle)
-            imageButton.animate().rotation(ROTATION_ANGLE).setDuration(ROTATION_DURATION).start()
-        else
-            imageButton.animate().rotation(-ROTATION_ANGLE).setDuration(ROTATION_DURATION).start()
+                imageButton.animate().rotation(ROTATION_ANGLE).setDuration(ROTATION_DURATION).start()
+            else
+                imageButton.animate().rotation(-ROTATION_ANGLE).setDuration(ROTATION_DURATION).start()
     }
 
-    private fun rollBack(imageButton: ImageButton) = imageButton.animate().rotation(0F).setDuration(500).start()
+    private fun startRotation(materialCheckBox: MaterialCheckBox)
+    {
+        materialCheckBox.animate().rotation(ROTATION_CHECKBOX).setDuration(ROTATION_DURATION).start()
+    }
 
+    private fun rollBack(imageButton: ImageButton) = imageButton.animate().rotation(0F).setDuration(ROTATION_DURATION).start()
+
+    private fun rollBack(materialCheckBox: MaterialCheckBox) = materialCheckBox.animate().rotation(0F).setDuration(ROTATION_DURATION).start()
 
     //ENDVIEW HELPER FUNCTIONS------------------------------------------------------------------------------------------
 }
