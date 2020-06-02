@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.viewpager2.widget.ViewPager2
+import com.andrea.advanced_workout_clock.view.ScreenInchesDeterminator
 import com.andrea.advanced_workout_clock.view.custom_adapters.ViewPagerAdapter
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
@@ -18,6 +19,8 @@ class MainActivity : AppCompatActivity() {
     private lateinit var viewPager: ViewPager2
     private lateinit var viewPagerAdapter: ViewPagerAdapter
     private lateinit var tabLayout: TabLayout
+
+    var isLightLayout = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -48,6 +51,8 @@ class MainActivity : AppCompatActivity() {
 
         //setting the dark navigation button color
         setNavigationBarButtonsColor()
+
+        isLightLayout = ScreenInchesDeterminator.canDisplayFullLayout(resources.displayMetrics)
     }
 
     //the navigation bar is white so I need dark button color

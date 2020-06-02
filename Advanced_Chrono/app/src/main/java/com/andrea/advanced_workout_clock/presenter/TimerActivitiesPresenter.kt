@@ -24,6 +24,8 @@ class TimerActivitiesPresenter(val view: TimerActivitiesContract.ITimerActivitie
     companion object
     {
         private const val TAG = "TIMER PRESENTER"
+
+        private const val MAX_ACTVITY_NAME_LENGTH = 15
     }
 
     private lateinit var viewContext: Context
@@ -51,6 +53,11 @@ class TimerActivitiesPresenter(val view: TimerActivitiesContract.ITimerActivitie
 
             if (activityNameTrimmed.isNotEmpty())
             {
+                if (activityNameTrimmed.length > MAX_ACTVITY_NAME_LENGTH)
+                {
+                    view.displayResult(viewContext.getString(R.string.TOO_LONG_ACTIVITY_NAME))
+                    return
+                }
                 val newActivity = model!!.addNewActivity(activityNameTrimmed)
 
                 if (newActivity != null)

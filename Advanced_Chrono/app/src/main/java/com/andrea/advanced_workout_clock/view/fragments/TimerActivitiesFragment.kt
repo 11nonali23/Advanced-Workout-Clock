@@ -255,8 +255,6 @@ class TimerActivitiesFragment : Fragment(), TimerActivitiesContract.ITimerActivi
         dialogBuilder.setView(dialogView)
 
         dialogBuilder.setPositiveButton(context?.getString(R.string.ADD_ACTIVITY_CONFIRM)) { _, _ ->
-            Toast.makeText(this.lendContext(), "ADDED", Toast.LENGTH_LONG).show()
-
             val editText = dialogView.findViewById<EditText>(R.id.insertActivity)
 
             timerActivitiesPresenter.addNewActivity(editText.text.toString())

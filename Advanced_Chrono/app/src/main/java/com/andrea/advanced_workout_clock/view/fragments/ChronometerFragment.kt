@@ -6,17 +6,21 @@ import android.app.AlertDialog
 import android.content.Context
 import android.os.Bundle
 import android.os.SystemClock
+import android.util.Log
 import android.view.*
 import android.widget.*
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import com.andrea.advanced_workout_clock.MainActivity
 import com.andrea.advanced_workout_clock.R
 import com.andrea.advanced_workout_clock.contract.ChronometerContract
 import com.andrea.advanced_workout_clock.model.ChronometerActivity
 import com.andrea.advanced_workout_clock.presenter.ChronometerPresenter
+import com.andrea.advanced_workout_clock.view.ScreenInchesDeterminator
 import com.andrea.advanced_workout_clock.view.custom_views.CustomDialog
 import kotlinx.android.synthetic.main.chrono_layout.*
 import kotlin.math.pow
+import kotlin.math.sqrt
 
 
 //ToDo implement the save button (only when you have the database)
@@ -91,13 +95,8 @@ class ChronometerFragment : Fragment(), ChronometerContract.IHomeChronometerView
 
         homePresenter.onViewCreated(this.context, chrono_spinner.selectedItemPosition)
 
-        //removing the progress bar if the screen is too little
-        val dm = resources.displayMetrics
-        val density = dm.density * 160.toDouble()
-        val x = (dm.widthPixels / density).pow(2.0)
-        val y = (dm.heightPixels / density).pow(2.0)
-        val screenInches = Math.sqrt(x + y)
-        if (screenInches < 5.3)
+        //If I dont' have enough space I dont show the progress bar
+        if ((activity as MainActivity).isLightLayout)
             progress_circular_chrono.visibility = View.INVISIBLE
 
         //set up object animator

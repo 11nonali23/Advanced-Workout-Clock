@@ -69,7 +69,9 @@
     <string name="EMPTY_ITEM_FIELDS">Error: this activity has no item!</string>
     <string name="NO_SELECTED_ACTIVITY">Error: Please select an activity</string>
     <string name="EMPTY_ACTIVITY_ON_START">Error! this activity has no timers</string>
-    <string name="Version_Name">ONE</string>
+    <string name="TOO_LONG_ACTIVITY_NAME">Error! name too long: Max 15 letters</string>
+
+
     <string name="graphs_indicator">Soon graphs will arrive</string>
 
     <!--CHRONOMETER TIMES
