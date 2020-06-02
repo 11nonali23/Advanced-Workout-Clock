@@ -2,14 +2,14 @@ package com.andrea.advanced_workout_clock.presenter
 
 import android.content.Context
 import com.andrea.advanced_workout_clock.R
-import com.andrea.advanced_workout_clock.contract.HomeChronometerContract
+import com.andrea.advanced_workout_clock.contract.ChronometerContract
 import com.andrea.advanced_workout_clock.model.ChronometerActivitiesDB
 
-import com.andrea.advanced_workout_clock.contract.HomeChronometerContract.IHomePresenter.Companion.activities
-import com.andrea.advanced_workout_clock.contract.HomeChronometerContract.IHomePresenter.Companion.currentSelectedActivity
+import com.andrea.advanced_workout_clock.contract.ChronometerContract.IHomePresenter.Companion.activities
+import com.andrea.advanced_workout_clock.contract.ChronometerContract.IHomePresenter.Companion.currentSelectedActivity
 
 
-class ChronometerPresenter(val view: HomeChronometerContract.IHomeChronometerView) : HomeChronometerContract.IHomePresenter
+class ChronometerPresenter(val view: ChronometerContract.IHomeChronometerView) : ChronometerContract.IHomePresenter
 {
     private var model: ChronometerActivitiesDB? = null
 

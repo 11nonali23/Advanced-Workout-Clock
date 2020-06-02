@@ -1,16 +1,17 @@
 package com.andrea.advanced_workout_clock.view.fragments
 
+import android.animation.ObjectAnimator
+import android.animation.PropertyValuesHolder
 import android.app.AlertDialog
 import android.content.Context
 import android.os.Bundle
 import android.os.SystemClock
-import android.util.Log
 import android.view.*
 import android.widget.*
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import com.andrea.advanced_workout_clock.R
-import com.andrea.advanced_workout_clock.contract.HomeChronometerContract
+import com.andrea.advanced_workout_clock.contract.ChronometerContract
 import com.andrea.advanced_workout_clock.model.ChronometerActivity
 import com.andrea.advanced_workout_clock.presenter.ChronometerPresenter
 import com.andrea.advanced_workout_clock.view.custom_views.CustomDialog
@@ -27,14 +28,14 @@ import kotlin.math.pow
  */
 
 
-class ChronometerFragment : Fragment(), HomeChronometerContract.IHomeChronometerView
+class ChronometerFragment : Fragment(), ChronometerContract.IHomeChronometerView
 {
-    private val homePresenter: HomeChronometerContract.IHomePresenter = ChronometerPresenter(this)
-
+    private val homePresenter: ChronometerContract.IHomePresenter = ChronometerPresenter(this)
     //ADAPTERS
     private lateinit var spinnerAdapter: ArrayAdapter<ChronometerActivity>
-
     private var customDialog: CustomDialog? = null
+
+    private lateinit var objectAnimator: ObjectAnimator
 
     companion object
     {
@@ -44,6 +45,12 @@ class ChronometerFragment : Fragment(), HomeChronometerContract.IHomeChronometer
         private var pauseOffset: Long = 0L                                       //used to set the timer properly when restored from on pause and to take note of time
         private var progresssion :Int = -1                                       //define the progression of the circular bar
         private var chronoState: ChronometerState = ChronometerState.Resetted    //track the chronometer state
+
+        //animation constants
+        private const val ROTATION_ANGLE = 45F
+        private const val ROTATION_DURATION = 450L
+        private const val PULSATE_DURATION = 600L
+        private const val PULSATE_TIME = 1
     }
 
     //This enum stores the states of the chronometer
@@ -90,9 +97,18 @@ class ChronometerFragment : Fragment(), HomeChronometerContract.IHomeChronometer
         val x = (dm.widthPixels / density).pow(2.0)
         val y = (dm.heightPixels / density).pow(2.0)
         val screenInches = Math.sqrt(x + y)
-
         if (screenInches < 5.3)
             progress_circular_chrono.visibility = View.INVISIBLE
+
+        //set up object animator
+        objectAnimator = ObjectAnimator.ofPropertyValuesHolder(
+            chrono_save_btn,
+            PropertyValuesHolder.ofFloat("scaleX", 1.1f),
+            PropertyValuesHolder.ofFloat("scaleY", 1.1f))
+
+        objectAnimator.duration = PULSATE_DURATION;
+        objectAnimator.repeatCount = PULSATE_TIME
+        objectAnimator.repeatMode = ObjectAnimator.REVERSE;
 
         //LISTENERS-----------------------------------------------------------------------------------------------------------------------------------
 
@@ -119,6 +135,9 @@ class ChronometerFragment : Fragment(), HomeChronometerContract.IHomeChronometer
             pauseOffset = SystemClock.elapsedRealtime() - chronometer_.base
             chronoState = ChronometerState.Paused
             updateUIButtons()
+
+            //start the animation
+            objectAnimator.start()
         }
 
         chrono_reset.setOnClickListener {
@@ -140,18 +159,23 @@ class ChronometerFragment : Fragment(), HomeChronometerContract.IHomeChronometer
         //add new activity
         add_activity_button.setOnClickListener {
             showAddDialogBuilder()
+            startRotation(false, add_activity_button)
         }
 
         //delete selected activity
         del_activity_button.setOnClickListener{
             showDeleteDialogBuilder()
+            startRotation(true, del_activity_button)
         }
 
         show_timings_button.setOnClickListener{
             if (this.context != null)
             {
                 customDialog = CustomDialog(this)
+                customDialog!!.setOnDismissListener { endRotation(show_timings_button)}
                 customDialog!!.show()
+
+                startRotation(true, show_timings_button)
             }
         }
 
@@ -241,6 +265,8 @@ class ChronometerFragment : Fragment(), HomeChronometerContract.IHomeChronometer
             dialogInterface.dismiss()
         }
 
+        dialogBuilder.setOnDismissListener {endRotation(add_activity_button)}
+
         dialogBuilder.show()
     }
 
@@ -255,12 +281,15 @@ class ChronometerFragment : Fragment(), HomeChronometerContract.IHomeChronometer
                 homePresenter.deleteActivity(chrono_spinner.selectedItem.toString())
             else
                 homePresenter.deleteActivity(null)
-
         }
 
         dialogBuilder.setNegativeButton(context?.getString(R.string.DISMISS_DIALOG)) { dialogInterface, _ ->
             dialogInterface.dismiss()
+            endRotation(del_activity_button)
         }
+
+        dialogBuilder.setOnDismissListener {endRotation(del_activity_button)}
+
         dialogBuilder.show()
     }
 
@@ -289,6 +318,17 @@ class ChronometerFragment : Fragment(), HomeChronometerContract.IHomeChronometer
             {chrono_start.isEnabled = true; chrono_pause.isEnabled = false; chrono_reset.isEnabled = false; chrono_save_btn.isEnabled = false}
         }
     }
+
+    private fun startRotation(isPositiveAngle: Boolean, imageButton: ImageButton)
+    {
+        if (isPositiveAngle)
+            imageButton.animate().rotation(ROTATION_ANGLE).setDuration(ROTATION_DURATION).start()
+        else
+            imageButton.animate().rotation(-ROTATION_ANGLE).setDuration(ROTATION_DURATION).start()
+    }
+
+    private fun endRotation(imageButton: ImageButton) = imageButton.animate().rotation(0F).setDuration(500).start()
+
 
     //ENDVIEW HELPER FUNCTIONS------------------------------------------------------------------------------------------
 }

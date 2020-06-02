@@ -8,7 +8,7 @@ import kotlin.collections.ArrayList
 
 //This interface define a contract between the home view and the presenter related to it
 
-interface HomeChronometerContract
+interface ChronometerContract
 {
     interface IHomeModel : BaseModel
     {

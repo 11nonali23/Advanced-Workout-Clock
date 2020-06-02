@@ -16,7 +16,7 @@ import com.andrea.advanced_workout_clock.view.custom_adapters.OnlySwipeHelper
 import com.andrea.advanced_workout_clock.view.fragments.ChronometerFragment
 
 
-class CustomDialog(val parent: ChronometerFragment) : Dialog(parent.context!!)
+class CustomDialog(private val parent: ChronometerFragment) : Dialog(parent.requireContext())
 {
     private lateinit var timingsList: RecyclerView
     private lateinit var viewAdapter: ChronometerTimingsAdapter
@@ -81,3 +81,4 @@ class CustomDialog(val parent: ChronometerFragment) : Dialog(parent.context!!)
 
     fun removeTiming(timingPosition: Int) {parent.deleteTiming(timingPosition)}
 }
+

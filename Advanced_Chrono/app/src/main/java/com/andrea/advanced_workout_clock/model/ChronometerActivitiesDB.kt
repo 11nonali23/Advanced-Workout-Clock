@@ -4,14 +4,14 @@ import android.content.ContentValues
 import android.content.Context
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
-import com.andrea.advanced_workout_clock.contract.HomeChronometerContract
+import com.andrea.advanced_workout_clock.contract.ChronometerContract
 import java.sql.SQLException
 import java.util.*
 import kotlin.collections.ArrayList
 
 class ChronometerActivitiesDB(context: Context) :
     SQLiteOpenHelper(context, DATABASE_NAME, null, DATABASE_VERSION),
-    HomeChronometerContract.IHomeModel
+    ChronometerContract.IHomeModel
 {
 
     companion object DbContract
