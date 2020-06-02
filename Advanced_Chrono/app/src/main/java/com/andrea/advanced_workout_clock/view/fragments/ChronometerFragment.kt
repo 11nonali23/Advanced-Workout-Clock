@@ -6,7 +6,6 @@ import android.app.AlertDialog
 import android.content.Context
 import android.os.Bundle
 import android.os.SystemClock
-import android.util.Log
 import android.view.*
 import android.widget.*
 import androidx.core.content.ContextCompat
@@ -16,11 +15,8 @@ import com.andrea.advanced_workout_clock.R
 import com.andrea.advanced_workout_clock.contract.ChronometerContract
 import com.andrea.advanced_workout_clock.model.ChronometerActivity
 import com.andrea.advanced_workout_clock.presenter.ChronometerPresenter
-import com.andrea.advanced_workout_clock.view.ScreenInchesDeterminator
 import com.andrea.advanced_workout_clock.view.custom_views.CustomDialog
 import kotlinx.android.synthetic.main.chrono_layout.*
-import kotlin.math.pow
-import kotlin.math.sqrt
 
 
 //ToDo implement the save button (only when you have the database)
@@ -173,7 +169,7 @@ class ChronometerFragment : Fragment(), ChronometerContract.IHomeChronometerView
             if (this.context != null)
             {
                 customDialog = CustomDialog(this)
-                customDialog!!.setOnDismissListener { endRotation(show_timings_button)}
+                customDialog!!.setOnDismissListener { rollBack(show_timings_button)}
                 customDialog!!.show()
 
                 startRotation(true, show_timings_button)
@@ -268,7 +264,7 @@ class ChronometerFragment : Fragment(), ChronometerContract.IHomeChronometerView
             dialogInterface.dismiss()
         }
 
-        dialogBuilder.setOnDismissListener {endRotation(add_activity_button)}
+        dialogBuilder.setOnDismissListener {rollBack(add_activity_button)}
 
         dialogBuilder.show()
     }
@@ -293,7 +289,7 @@ class ChronometerFragment : Fragment(), ChronometerContract.IHomeChronometerView
             dialogInterface.dismiss()
         }
 
-        dialogBuilder.setOnDismissListener {endRotation(add_activity_button)}
+        dialogBuilder.setOnDismissListener {rollBack(add_activity_button)}
 
         dialogBuilder.show()
     }
@@ -313,10 +309,10 @@ class ChronometerFragment : Fragment(), ChronometerContract.IHomeChronometerView
 
         dialogBuilder.setNegativeButton(context?.getString(R.string.DISMISS_DIALOG)) { dialogInterface, _ ->
             dialogInterface.dismiss()
-            endRotation(del_activity_button)
+            rollBack(del_activity_button)
         }
 
-        dialogBuilder.setOnDismissListener {endRotation(del_activity_button)}
+        dialogBuilder.setOnDismissListener {rollBack(del_activity_button)}
 
         dialogBuilder.show()
     }
@@ -355,7 +351,7 @@ class ChronometerFragment : Fragment(), ChronometerContract.IHomeChronometerView
             imageButton.animate().rotation(-ROTATION_ANGLE).setDuration(ROTATION_DURATION).start()
     }
 
-    private fun endRotation(imageButton: ImageButton) = imageButton.animate().rotation(0F).setDuration(500).start()
+    private fun rollBack(imageButton: ImageButton) = imageButton.animate().rotation(0F).setDuration(500).start()
 
 
     //ENDVIEW HELPER FUNCTIONS------------------------------------------------------------------------------------------

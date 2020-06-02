@@ -4,7 +4,6 @@ import android.app.AlertDialog
 import android.content.Context
 import android.graphics.Rect
 import android.os.Bundle
-import android.util.Log
 import android.view.*
 import android.widget.EditText
 import android.widget.ImageButton
@@ -30,8 +29,9 @@ class TimerActivitiesFragment : Fragment(), TimerActivitiesContract.ITimerActivi
     {
         private const val TAG = "TIMER FRAGMENT CYCLE"
         //animation constants
-        private const val ROTATION_ANGLE = 1080F
-        private const val ROTATION_DURATION = 700L
+        private const val ROTATION_ANGLE_ADD_ITEM = 1080F
+        private const val ROTATION_DURATION = 600L
+
     }
 
     val timerActivitiesPresenter:
@@ -163,8 +163,10 @@ class TimerActivitiesFragment : Fragment(), TimerActivitiesContract.ITimerActivi
             timer_items_button.visibility = View.VISIBLE
             startRotation(timer_items_button)
         }
-        else
+        else {
             timer_items_button.visibility = View.INVISIBLE
+            rollBack(timer_items_button)
+        }
     }
 
 
@@ -299,9 +301,9 @@ class TimerActivitiesFragment : Fragment(), TimerActivitiesContract.ITimerActivi
         dialogBuilder.show()
     }
 
-    private fun startRotation(imageButton: ImageButton)
-    {
-        Log.e(TAG, "rotating")
-        imageButton.animate().rotation(ROTATION_ANGLE).setDuration(ROTATION_DURATION).start()
-    }
+    private fun startRotation(imageButton: ImageButton) =
+        imageButton.animate().rotation(ROTATION_ANGLE_ADD_ITEM).setDuration(ROTATION_DURATION).start()
+
+    private fun rollBack(imageButton: ImageButton) = imageButton.animate().rotation(0F).setDuration(500).start()
+
 }
