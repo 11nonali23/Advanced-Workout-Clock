@@ -265,16 +265,13 @@ class TimerActivitiesFragment : Fragment(), TimerActivitiesContract.ITimerActivi
 
         dialogBuilder.setPositiveButton(context?.getString(R.string.ADD_ACTIVITY_CONFIRM)) { _, _ ->
             val editText = dialogView.findViewById<EditText>(R.id.insertActivity)
-
             timerActivitiesPresenter.addNewActivity(editText.text.toString())
-
-            startRotation(timer_items_button)
-
         }
 
         dialogBuilder.setNegativeButton(context?.getString(R.string.DISMISS_DIALOG)) { dialogInterface, _ ->
             dialogInterface.dismiss()
         }
+
         dialogBuilder.show()
 
     }
@@ -298,6 +295,7 @@ class TimerActivitiesFragment : Fragment(), TimerActivitiesContract.ITimerActivi
         dialogBuilder.setNegativeButton(context?.getString(R.string.DISMISS_DIALOG)) { dialogInterface, _ ->
             dialogInterface.dismiss()
         }
+
         dialogBuilder.show()
     }
 

@@ -15,6 +15,7 @@ import com.andrea.advanced_workout_clock.view.ScreenInchesDeterminator
 import kotlinx.android.synthetic.main.timer_layout.*
 import kotlinx.android.synthetic.main.toolbar_layout.*
 import java.util.*
+import kotlin.properties.Delegates
 
 
 //this class is revisited from--> https://resocoder.com/category/tutorials/android/make-a-timer-app/
@@ -34,7 +35,8 @@ class IntervalTimerActivity : AppCompatActivity() {
     private var isWorkout = true                            //tracks if activity has to set to show workout bar or rest
     private var isTimerListStarted = false                  //tracks if item list is started
     private var currTimerItemData: TimerItem? = null        //tracks the curent item to complete
-    private var isLightLayout: Boolean = false
+
+    private var isFullLayout by Delegates.notNull<Boolean>()
 
 
     enum class TimerState {
@@ -55,15 +57,19 @@ class IntervalTimerActivity : AppCompatActivity() {
         supportActionBar?.setDisplayShowHomeEnabled(true)
 
         //removing the rectangle of the background if layout is too little
-        if(!ScreenInchesDeterminator.canDisplayFullLayout(resources.displayMetrics))
+        if(ScreenInchesDeterminator.canDisplayFullLayout(resources.displayMetrics))
         {
-            isLightLayout = true
+            isFullLayout = true
+        }
+        else {
+            isFullLayout = false
             val black = ContextCompat.getColor(this, R.color.black)
             blue_coordinator_layout?.background = ContextCompat.getDrawable(this, R.color.white)
             timer_workout_indicator.setTextColor(black)
             timer_rest_indicator.setTextColor(black)
             remaining_indicator?.setTextColor(black)
             timer_text_remaining.setTextColor(black)
+
         }
 
         val list: ArrayList<TimerItem> =
@@ -262,17 +268,19 @@ class IntervalTimerActivity : AppCompatActivity() {
         //setting color
         if (isWorkout) {
             timer_workout_indicator.setTextColor(ContextCompat.getColor(this, R.color.deep_orange))
-            if (isLightLayout)
-                timer_rest_indicator.setTextColor(Color.BLACK)
-            else
+            if (isFullLayout)
                 timer_rest_indicator.setTextColor(Color.WHITE)
+            else
+                timer_rest_indicator.setTextColor(Color.BLACK)
+
 
         } else {
             timer_rest_indicator.setTextColor(ContextCompat.getColor(this, R.color.accent_yellow))
-            if (isLightLayout)
-                timer_workout_indicator.setTextColor(Color.BLACK)
-            else
+            if (isFullLayout)
                 timer_workout_indicator.setTextColor(Color.WHITE)
+            else
+                timer_workout_indicator.setTextColor(Color.BLACK)
+
         }
     }
 

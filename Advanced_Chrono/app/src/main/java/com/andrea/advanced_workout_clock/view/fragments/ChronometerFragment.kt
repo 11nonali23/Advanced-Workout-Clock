@@ -94,7 +94,7 @@ class ChronometerFragment : Fragment(), ChronometerContract.IHomeChronometerView
         homePresenter.onViewCreated(this.context, chrono_spinner.selectedItemPosition)
 
         //If I dont' have enough space I dont show the progress bar
-        if ((activity as MainActivity).isLightLayout)
+        if (!(activity as MainActivity).isFullLayout)
             progress_circular_chrono.visibility = View.INVISIBLE
 
         //set up object animator

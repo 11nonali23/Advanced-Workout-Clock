@@ -1,6 +1,7 @@
 package com.andrea.advanced_workout_clock.view
 
 import android.util.DisplayMetrics
+import android.util.Log
 import kotlin.math.pow
 import kotlin.math.sqrt
 
@@ -8,7 +9,7 @@ import kotlin.math.sqrt
 
 object ScreenInchesDeterminator
 {
-    const val ADMITTED_INCHES_FULL_LAYOUT = 5.342670889302929 //empiric value
+    private const val ADMITTED_INCHES_FULL_LAYOUT = 4.985714285714286 //empiric value
 
     //returns true if full layout display is admitted
     fun canDisplayFullLayout(dm: DisplayMetrics): Boolean
@@ -16,8 +17,10 @@ object ScreenInchesDeterminator
         val density = dm.density * 160.toDouble()
         val x = (dm.widthPixels / density).pow(2.0)
         val y = (dm.heightPixels / density).pow(2.0)
+        val inches = sqrt(x + y)
+        Log.e("inches determinator", "$inches")
 
-        return sqrt(x + y) > ADMITTED_INCHES_FULL_LAYOUT
+        return inches > ADMITTED_INCHES_FULL_LAYOUT
     }
 
 }

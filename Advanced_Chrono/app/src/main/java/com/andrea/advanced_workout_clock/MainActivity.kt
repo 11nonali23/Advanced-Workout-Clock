@@ -11,6 +11,7 @@ import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.toolbar_layout.*
+import kotlin.properties.Delegates
 
 
 class MainActivity : AppCompatActivity() {
@@ -20,7 +21,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var viewPagerAdapter: ViewPagerAdapter
     private lateinit var tabLayout: TabLayout
 
-    var isLightLayout = false
+    var isFullLayout by Delegates.notNull<Boolean>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -52,7 +53,7 @@ class MainActivity : AppCompatActivity() {
         //setting the dark navigation button color
         setNavigationBarButtonsColor()
 
-        isLightLayout = ScreenInchesDeterminator.canDisplayFullLayout(resources.displayMetrics)
+        isFullLayout = ScreenInchesDeterminator.canDisplayFullLayout(resources.displayMetrics)
     }
 
     //the navigation bar is white so I need dark button color
