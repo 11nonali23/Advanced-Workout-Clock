@@ -18,7 +18,6 @@ object ScreenInchesDeterminator
         val x = (dm.widthPixels / density).pow(2.0)
         val y = (dm.heightPixels / density).pow(2.0)
         val inches = sqrt(x + y)
-        Log.e("inches determinator", "$inches")
 
         return inches > ADMITTED_INCHES_FULL_LAYOUT
     }

@@ -8,6 +8,7 @@ import android.media.MediaPlayer
 import android.os.Build
 import android.os.Bundle
 import android.os.CountDownTimer
+import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
@@ -51,7 +52,7 @@ class IntervalTimerActivity : AppCompatActivity() {
 
 
     enum class TimerState {
-        Stopped, Paused, Running
+        Stopped, Paused, Running, Ended
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -93,9 +94,7 @@ class IntervalTimerActivity : AppCompatActivity() {
 
         }
 
-        val list: ArrayList<TimerItem> =
-            intent.getSerializableExtra("TIMER_ITEMS") as ArrayList<TimerItem>
-        list.forEach { timerItemList.add(it) }
+        buildTimerItemList()
 
         //getting first element of the list
         currTimerItemData = timerItemList.poll()
@@ -106,7 +105,12 @@ class IntervalTimerActivity : AppCompatActivity() {
             if (isTimerListStarted) {
                 startNewTimer(); updateUIButtons()
             } else {
-                startTimersFromList(); updateUIButtons()
+                //if the timer is ended I want that the user can restart it
+                if (timerState == TimerState.Ended) {
+                    buildTimerItemList()
+                }
+                startTimersFromList()
+                updateUIButtons()
             }
 
             timerState = TimerState.Running
@@ -143,6 +147,13 @@ class IntervalTimerActivity : AppCompatActivity() {
 
         setNavigationBarButtonsColor()
         window.navigationBarColor = ContextCompat.getColor(this, R.color.white)
+    }
+
+    private fun buildTimerItemList()
+    {
+        val list: ArrayList<TimerItem> =
+            intent.getSerializableExtra("TIMER_ITEMS") as ArrayList<TimerItem>
+        list.forEach { timerItemList.add(it) }
     }
 
     override fun onSupportNavigateUp(): Boolean {
@@ -211,6 +222,8 @@ class IntervalTimerActivity : AppCompatActivity() {
     //on finish of the timer. Manage the new Timer call
     private fun onTimerEnded() {
 
+        Log.e("kk", "timer ended")
+
         if(!isWorkout)
         {
             currTimerItemData = timerItemList.poll()
@@ -219,7 +232,14 @@ class IntervalTimerActivity : AppCompatActivity() {
         }
 
         if (currTimerItemData == null)
-            finish()
+        {
+            timer_text_remaining.text = "0";
+            timer.cancel();
+            timerState = TimerState.Ended
+            isTimerListStarted = false
+            updateUIButtons()
+            return
+        }
 
         isWorkout = !isWorkout
 
@@ -305,7 +325,7 @@ class IntervalTimerActivity : AppCompatActivity() {
     private fun setNewTimerAndProgressLength() {
         val lengthInMinutes = TimerPrefUtilsManager.getTimerLength()
 
-        if (currTimerItemData == null) return
+        if (currTimerItemData == null){ timer.cancel(); Log.e("kk", "timer item data null"); return; }
 
         if (isWorkout) {
             currTimerLengthSeconds =
@@ -355,10 +375,10 @@ class IntervalTimerActivity : AppCompatActivity() {
                 start.isEnabled = true; pause.isEnabled = false; reset.isEnabled =
                     true; fast_forward.isEnabled = false
             }
-
-            TimerState.Stopped -> {
-                start.isEnabled = true; pause.isEnabled = false; reset.isEnabled =
-                    false; fast_forward.isEnabled = false
+            //Stopped or Ended
+            else -> {
+                start.isEnabled = true; pause.isEnabled = false;
+                reset.isEnabled = false; fast_forward.isEnabled = false
             }
         }
     }
