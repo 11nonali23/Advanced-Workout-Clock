@@ -282,6 +282,9 @@ class TimerActivitiesPresenter(val view: TimerActivitiesContract.ITimerActivitie
         selectedActivityPosition = position
         if (position != null)
             view.changeAddItemButtonVisibility(true)
+        else
+            view.changeAddItemButtonVisibility(false)
+
         view.itemDataSetChanged()
     }
 

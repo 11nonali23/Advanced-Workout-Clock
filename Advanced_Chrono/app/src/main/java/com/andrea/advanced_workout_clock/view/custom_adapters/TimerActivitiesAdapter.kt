@@ -129,7 +129,6 @@ class TimerActivitiesAdapter (private val parentView: TimerActivitiesFragment
                         selectedCard!!.isSelected = !selectedCard!!.isSelected      //setting the current card as not selected anymore
                         selectedCard = null                                         //setting the current selected card as none
                         selectedActivityPosition = null                             //setting the current selected position as none
-                        parentView.setAddItemButtonVisible(false)                   //hide the add items button
 
                     }
                 }
@@ -140,7 +139,6 @@ class TimerActivitiesAdapter (private val parentView: TimerActivitiesFragment
                     selectedCard!!.isSelected = true
                     //Setting the new selected item position
                     selectedActivityPosition = absoluteAdapterPosition
-                    parentView.setAddItemButtonVisible(true)
                 }
                 //update the item list
                 parentView.timerActivitiesPresenter.onSelectedActivityChange(selectedActivityPosition)

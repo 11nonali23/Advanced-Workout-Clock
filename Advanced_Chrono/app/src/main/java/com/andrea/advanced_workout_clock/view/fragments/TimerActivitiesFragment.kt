@@ -4,8 +4,10 @@ import android.app.AlertDialog
 import android.content.Context
 import android.graphics.Rect
 import android.os.Bundle
+import android.util.Log
 import android.view.*
 import android.widget.EditText
+import android.widget.ImageButton
 import android.widget.NumberPicker
 import android.widget.Toast
 import androidx.core.content.ContextCompat
@@ -27,6 +29,9 @@ class TimerActivitiesFragment : Fragment(), TimerActivitiesContract.ITimerActivi
     companion object
     {
         private const val TAG = "TIMER FRAGMENT CYCLE"
+        //animation constants
+        private const val ROTATION_ANGLE = 1080F
+        private const val ROTATION_DURATION = 700L
     }
 
     val timerActivitiesPresenter:
@@ -154,8 +159,10 @@ class TimerActivitiesFragment : Fragment(), TimerActivitiesContract.ITimerActivi
 
     fun setAddItemButtonVisible (setVisible: Boolean)
     {
-        if (setVisible)
+        if (setVisible) {
             timer_items_button.visibility = View.VISIBLE
+            startRotation(timer_items_button)
+        }
         else
             timer_items_button.visibility = View.INVISIBLE
     }
@@ -259,6 +266,8 @@ class TimerActivitiesFragment : Fragment(), TimerActivitiesContract.ITimerActivi
 
             timerActivitiesPresenter.addNewActivity(editText.text.toString())
 
+            startRotation(timer_items_button)
+
         }
 
         dialogBuilder.setNegativeButton(context?.getString(R.string.DISMISS_DIALOG)) { dialogInterface, _ ->
@@ -288,5 +297,11 @@ class TimerActivitiesFragment : Fragment(), TimerActivitiesContract.ITimerActivi
             dialogInterface.dismiss()
         }
         dialogBuilder.show()
+    }
+
+    private fun startRotation(imageButton: ImageButton)
+    {
+        Log.e(TAG, "rotating")
+        imageButton.animate().rotation(ROTATION_ANGLE).setDuration(ROTATION_DURATION).start()
     }
 }
