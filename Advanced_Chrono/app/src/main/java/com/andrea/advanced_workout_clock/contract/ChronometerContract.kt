@@ -10,7 +10,7 @@ import kotlin.collections.ArrayList
 
 interface ChronometerContract
 {
-    interface IHomeModel : BaseModel
+    interface IChronometerModel : BaseModel
     {
         fun addNewTiming(time: Long, timestamp: Long, activityId: Int): ActivityTiming?
 
@@ -21,7 +21,7 @@ interface ChronometerContract
     }
 
     //TODO When the user change the selected item on the spinner I have to query the timings on the database
-    interface IHomeChronometerView
+    interface IChronometerView
     {
         fun setUpSpinnerView(activities: List<ChronometerActivity>)
 
@@ -40,8 +40,9 @@ interface ChronometerContract
         fun lendContext(): Context?
     }
 
-    interface IHomePresenter
+    interface IChronometerPresenter
     {
+        //Todo use view model in future
         companion object
         {
             /*List of activities.
@@ -49,7 +50,6 @@ interface ChronometerContract
             This helps not to load timings that will not be seen from the user in a session*/
             var activities: ArrayList<ChronometerActivity> = ArrayList()
 
-            //default selected activity is 0. //TODO use shared preferences to save it in a better way
             var currentSelectedActivity: Int? = null
         }
 

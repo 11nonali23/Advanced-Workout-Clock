@@ -11,7 +11,7 @@ import kotlin.collections.ArrayList
 
 class ChronometerActivitiesDB(context: Context) :
     SQLiteOpenHelper(context, DATABASE_NAME, null, DATABASE_VERSION),
-    ChronometerContract.IHomeModel
+    ChronometerContract.IChronometerModel
 {
 
     companion object DbContract

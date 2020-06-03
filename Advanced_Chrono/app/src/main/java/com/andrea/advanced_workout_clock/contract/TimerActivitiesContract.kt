@@ -52,6 +52,7 @@ interface TimerActivitiesContract
 
     interface ITimerActivitiesPresenter
     {
+        //Todo use view model in future
         companion object
         {
             //the presenter has a unique list list of all the activities accessible for View and Adapters as a model

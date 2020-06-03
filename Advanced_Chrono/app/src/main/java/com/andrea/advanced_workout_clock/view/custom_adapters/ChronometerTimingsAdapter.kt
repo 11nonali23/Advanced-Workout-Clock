@@ -9,8 +9,8 @@ import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.andrea.advanced_workout_clock.R
 
-import com.andrea.advanced_workout_clock.contract.ChronometerContract.IHomePresenter.Companion.activities //list of the activities
-import com.andrea.advanced_workout_clock.contract.ChronometerContract.IHomePresenter.Companion.currentSelectedActivity
+import com.andrea.advanced_workout_clock.contract.ChronometerContract.IChronometerPresenter.Companion.activities //list of the activities
+import com.andrea.advanced_workout_clock.contract.ChronometerContract.IChronometerPresenter.Companion.currentSelectedActivity
 import com.andrea.advanced_workout_clock.model.ActivityTiming
 import com.andrea.advanced_workout_clock.view.custom_views.CustomDialog
 import java.text.SimpleDateFormat

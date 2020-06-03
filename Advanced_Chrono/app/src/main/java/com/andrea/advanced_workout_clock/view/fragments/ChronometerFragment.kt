@@ -16,7 +16,6 @@ import com.andrea.advanced_workout_clock.contract.ChronometerContract
 import com.andrea.advanced_workout_clock.model.ChronometerActivity
 import com.andrea.advanced_workout_clock.presenter.ChronometerPresenter
 import com.andrea.advanced_workout_clock.view.custom_views.CustomDialog
-import com.google.android.material.button.MaterialButton
 import com.google.android.material.checkbox.MaterialCheckBox
 import kotlinx.android.synthetic.main.chrono_layout.*
 
@@ -30,9 +29,9 @@ import kotlinx.android.synthetic.main.chrono_layout.*
  */
 
 
-class ChronometerFragment : Fragment(), ChronometerContract.IHomeChronometerView
+class ChronometerFragment : Fragment(), ChronometerContract.IChronometerView
 {
-    private val homePresenter: ChronometerContract.IHomePresenter = ChronometerPresenter(this)
+    private val homePresenter: ChronometerContract.IChronometerPresenter = ChronometerPresenter(this)
     //ADAPTERS
     private lateinit var spinnerAdapter: ArrayAdapter<ChronometerActivity>
     //DIALOGS

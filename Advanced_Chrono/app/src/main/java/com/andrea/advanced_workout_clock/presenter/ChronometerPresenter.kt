@@ -5,11 +5,11 @@ import com.andrea.advanced_workout_clock.R
 import com.andrea.advanced_workout_clock.contract.ChronometerContract
 import com.andrea.advanced_workout_clock.model.ChronometerActivitiesDB
 
-import com.andrea.advanced_workout_clock.contract.ChronometerContract.IHomePresenter.Companion.activities
-import com.andrea.advanced_workout_clock.contract.ChronometerContract.IHomePresenter.Companion.currentSelectedActivity
+import com.andrea.advanced_workout_clock.contract.ChronometerContract.IChronometerPresenter.Companion.activities
+import com.andrea.advanced_workout_clock.contract.ChronometerContract.IChronometerPresenter.Companion.currentSelectedActivity
 
 
-class ChronometerPresenter(val view: ChronometerContract.IHomeChronometerView) : ChronometerContract.IHomePresenter
+class ChronometerPresenter(val view: ChronometerContract.IChronometerView) : ChronometerContract.IChronometerPresenter
 {
     private var model: ChronometerActivitiesDB? = null
 

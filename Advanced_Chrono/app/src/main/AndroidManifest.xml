@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.andrea.advanced_workout_clock"
     android:versionCode="9"
     android:versionName="9">
@@ -15,16 +16,20 @@
         android:theme="@style/AppTheme"
         android:hardwareAccelerated="true">
 
-        <activity android:name="com.andrea.advanced_workout_clock.MainActivity">
+        <activity
+            android:name="com.andrea.advanced_workout_clock.MainActivity"
+            tools:ignore="LockedOrientationActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
 
-        <activity android:name="com.andrea.advanced_workout_clock.IntervalTimerActivity"
+        <activity
+            android:name="com.andrea.advanced_workout_clock.IntervalTimerActivity"
             android:parentActivityName="com.andrea.advanced_workout_clock.MainActivity"
-            android:label="@string/timer_label">
+            android:label="@string/timer_label"
+            tools:ignore="LockedOrientationActivity">
         </activity>
 
     </application>
