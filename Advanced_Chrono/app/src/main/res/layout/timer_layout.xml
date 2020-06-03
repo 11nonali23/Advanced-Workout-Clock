@@ -177,11 +177,12 @@
                 android:layout_marginStart="10dp"
                 android:layout_marginEnd="10dp"
                 android:layout_gravity="center_vertical"
+                android:backgroundTint="@color/white"
                 app:cornerRadius="20dp"
                 app:icon="@drawable/ic_play_arrow"
+                app:iconGravity="end"
                 app:iconTint="@color/colorSecondary"
-                app:iconGravity="textEnd"
-                android:backgroundTint="@color/white" />
+                app:iconPadding="0dp" />
 
             <com.google.android.material.button.MaterialButton
                 style="@style/Widget.MaterialComponents.ExtendedFloatingActionButton.Icon"
@@ -193,11 +194,12 @@
                 android:layout_marginStart="10dp"
                 android:layout_marginEnd="10dp"
                 android:layout_gravity="center_vertical"
+                android:backgroundTint="@color/white"
                 app:cornerRadius="20dp"
                 app:icon="@drawable/ic_pause"
+                app:iconGravity="end"
                 app:iconTint="@color/colorSecondary"
-                app:iconGravity="textEnd"
-                android:backgroundTint="@color/white" />
+                app:iconPadding="0dp"/>
 
             <com.google.android.material.button.MaterialButton
                 style="@style/Widget.MaterialComponents.ExtendedFloatingActionButton.Icon"
@@ -209,11 +211,12 @@
                 android:layout_marginStart="10dp"
                 android:layout_marginEnd="10dp"
                 android:layout_gravity="center_vertical"
+                android:backgroundTint="@color/white"
                 app:cornerRadius="20dp"
                 app:icon="@drawable/ic_stop"
                 app:iconTint="@color/colorSecondary"
-                app:iconGravity="textEnd"
-                android:backgroundTint="@color/white" />
+                app:iconGravity="end"
+                app:iconPadding="0dp"/>
 
             <com.google.android.material.button.MaterialButton
                 style="@style/Widget.MaterialComponents.ExtendedFloatingActionButton.Icon"
@@ -227,9 +230,10 @@
                 android:layout_gravity="center_vertical"
                 app:cornerRadius="20dp"
                 app:icon="@drawable/ic_fast_forward"
+                app:iconGravity="end"
                 app:iconTint="@color/colorSecondary"
-                app:iconGravity="textEnd"
-                android:backgroundTint="@color/white" />
+                android:backgroundTint="@color/white"
+                app:iconPadding="0dp"/>
 
         </LinearLayout>
 

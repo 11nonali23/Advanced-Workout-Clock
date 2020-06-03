@@ -113,9 +113,10 @@
                 android:theme="@style/Theme.MaterialComponents"
                 app:cornerRadius="10dp"
                 android:elevation="20dp"
-                app:iconGravity="textEnd"
                 app:icon="@drawable/ic_play_arrow"
-                app:iconTint="@color/white"/>
+                app:iconGravity="textStart"
+                app:iconTint="@color/white"
+                app:iconPadding="0dp"/>
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/chrono_pause"
@@ -127,9 +128,10 @@
                 android:textSize="30sp"
                 android:theme="@style/Theme.MaterialComponents"
                 app:cornerRadius="6dp"
-                app:iconGravity="textEnd"
                 app:icon="@drawable/ic_pause"
-                app:iconTint="@color/white"/>
+                app:iconGravity="textStart"
+                app:iconTint="@color/white"
+                app:iconPadding="0dp"/>
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/chrono_reset"
@@ -142,9 +144,10 @@
                 android:textSize="30sp"
                 android:theme="@style/Theme.MaterialComponents"
                 app:cornerRadius="10dp"
-                app:iconGravity="textEnd"
                 app:icon="@drawable/ic_stop"
-                app:iconTint="@color/white"/>
+                app:iconGravity="textStart"
+                app:iconTint="@color/white"
+                app:iconPadding="0dp"/>
 
         </LinearLayout>
 
