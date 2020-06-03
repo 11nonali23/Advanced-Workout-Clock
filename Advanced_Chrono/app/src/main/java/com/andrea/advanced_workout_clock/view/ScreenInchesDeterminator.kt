@@ -9,7 +9,7 @@ import kotlin.math.sqrt
 
 object ScreenInchesDeterminator
 {
-    private const val ADMITTED_INCHES_FULL_LAYOUT = 4.985714285714286 //empiric value
+    private const val ADMITTED_INCHES_FULL_LAYOUT = 4.658064985074606 //empiric value -> (Pixel XL emulator + Nexus5) / 2
 
     //returns true if full layout display is admitted
     fun canDisplayFullLayout(dm: DisplayMetrics): Boolean
@@ -19,7 +19,9 @@ object ScreenInchesDeterminator
         val y = (dm.heightPixels / density).pow(2.0)
         val inches = sqrt(x + y)
 
-        return inches > ADMITTED_INCHES_FULL_LAYOUT
+        Log.e("inches deter", "$inches")
+
+        return inches >= ADMITTED_INCHES_FULL_LAYOUT
     }
 
 }

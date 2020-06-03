@@ -156,7 +156,7 @@ class ChronometerFragment : Fragment(), ChronometerContract.IHomeChronometerView
                 saveCurrentTiming()
         }
 
-        chrono_check.setOnCheckedChangeListener() { _ , isChecked ->
+        chrono_check.setOnCheckedChangeListener { _ , isChecked ->
             if (isChecked)
                 startRotation(chrono_check)
             else

@@ -15,6 +15,8 @@ import com.andrea.advanced_workout_clock.model.TimerItem
 import com.andrea.advanced_workout_clock.shared_preferences.TimerPrefUtilsManager
 import com.andrea.advanced_workout_clock.view.ScreenInchesDeterminator
 import kotlinx.android.synthetic.main.timer_layout.*
+import kotlinx.android.synthetic.main.timer_layout.timer_rest_indicator
+import kotlinx.android.synthetic.main.timer_layout.timer_workout_indicator
 import kotlinx.android.synthetic.main.toolbar_layout.*
 import java.util.*
 import kotlin.properties.Delegates
@@ -81,7 +83,7 @@ class IntervalTimerActivity : AppCompatActivity() {
             timer_workout_indicator.setTextColor(black)
             timer_rest_indicator.setTextColor(black)
             remaining_indicator?.setTextColor(black)
-            timer_text_remaining.setTextColor(black)
+            timer_text_remaining?.setTextColor(black)
 
         }
 
@@ -134,7 +136,7 @@ class IntervalTimerActivity : AppCompatActivity() {
         //TIMER LISTENERS-----------------------------------------------------------------------------------------------------------------------------------------------------------
 
         //updating the remaining text
-        timer_text_remaining.text = (timerItemList.size + 1).toString()
+        timer_text_remaining?.text = (timerItemList.size + 1).toString()
 
         setNavigationBarButtonsColor()
         window.navigationBarColor = ContextCompat.getColor(this, R.color.white)
@@ -228,7 +230,7 @@ class IntervalTimerActivity : AppCompatActivity() {
         if(!isWorkout)
         {
             currTimerItemData = timerItemList.poll()
-            timer_text_remaining.text = (timerItemList.size + 1).toString()
+            timer_text_remaining?.text = (timerItemList.size + 1).toString()
             textRemainingAnimator.start()
         }
 
@@ -236,7 +238,7 @@ class IntervalTimerActivity : AppCompatActivity() {
         // If the user wants to restart the timer he can just play start and the list will be rebuilt
         if (currTimerItemData == null)
         {
-            timer_text_remaining.text = "0";
+            timer_text_remaining?.text = "0";
             timer.cancel();
             timerState = TimerState.Ended
             isTimerListStarted = false
