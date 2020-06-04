@@ -31,7 +31,7 @@
     <string name="test_yourself">Testez-vous</string>
     <string name="timer_tab_indicator">Minuterie Activitès</string>
     <string name="data_tab_indicator">Donnéèes Personelle</string>
-    <string name="chrono_tab_indicator">Savauble Chrono</string>
+    <string name="chrono_tab_indicator">" Chronomètre"</string>
     <string name="ADD_ITEM_CONFIRM">ENREGISTRER DES ARTICLES</string>
     <string name="DISMISS_DIALOG">ANNULER</string>
     <string name="DEL_ACTIVITY_CONFIRM">SUPPRIMER</string>

@@ -7,11 +7,16 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import com.andrea.advanced_workout_clock.R
+import com.andrea.advanced_workout_clock.contract.ChartViewContract
+import com.andrea.advanced_workout_clock.model.ChronometerActivity
+import com.github.mikephil.charting.charts.LineChart
+import com.github.mikephil.charting.data.LineDataSet
 
 /**
- * A simple [Fragment] subclass.
+ * Fragment that visualize data with Line Charts
  */
-class DataFragment: Fragment() {
+
+class DataFragment: Fragment(), ChartViewContract.IChartView {
 
     companion object
     {
@@ -37,6 +42,18 @@ class DataFragment: Fragment() {
         super.onResume()
         if (this.context != null)
             activity?.window?.navigationBarColor = ContextCompat.getColor(this.requireContext(), R.color.white)
+    }
+
+    override fun setUpView(activities: ArrayList<ChronometerActivity>) {
+       //TODO
+    }
+
+    override fun addChartView(position: Int) {
+       //TODo
+    }
+
+    override fun deleteChartView(position: Int) {
+        //TODO
     }
 
 

@@ -61,7 +61,7 @@ interface ChronometerContract
 
         fun deleteTiming(itemPosition: Int)
 
-        fun saveTempo(tempo: Long, activityId: Int?)
+        fun saveTiming(tempo: Long, activityId: Int?): ActivityTiming?
 
         fun handleNewSelectedActivity(activityId: Int)
     }

@@ -7,19 +7,18 @@ import com.andrea.advanced_workout_clock.model.ChronometerActivitiesDB
 
 import com.andrea.advanced_workout_clock.contract.ChronometerContract.IChronometerPresenter.Companion.activities
 import com.andrea.advanced_workout_clock.contract.ChronometerContract.IChronometerPresenter.Companion.currentSelectedActivity
+import com.andrea.advanced_workout_clock.model.ActivityTiming
 
 
 class ChronometerPresenter(val view: ChronometerContract.IChronometerView) : ChronometerContract.IChronometerPresenter
 {
     private var model: ChronometerActivitiesDB? = null
+    private lateinit var viewContext: Context
 
     companion object
     {
         private const val TAG = "HOME PRESENTER"
     }
-
-    private lateinit var viewContext: Context
-
 
     override fun onViewCreated(context: Context?, currentActivityId: Int)
     {
@@ -167,14 +166,14 @@ class ChronometerPresenter(val view: ChronometerContract.IChronometerView) : Chr
     }
 
 
-    override fun saveTempo(tempo: Long, activityId: Int?)
+    override fun saveTiming(tempo: Long, activityId: Int?): ActivityTiming?
     {
         //if no activity is selected I will ask the user to create one to store the timings
         if (activityId == null)
         {
             view.displayResult(viewContext.getString(R.string.CREATE_ACTIVITY_HINT))
             view.showNewActivityDialog()
-            return
+            return null
         }
         if (model != null)
         {
@@ -185,10 +184,11 @@ class ChronometerPresenter(val view: ChronometerContract.IChronometerView) : Chr
                 if (currentSelectedActivity != null)
                     activities[currentSelectedActivity!!].timings_timestamp!!.add(newItem)
                 view.displayResult(viewContext.getString(R.string.SAVE_TIMING_SUCCES))
-                return
+                return newItem
             }
         }
         view.displayResult(viewContext.getString(R.string.INTERNAL_ERROR))
+        return null
     }
 
     //updates the current selected activity and add timings if weren't already

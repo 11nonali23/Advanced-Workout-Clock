@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">Advanced Workout Clock</string>
 
-    <string name="chrono_tab_indicator">Savable Chrono</string>
+    <string name="chrono_tab_indicator">Stopwatch</string>
     <string name="timer_tab_indicator">Timer Activities</string>
     <string name="data_tab_indicator">Personal Data</string>
 

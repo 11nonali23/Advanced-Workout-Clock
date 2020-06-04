@@ -1,14 +1,14 @@
 package com.andrea.advanced_workout_clock.contract
 
+import android.util.Log
 import com.andrea.advanced_workout_clock.model.ActivityTiming
-
-
+import com.andrea.advanced_workout_clock.model.ChronometerActivity
 
 interface ChartViewContract
 {
     interface IChartView
     {
-        fun setUpView()
+        fun setUpView(activities: ArrayList<ChronometerActivity>)
 
         fun addChartView(position: Int)
 
@@ -40,26 +40,30 @@ interface ChartViewContract
     */
     interface IChartObserver
     {
-        companion object
+        companion object CacheManager
         {
             //map containing the values of the new data. Int is the Id of an activity
             val newTimingsCached: HashMap<Int, ArrayList<ActivityTiming>> = HashMap()
-        }
 
-        fun cacheNewTiming(chronometerActivityId: Int, activityTiming: ActivityTiming)
-        {
-            if (newTimingsCached[chronometerActivityId] == null)
-                newTimingsCached[chronometerActivityId] = arrayListOf(activityTiming)
-            else
-                newTimingsCached[chronometerActivityId]!!.add(activityTiming)
-        }
+            fun cacheNewTiming(chronometerActivityId: Int?, activityTiming: ActivityTiming?)
+            {
+                if (activityTiming == null || chronometerActivityId == null) return
 
-        fun deleteCachedTiming(chronometerActivityId: Int, activityTiming: ActivityTiming)
-        {
-            newTimingsCached[chronometerActivityId]?.filterNot { it -> it.id == activityTiming.id }
-        }
+                if (newTimingsCached[chronometerActivityId] == null)
+                    newTimingsCached[chronometerActivityId] = arrayListOf(activityTiming)
+                else
+                    newTimingsCached[chronometerActivityId]!!.add(activityTiming)
 
-        fun deleteCachedActivity(chronometerActivityId: Int) = newTimingsCached.remove(chronometerActivityId)
+                // Works fine: Log.e("Observer", "New Timing Cached => ${newTimingsCached[chronometerActivityId]?.get(0)?.timing}")
+            }
+
+            fun deleteCachedTiming(chronometerActivityId: Int, activityTiming: ActivityTiming)
+            {
+                newTimingsCached[chronometerActivityId]?.filterNot { it -> it.id == activityTiming.id }
+            }
+
+            fun deleteCachedActivity(chronometerActivityId: Int) = newTimingsCached.remove(chronometerActivityId)
+        }
 
         fun notifyNewActivity()
 

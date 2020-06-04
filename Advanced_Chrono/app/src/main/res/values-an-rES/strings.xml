@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Advanced Workout Clock</string>
-    <string name="chrono_tab_indicator">Reloj avanzado</string>
+    <string name="chrono_tab_indicator">Cronógrafo</string>
     <string name="timer_tab_indicator">"Tenporizador "</string>
     <string name="data_tab_indicator">"Datos personal "</string>
     <string name="test_yourself">Pruébate</string>

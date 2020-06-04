@@ -20,6 +20,10 @@ import com.google.android.material.checkbox.MaterialCheckBox
 import kotlinx.android.synthetic.main.chrono_layout.*
 
 
+import com.andrea.advanced_workout_clock.contract.ChartViewContract.IChartObserver.CacheManager
+import com.andrea.advanced_workout_clock.model.ActivityTiming
+
+
 //ToDo implement the save button (only when you have the database)
 
 /**
@@ -187,7 +191,9 @@ class ChronometerFragment : Fragment(), ChronometerContract.IChronometerView
 
         //save timing button
         chrono_save_btn.setOnClickListener {
-            saveCurrentTiming()
+            //This show that if the fragment element is null the app will not crash
+            //graphs_reminder?.text = "new text"
+            CacheManager.cacheNewTiming(0, saveCurrentTiming())
         }
 
         //update the current selected activity of the presenter on change
@@ -327,12 +333,12 @@ class ChronometerFragment : Fragment(), ChronometerContract.IChronometerView
     }
 
 
-    private fun saveCurrentTiming()
+    private fun saveCurrentTiming(): ActivityTiming?
     {
         if (chrono_spinner.selectedItem != null)
-            homePresenter.saveTempo(pauseOffset, (chrono_spinner.selectedItem as ChronometerActivity).id)
+            return homePresenter.saveTiming(pauseOffset, (chrono_spinner.selectedItem as ChronometerActivity).id)
         else
-            homePresenter.saveTempo(pauseOffset, null)
+            return homePresenter.saveTiming(pauseOffset, null)
     }
 
 

@@ -6,19 +6,26 @@
     android:orientation="vertical"
     tools:context=".view.fragments.DataFragment">
 
-    <TextView
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/chartList"
         android:layout_width="match_parent"
-        android:layout_height="90dp"
-        android:layout_marginTop="60dp"
-        android:gravity="center"
-        android:textColor="@color/colorPrimary"
-        android:textSize="35sp"
-        android:text="@string/graphs_indicator"/>
+        android:layout_height="match_parent"
+        android:orientation="vertical" />
 
-    <View
+</FrameLayout>
+
+    <!--TextView
+            android:id="@+id/graphs_reminder"
+            android:layout_width="match_parent"
+            android:layout_height="90dp"
+            android:layout_marginTop="60dp"
+            android:gravity="center"
+            android:textColor="@color/colorPrimary"
+            android:textSize="35sp"
+            android:text="@string/graphs_indicator"/-->
+
+    <!--View
         android:layout_height="70dp"
         android:layout_width="70dp"
         android:layout_gravity="center"
-        android:background="@drawable/ic_pie_chart"/>
-
-</FrameLayout>
+        android:background="@drawable/ic_pie_chart"/-->
