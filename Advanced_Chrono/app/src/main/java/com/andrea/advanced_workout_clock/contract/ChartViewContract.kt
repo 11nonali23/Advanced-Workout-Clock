@@ -1,5 +1,6 @@
 package com.andrea.advanced_workout_clock.contract
 
+import android.content.Context
 import android.util.Log
 import com.andrea.advanced_workout_clock.model.ActivityTiming
 import com.andrea.advanced_workout_clock.model.ChronometerActivity
@@ -13,13 +14,11 @@ interface ChartViewContract
         fun addChartView(position: Int)
 
         fun deleteChartView(position: Int)
-
     }
 
     interface IChartPresenter
     {
-
-        fun onCreateSetUp()
+        fun onViewCreated(context: Context?)
 
         //returns null if there are not new data available
         fun getNewData(): HashMap<Int, ArrayList<ActivityTiming>>?

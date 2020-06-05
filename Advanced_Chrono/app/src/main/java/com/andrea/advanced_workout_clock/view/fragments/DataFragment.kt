@@ -6,17 +6,27 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.andrea.advanced_workout_clock.R
 import com.andrea.advanced_workout_clock.contract.ChartViewContract
 import com.andrea.advanced_workout_clock.model.ChronometerActivity
+import com.andrea.advanced_workout_clock.presenter.ChartPresenter
+import com.andrea.advanced_workout_clock.view.custom_adapters.ChartListAdapter
 import com.github.mikephil.charting.charts.LineChart
 import com.github.mikephil.charting.data.LineDataSet
+import kotlinx.android.synthetic.main.fragment_data_.*
 
 /**
  * Fragment that visualize data with Line Charts
  */
 
 class DataFragment: Fragment(), ChartViewContract.IChartView {
+
+    private val presenter: ChartViewContract.IChartPresenter = ChartPresenter(this)
+
+    private lateinit var _chartList: RecyclerView
+    private lateinit var chartListAdapter: ChartListAdapter
 
     companion object
     {
@@ -37,6 +47,12 @@ class DataFragment: Fragment(), ChartViewContract.IChartView {
         super.onCreate(savedInstanceState)
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?)
+    {
+        super.onViewCreated(view, savedInstanceState)
+        presenter.onViewCreated(this.context)
+    }
+
     override fun onResume()
     {
         super.onResume()
@@ -44,8 +60,14 @@ class DataFragment: Fragment(), ChartViewContract.IChartView {
             activity?.window?.navigationBarColor = ContextCompat.getColor(this.requireContext(), R.color.white)
     }
 
-    override fun setUpView(activities: ArrayList<ChronometerActivity>) {
-       //TODO
+    override fun setUpView(activities: ArrayList<ChronometerActivity>)
+    {
+        //setting the recycler view adapter
+        _chartList = chartList
+        chartListAdapter = ChartListAdapter(activities)
+        _chartList.layoutManager = LinearLayoutManager(this.context)
+        _chartList.adapter = chartListAdapter
+        _chartList.setHasFixedSize(true)
     }
 
     override fun addChartView(position: Int) {

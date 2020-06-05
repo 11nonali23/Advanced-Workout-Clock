@@ -35,7 +35,7 @@ import com.andrea.advanced_workout_clock.model.ActivityTiming
 
 class ChronometerFragment : Fragment(), ChronometerContract.IChronometerView
 {
-    private val homePresenter: ChronometerContract.IChronometerPresenter = ChronometerPresenter(this)
+    private val presenter: ChronometerContract.IChronometerPresenter = ChronometerPresenter(this)
     //ADAPTERS
     private lateinit var spinnerAdapter: ArrayAdapter<ChronometerActivity>
     //DIALOGS
@@ -97,7 +97,7 @@ class ChronometerFragment : Fragment(), ChronometerContract.IChronometerView
 
         updateUIButtons()
 
-        homePresenter.onViewCreated(this.context, chrono_spinner.selectedItemPosition)
+        presenter.onViewCreated(this.context, chrono_spinner.selectedItemPosition)
 
         //If I dont' have enough space I dont show the progress bar
         if (!(activity as MainActivity).isFullLayout)
@@ -203,7 +203,7 @@ class ChronometerFragment : Fragment(), ChronometerContract.IChronometerView
 
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long)
             {
-                homePresenter.handleNewSelectedActivity((chrono_spinner.selectedItem as ChronometerActivity).id)
+                presenter.handleNewSelectedActivity((chrono_spinner.selectedItem as ChronometerActivity).id)
             }
 
         }
@@ -255,7 +255,7 @@ class ChronometerFragment : Fragment(), ChronometerContract.IChronometerView
 
     //FUNCTIONS FOR ADAPTERS------------------------------------------------------------------------------------------
 
-    fun deleteTiming(itemPosition: Int){  homePresenter.deleteTiming(itemPosition)}
+    fun deleteTiming(itemPosition: Int){  presenter.deleteTiming(itemPosition)}
     //END FUNCTIONS FOR ADAPTERS------------------------------------------------------------------------------------------
 
 
@@ -272,7 +272,7 @@ class ChronometerFragment : Fragment(), ChronometerContract.IChronometerView
 
         dialogBuilder.setPositiveButton(context?.getString(R.string.ADD_ACTIVITY_CONFIRM)) { _, _->
             val editText = dialogView.findViewById<EditText>(R.id.insertActivity)
-            homePresenter.addNewActivity(editText.text.toString())
+            presenter.addNewActivity(editText.text.toString())
         }
 
         dialogBuilder.setNegativeButton(context?.getString(R.string.DISMISS_DIALOG)) { dialogInterface, _ ->
@@ -296,7 +296,7 @@ class ChronometerFragment : Fragment(), ChronometerContract.IChronometerView
         dialogBuilder.setPositiveButton(context?.getString(R.string.ADD_ACTIVITY_CONFIRM)) { _, _->
             val editText = dialogView.findViewById<EditText>(R.id.insertActivity)
 
-            if (homePresenter.addNewActivity(editText.text.toString()))
+            if (presenter.addNewActivity(editText.text.toString()))
                 saveCurrentTiming()
         }
 
@@ -317,9 +317,9 @@ class ChronometerFragment : Fragment(), ChronometerContract.IChronometerView
 
         dialogBuilder.setPositiveButton(context?.getString(R.string.DEL_ACTIVITY_CONFIRM)) { _, _->
             if (chrono_spinner.selectedItem != null)
-                homePresenter.deleteActivity(chrono_spinner.selectedItem.toString())
+                presenter.deleteActivity(chrono_spinner.selectedItem.toString())
             else
-                homePresenter.deleteActivity(null)
+                presenter.deleteActivity(null)
         }
 
         dialogBuilder.setNegativeButton(context?.getString(R.string.DISMISS_DIALOG)) { dialogInterface, _ ->
@@ -336,9 +336,9 @@ class ChronometerFragment : Fragment(), ChronometerContract.IChronometerView
     private fun saveCurrentTiming(): ActivityTiming?
     {
         if (chrono_spinner.selectedItem != null)
-            return homePresenter.saveTiming(pauseOffset, (chrono_spinner.selectedItem as ChronometerActivity).id)
+            return presenter.saveTiming(pauseOffset, (chrono_spinner.selectedItem as ChronometerActivity).id)
         else
-            return homePresenter.saveTiming(pauseOffset, null)
+            return presenter.saveTiming(pauseOffset, null)
     }
 
 
