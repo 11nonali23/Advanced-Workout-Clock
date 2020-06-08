@@ -31,6 +31,8 @@ You can check a front-end presentation here: https://www.youtube.com/watch?v=GXI
 
 ![timer activities front end](images/timerActivities_fron_end.png)
 
+![charts_front_end](images/charts.png)
+
 ## Back-End
 
 The interval timer uses the **Shared Preferences** of the phone in order not to lose the timings already done. 
