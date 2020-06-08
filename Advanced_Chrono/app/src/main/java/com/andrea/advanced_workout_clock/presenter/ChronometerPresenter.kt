@@ -4,11 +4,13 @@ import android.content.Context
 import com.andrea.advanced_workout_clock.R
 import com.andrea.advanced_workout_clock.contract.ChronometerContract
 import com.andrea.advanced_workout_clock.model.ChronometerActivitiesDB
+import com.andrea.advanced_workout_clock.model.ActivityTiming
+
 
 import com.andrea.advanced_workout_clock.contract.ChronometerContract.IChronometerPresenter.Companion.activities
 import com.andrea.advanced_workout_clock.contract.ChronometerContract.IChronometerPresenter.Companion.currentSelectedActivity
+import com.andrea.advanced_workout_clock.contract.ChartViewContract.IChartPresenter.Companion.observer
 import com.andrea.advanced_workout_clock.contract.ChartViewContract.IChartObserver.CacheManager
-import com.andrea.advanced_workout_clock.model.ActivityTiming
 
 
 class ChronometerPresenter(val view: ChronometerContract.IChronometerView) : ChronometerContract.IChronometerPresenter
@@ -49,10 +51,10 @@ class ChronometerPresenter(val view: ChronometerContract.IChronometerView) : Chr
 
                 if (newActivity != null)
                 {
-
                     activities.add(newActivity)
+                    observer?.notifyActivityAdded()
+
                     view.displayResult(viewContext.getString(R.string.ADD_ACTIVITY_SUCCESS))
-                    //Todo check this passage
                     view.updateActivitiesView()
                     view.setNewItemAsSelected()
                     //Last element added is the new current selected activity

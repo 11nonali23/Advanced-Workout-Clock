@@ -1,14 +1,17 @@
 package com.andrea.advanced_workout_clock.presenter
 
 import android.content.Context
-import com.andrea.advanced_workout_clock.contract.ChartViewContract.IChartObserver.CacheManager
 import com.andrea.advanced_workout_clock.contract.ChartViewContract.IChartPresenter
 import com.andrea.advanced_workout_clock.contract.ChartViewContract.IChartView
 import com.andrea.advanced_workout_clock.contract.ChronometerContract.IChronometerModel
-import com.andrea.advanced_workout_clock.contract.ChronometerContract.IChronometerPresenter.Companion.activities
 import com.andrea.advanced_workout_clock.model.ActivityTiming
 import com.andrea.advanced_workout_clock.model.ChronometerActivitiesDB
 import com.andrea.advanced_workout_clock.model.ChronometerActivity
+import com.andrea.advanced_workout_clock.observer.ChartObserver
+
+import com.andrea.advanced_workout_clock.contract.ChartViewContract.IChartObserver.CacheManager
+import com.andrea.advanced_workout_clock.contract.ChronometerContract.IChronometerPresenter.Companion.activities
+import com.andrea.advanced_workout_clock.contract.ChartViewContract.IChartPresenter.Companion.observer
 
 
 class ChartPresenter(val view: IChartView): IChartPresenter
@@ -23,6 +26,7 @@ class ChartPresenter(val view: IChartView): IChartPresenter
         {
             viewContext = context
             model = ChronometerActivitiesDB(viewContext)
+            observer = ChartObserver(this)
             view.setUpView(model!!.getAllActivities() as ArrayList<ChronometerActivity>)
         }
     }
@@ -38,11 +42,14 @@ class ChartPresenter(val view: IChartView): IChartPresenter
         }
     }
 
-    override fun addChartToView() {
-        TODO("Not yet implemented")
+    override fun addChartToView()
+    {
+        //the new activity is at the last position
+        view.addChartView(activities.size - 1)
     }
 
-    override fun deleteChartFromView(position: Int) {
+    override fun deleteChartFromView(position: Int)
+    {
         TODO("Not yet implemented")
     }
 
@@ -61,7 +68,7 @@ class ChartPresenter(val view: IChartView): IChartPresenter
 
     private fun findPosition(activityId: Int): Int?
     {
-        activities.forEachIndexed { index, it -> if (it.id == activityId) return index}
+        activities.forEachIndexed { idx, it -> if (it.id == activityId) return idx}
         return null
     }
 

@@ -23,6 +23,8 @@ interface ChartViewContract
 
     interface IChartPresenter
     {
+        companion object {  var observer: IChartObserver? = null    }
+
         fun onViewCreated(context: Context?)
 
         //returns null if there are not new data available
@@ -74,11 +76,10 @@ interface ChartViewContract
                     newTimingsCached
                 else
                     null
-
         }
 
-        fun notifyNewActivity()
+        fun notifyActivityAdded()
 
-        fun notifyDeletedActivity(position: Int)
+        fun notifyDeletedActivity(activityId: Int)
     }
 }

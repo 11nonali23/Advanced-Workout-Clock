@@ -82,12 +82,14 @@ class DataFragment: Fragment(), ChartViewContract.IChartView {
         chartListAdapter.notifyItemChanged(position)
     }
 
-    override fun addChartView(position: Int) {
-       //TODO
+    override fun addChartView(position: Int)
+    {
+       chartListAdapter.notifyItemInserted(position)
     }
 
-    override fun deleteChartView(position: Int) {
-        //TODO
+    override fun deleteChartView(position: Int)
+    {
+        chartListAdapter.notifyItemRemoved(position)
     }
 
 }

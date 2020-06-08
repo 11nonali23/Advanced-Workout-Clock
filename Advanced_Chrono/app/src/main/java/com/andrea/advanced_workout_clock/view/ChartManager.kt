@@ -21,7 +21,7 @@ object ChartManager
         viewContext: Context
     )
     {
-        if (timings == null || timings.size == 0) return
+        if (timings == null) return
 
         viewHolder.chart.setTouchEnabled(true)
         viewHolder.chart.setPinchZoom(true)
