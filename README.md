@@ -10,7 +10,7 @@ The app is offically on the app store [Link to app](https://play.google.com/stor
 
 * The user can create an activity for an interval timer and schedule the timings to do, that are also divided into work and rest. The interval timer can be stopped, paused, resetted and fast forwarded. 
 
-* The data stored for the chronometer and for the timer will be plotted into graphs. The graphs types are not chosen yet.
+* The data stored for the chronometer and for the timer will be plotted into line charts. 
 
 * The app support 4 languages: English (default), France, Spanish, Italian.
 
