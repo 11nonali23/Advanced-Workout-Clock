@@ -29,9 +29,7 @@ You can check a front-end presentation here: https://www.youtube.com/watch?v=GXI
 
 ![chronometer front end](images/chrono_front_end.png) ![timer front end](images/timer_front_end.png)
 
-![timer activities front end](images/timerActivities_fron_end.png)
-
-![charts_front_end](images/charts.png)
+![timer activities front end](images/timerActivities_fron_end.png) ![charts_front_end](images/charts.png)
 
 ## Back-End
 
