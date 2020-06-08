@@ -133,7 +133,6 @@ class ChronometerActivitiesDB(context: Context) :
         return ChronometerActivity(id, name, ArrayList())
     }
 
-    //TODO catch the error
     override fun deleteActivity(activityName:String): Boolean
     {
         val db = this.writableDatabase

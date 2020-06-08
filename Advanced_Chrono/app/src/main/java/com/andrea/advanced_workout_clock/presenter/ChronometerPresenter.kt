@@ -10,7 +10,7 @@ import com.andrea.advanced_workout_clock.model.ActivityTiming
 import com.andrea.advanced_workout_clock.contract.ChronometerContract.IChronometerPresenter.Companion.activities
 import com.andrea.advanced_workout_clock.contract.ChronometerContract.IChronometerPresenter.Companion.currentSelectedActivity
 import com.andrea.advanced_workout_clock.contract.ChartViewContract.IChartPresenter.Companion.observer
-import com.andrea.advanced_workout_clock.contract.ChartViewContract.IChartObserver.CacheManager
+import com.andrea.advanced_workout_clock.contract.ChartViewContract.CacheManager
 
 
 class ChronometerPresenter(val view: ChronometerContract.IChronometerView) : ChronometerContract.IChronometerPresenter

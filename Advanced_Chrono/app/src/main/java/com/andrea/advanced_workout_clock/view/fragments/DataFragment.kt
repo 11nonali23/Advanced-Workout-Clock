@@ -77,11 +77,6 @@ class DataFragment: Fragment(), ChartViewContract.IChartView {
     override fun paintCachedTimings(cachedTimings: HashMap<Int, ArrayList<ActivityTiming>>) =
         chartListAdapter.paintNewData(cachedTimings)
 
-    override fun repaintChart(position: Int)
-    {
-        chartListAdapter.notifyItemChanged(position)
-    }
-
     override fun addChartView(position: Int)
     {
        chartListAdapter.notifyItemInserted(position)

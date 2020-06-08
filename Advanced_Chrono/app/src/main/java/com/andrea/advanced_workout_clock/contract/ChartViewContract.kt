@@ -13,9 +13,6 @@ interface ChartViewContract
         //Int key of te hashMap will be converted by the presenter to the position and not to the ID
         fun paintCachedTimings(cachedTimings: HashMap<Int, ArrayList<ActivityTiming>>)
 
-        //when the user delete the timings I have to fully repaint the chart
-        fun repaintChart(position: Int)
-
         fun addChartView(position: Int)
 
         fun deleteChartView(position: Int)
@@ -36,50 +33,47 @@ interface ChartViewContract
 
     }
 
-    /*This *observer listens for new timings of chronometers and has a local caching mechanism to store them TODO viewModel
+    /*This *observer listens for new timings of chronometers
     *Ith also listens for new activity added or deleted
-    * Its cache methods will be called by the chronometer interface
     */
     interface IChartObserver
     {
-        companion object CacheManager
-        {
-            //map containing the values of the new data. Int is the position of an activity
-            private val newTimingsCached: HashMap<Int, ArrayList<ActivityTiming>> = HashMap()
-
-            fun cacheNewTiming(chronometerActivityId: Int?, activityTiming: ActivityTiming?)
-            {
-                if (activityTiming == null || chronometerActivityId == null) return
-
-                if (newTimingsCached[chronometerActivityId] == null)
-                    newTimingsCached[chronometerActivityId] = arrayListOf(activityTiming)
-                else
-                    newTimingsCached[chronometerActivityId]!!.add(activityTiming)
-
-                // Works fine: Log.e("Observer", "New Timing Cached => ${newTimingsCached[chronometerActivityId]?.get(0)?.timing}")
-            }
-
-            fun deleteCachedTiming(chronometerActivityId: Int, activityTimingId: Int)
-            {
-                if (newTimingsCached[chronometerActivityId]!= null)
-                    newTimingsCached[chronometerActivityId] = newTimingsCached[chronometerActivityId]!!.filterNot { it.id == activityTimingId } as java.util.ArrayList<ActivityTiming>
-
-            }
-
-            //If the user cache an activity and after if deletes it
-            fun deleteCachedActivity(chronometerActivityId: Int) = newTimingsCached.remove(chronometerActivityId)
-
-            fun clearCache() = newTimingsCached.clear()
-
-            fun getNewTimings(): HashMap<Int, ArrayList<ActivityTiming>>? =
-                if (newTimingsCached.size > 0)
-                    newTimingsCached
-                else
-                    null
-        }
-
         fun notifyActivityAdded()
 
         fun notifyDeletedActivity(activityPosition: Int)
+    }
+
+    //caching mechanism to store the new timings. Presenter of chronometer and chart will use it
+    object CacheManager
+    {
+        //map containing the values of the new data. Int is the position of an activity
+        private val newTimingsCached: HashMap<Int, ArrayList<ActivityTiming>> = HashMap()
+
+        fun cacheNewTiming(chronometerActivityId: Int?, activityTiming: ActivityTiming?)
+        {
+            if (activityTiming == null || chronometerActivityId == null) return
+
+            if (newTimingsCached[chronometerActivityId] == null)
+                newTimingsCached[chronometerActivityId] = arrayListOf(activityTiming)
+            else
+                newTimingsCached[chronometerActivityId]!!.add(activityTiming)
+
+            // Works fine: Log.e("Observer", "New Timing Cached => ${newTimingsCached[chronometerActivityId]?.get(0)?.timing}")
+        }
+
+        fun deleteCachedTiming(chronometerActivityId: Int, activityTimingId: Int)
+        {
+            if (newTimingsCached[chronometerActivityId]!= null)
+                newTimingsCached[chronometerActivityId] = newTimingsCached[chronometerActivityId]!!.filterNot { it.id == activityTimingId } as java.util.ArrayList<ActivityTiming>
+
+        }
+
+        fun clearCache() = newTimingsCached.clear()
+
+        fun getNewTimings(): HashMap<Int, ArrayList<ActivityTiming>>? =
+            if (newTimingsCached.size > 0)
+                newTimingsCached
+            else
+                null
     }
 }

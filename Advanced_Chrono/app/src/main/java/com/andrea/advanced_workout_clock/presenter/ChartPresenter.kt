@@ -9,7 +9,7 @@ import com.andrea.advanced_workout_clock.model.ChronometerActivitiesDB
 import com.andrea.advanced_workout_clock.model.ChronometerActivity
 import com.andrea.advanced_workout_clock.observer.ChartObserver
 
-import com.andrea.advanced_workout_clock.contract.ChartViewContract.IChartObserver.CacheManager
+import com.andrea.advanced_workout_clock.contract.ChartViewContract.CacheManager
 import com.andrea.advanced_workout_clock.contract.ChronometerContract.IChronometerPresenter.Companion.activities
 import com.andrea.advanced_workout_clock.contract.ChartViewContract.IChartPresenter.Companion.observer
 

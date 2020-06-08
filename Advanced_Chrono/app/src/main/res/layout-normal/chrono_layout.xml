@@ -175,7 +175,6 @@
                 app:iconGravity="textEnd"
                 app:iconTint="@color/black" />
 
-
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
