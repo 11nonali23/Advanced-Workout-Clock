@@ -20,10 +20,6 @@ import com.google.android.material.checkbox.MaterialCheckBox
 import kotlinx.android.synthetic.main.chrono_layout.*
 
 
-import com.andrea.advanced_workout_clock.contract.ChartViewContract.IChartObserver.CacheManager
-import com.andrea.advanced_workout_clock.model.ActivityTiming
-
-
 //ToDo implement the save button (only when you have the database)
 
 /**
@@ -190,11 +186,7 @@ class ChronometerFragment : Fragment(), ChronometerContract.IChronometerView
 
         //save timing button
         chrono_save_btn.setOnClickListener {
-            if (chrono_spinner.selectedItem != null)
-                CacheManager.cacheNewTiming(
-                    (chrono_spinner.selectedItem as ChronometerActivity).id,
-                    saveCurrentTiming()
-                )
+            saveCurrentTiming()
         }
 
         //update the current selected activity of the presenter on change
@@ -243,7 +235,6 @@ class ChronometerFragment : Fragment(), ChronometerContract.IChronometerView
     override fun itemRemovedFromDataSet(itemPosition: Int)
     {
         customDialog?.notifyAdapterItemRemoved(itemPosition)
-        //TODO CacheManager.deleteCachedTiming(id? , timing?)
     }
 
     override fun displayResult(result: String)
@@ -341,9 +332,9 @@ class ChronometerFragment : Fragment(), ChronometerContract.IChronometerView
     }
 
 
-    private fun saveCurrentTiming(): ActivityTiming?
+    private fun saveCurrentTiming()
     {
-        return if (chrono_spinner.selectedItem != null)
+        if (chrono_spinner.selectedItem != null)
             presenter.saveTiming(pauseOffset, (chrono_spinner.selectedItem as ChronometerActivity).id)
         else
             presenter.saveTiming(pauseOffset, null)

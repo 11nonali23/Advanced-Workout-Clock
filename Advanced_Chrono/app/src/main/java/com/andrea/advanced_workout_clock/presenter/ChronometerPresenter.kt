@@ -7,6 +7,7 @@ import com.andrea.advanced_workout_clock.model.ChronometerActivitiesDB
 
 import com.andrea.advanced_workout_clock.contract.ChronometerContract.IChronometerPresenter.Companion.activities
 import com.andrea.advanced_workout_clock.contract.ChronometerContract.IChronometerPresenter.Companion.currentSelectedActivity
+import com.andrea.advanced_workout_clock.contract.ChartViewContract.IChartObserver.CacheManager
 import com.andrea.advanced_workout_clock.model.ActivityTiming
 
 
@@ -157,6 +158,8 @@ class ChronometerPresenter(val view: ChronometerContract.IChronometerView) : Chr
         //If the model succesfully deletes the item i don't want to log nothing to the user. I just want to delete the item from the list
         if(model!!.deleteTiming(timingId, parentActivityID))
         {
+            //delete the item if it was cached into the CacheManager to be add into charts
+            CacheManager.deleteCachedTiming(activities[currentSelectedActivity!!].id, activities[currentSelectedActivity!!].timings_timestamp!![itemPosition].id)
             activities[currentSelectedActivity!!].timings_timestamp!!.removeAt(itemPosition)
             view.itemRemovedFromDataSet(itemPosition)
             return
@@ -177,14 +180,15 @@ class ChronometerPresenter(val view: ChronometerContract.IChronometerView) : Chr
         }
         if (model != null)
         {
-            val newItem = model!!.addNewTiming(tempo, System.currentTimeMillis(), activityId)
-            if(newItem != null)
+            val newTiming = model!!.addNewTiming(tempo, System.currentTimeMillis(), activityId)
+            if(newTiming != null)
             {
-                //TODO retrieve timings and timestamps
+                CacheManager.cacheNewTiming(activities[currentSelectedActivity!!].id, newTiming)
                 if (currentSelectedActivity != null)
-                    activities[currentSelectedActivity!!].timings_timestamp!!.add(newItem)
+                    activities[currentSelectedActivity!!].timings_timestamp!!.add(newTiming)
+
                 view.displayResult(viewContext.getString(R.string.SAVE_TIMING_SUCCES))
-                return newItem
+                return newTiming
             }
         }
         view.displayResult(viewContext.getString(R.string.INTERNAL_ERROR))

@@ -57,9 +57,11 @@ interface ChartViewContract
                 // Works fine: Log.e("Observer", "New Timing Cached => ${newTimingsCached[chronometerActivityId]?.get(0)?.timing}")
             }
 
-            fun deleteCachedTiming(chronometerActivityId: Int, activityTiming: ActivityTiming)
+            fun deleteCachedTiming(chronometerActivityId: Int, activityTimingId: Int)
             {
-                newTimingsCached[chronometerActivityId]?.filterNot { it -> it.id == activityTiming.id }
+                if (newTimingsCached[chronometerActivityId]!= null)
+                    newTimingsCached[chronometerActivityId] = newTimingsCached[chronometerActivityId]!!.filterNot { it.id == activityTimingId } as java.util.ArrayList<ActivityTiming>
+
             }
 
             //If the user cache an activity and after if deletes it
