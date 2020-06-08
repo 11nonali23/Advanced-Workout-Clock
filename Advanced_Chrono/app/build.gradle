@@ -10,8 +10,8 @@ android {
         applicationId "com.andrea.advanced_workout_clock"
         minSdkVersion 21
         targetSdkVersion 29
-        version 9
-        versionName "9"
+        version 10
+        versionName "10"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
