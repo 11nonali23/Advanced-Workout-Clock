@@ -50,7 +50,7 @@ class ChartPresenter(val view: IChartView): IChartPresenter
 
     override fun deleteChartFromView(position: Int)
     {
-        TODO("Not yet implemented")
+        view.deleteChartView(position)
     }
 
 

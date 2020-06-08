@@ -89,10 +89,18 @@ class ChronometerPresenter(val view: ChronometerContract.IChronometerView) : Chr
 
         if (model!!.deleteActivity(activityName))
         {
+            //notify observer to delete the chart
+            getPositionFromName(activityName)?.let { observer?.notifyDeletedActivity(it) }
             activities.removeAll { it.name == activityName }    //I can use removeAll because every activity has a different name
             view.displayResult(viewContext.getString(R.string.DEL_ACTIVITY_SUCCESS))
             view.updateActivitiesView()
         }
+    }
+
+    private fun getPositionFromName(activityName: String): Int?
+    {
+        activities.forEachIndexed {idx, it -> if (it.name == activityName) return idx}
+        return null
     }
 
 

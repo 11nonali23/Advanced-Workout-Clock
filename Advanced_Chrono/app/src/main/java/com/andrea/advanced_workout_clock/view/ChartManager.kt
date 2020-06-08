@@ -50,7 +50,6 @@ object ChartManager
     {
         viewHolder.dataSet = LineDataSet(entries, null)
         viewHolder.dataSet!!.setDrawIcons(false)
-        //TODO set a proper color
         viewHolder.dataSet!!.color = ContextCompat.getColor(viewContext, R.color.colorPrimary)
         viewHolder.dataSet!!.setCircleColor(ContextCompat.getColor(viewContext, R.color.colorSecondary))
         viewHolder.dataSet!!.fillColor = ContextCompat.getColor(viewContext, R.color.white)

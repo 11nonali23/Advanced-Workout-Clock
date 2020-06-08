@@ -80,6 +80,6 @@ interface ChartViewContract
 
         fun notifyActivityAdded()
 
-        fun notifyDeletedActivity(activityId: Int)
+        fun notifyDeletedActivity(activityPosition: Int)
     }
 }

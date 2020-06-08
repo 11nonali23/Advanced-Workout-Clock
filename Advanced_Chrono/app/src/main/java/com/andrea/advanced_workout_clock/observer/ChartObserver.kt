@@ -11,8 +11,8 @@ class ChartObserver(val presenter: IChartPresenter): IChartObserver
         presenter.addChartToView()
     }
 
-    override fun notifyDeletedActivity(activityId: Int)
+    override fun notifyDeletedActivity(activityPosition: Int)
     {
-        presenter.deleteChartFromView(activityId)
+        presenter.deleteChartFromView(activityPosition)
     }
 }
