@@ -40,8 +40,7 @@ class ChronometerFragment : Fragment(), ChronometerContract.IChronometerView
     private lateinit var spinnerAdapter: ArrayAdapter<ChronometerActivity>
     //DIALOGS
     private var customDialog: CustomDialog? = null
-
-
+    //ANIMATIONS
     private lateinit var saveButtonAnimator: ObjectAnimator
 
     companion object
@@ -191,9 +190,11 @@ class ChronometerFragment : Fragment(), ChronometerContract.IChronometerView
 
         //save timing button
         chrono_save_btn.setOnClickListener {
-            //This show that if the fragment element is null the app will not crash
-            //graphs_reminder?.text = "new text"
-            CacheManager.cacheNewTiming(0, saveCurrentTiming())
+            if (chrono_spinner.selectedItem != null)
+                CacheManager.cacheNewTiming(
+                    (chrono_spinner.selectedItem as ChronometerActivity).id,
+                    saveCurrentTiming()
+                )
         }
 
         //update the current selected activity of the presenter on change
@@ -239,7 +240,11 @@ class ChronometerFragment : Fragment(), ChronometerContract.IChronometerView
 
     override fun setNewItemAsSelected() = chrono_spinner.setSelection(chrono_spinner.count - 1)
 
-    override fun itemRemovedFromDataSet(itemPosition: Int) {    customDialog?.notifyAdapterItemRemoved(itemPosition)    }
+    override fun itemRemovedFromDataSet(itemPosition: Int)
+    {
+        customDialog?.notifyAdapterItemRemoved(itemPosition)
+        //TODO CacheManager.deleteCachedTiming(id? , timing?)
+    }
 
     override fun displayResult(result: String)
     {
@@ -255,7 +260,10 @@ class ChronometerFragment : Fragment(), ChronometerContract.IChronometerView
 
     //FUNCTIONS FOR ADAPTERS------------------------------------------------------------------------------------------
 
-    fun deleteTiming(itemPosition: Int){  presenter.deleteTiming(itemPosition)}
+    fun deleteTiming(itemPosition: Int)
+    {
+        presenter.deleteTiming(itemPosition)
+    }
     //END FUNCTIONS FOR ADAPTERS------------------------------------------------------------------------------------------
 
 
@@ -335,10 +343,10 @@ class ChronometerFragment : Fragment(), ChronometerContract.IChronometerView
 
     private fun saveCurrentTiming(): ActivityTiming?
     {
-        if (chrono_spinner.selectedItem != null)
-            return presenter.saveTiming(pauseOffset, (chrono_spinner.selectedItem as ChronometerActivity).id)
+        return if (chrono_spinner.selectedItem != null)
+            presenter.saveTiming(pauseOffset, (chrono_spinner.selectedItem as ChronometerActivity).id)
         else
-            return presenter.saveTiming(pauseOffset, null)
+            presenter.saveTiming(pauseOffset, null)
     }
 
 

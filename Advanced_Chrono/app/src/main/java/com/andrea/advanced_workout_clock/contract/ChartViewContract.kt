@@ -1,7 +1,6 @@
 package com.andrea.advanced_workout_clock.contract
 
 import android.content.Context
-import android.util.Log
 import com.andrea.advanced_workout_clock.model.ActivityTiming
 import com.andrea.advanced_workout_clock.model.ChronometerActivity
 
@@ -10,6 +9,12 @@ interface ChartViewContract
     interface IChartView
     {
         fun setUpView(activities: ArrayList<ChronometerActivity>)
+
+        //Int key of te hashMap will be converted by the presenter to the position and not to the ID
+        fun paintCachedTimings(cachedTimings: HashMap<Int, ArrayList<ActivityTiming>>)
+
+        //when the user delete the timings I have to fully repaint the chart
+        fun repaintChart(position: Int)
 
         fun addChartView(position: Int)
 
@@ -21,12 +26,7 @@ interface ChartViewContract
         fun onViewCreated(context: Context?)
 
         //returns null if there are not new data available
-        fun getNewData(): HashMap<Int, ArrayList<ActivityTiming>>?
-        {
-            if (IChartObserver.newTimingsCached.size > 0)
-                return IChartObserver.newTimingsCached
-            return null
-        }
+        fun getCachedData()
 
         fun addChartToView()
 
@@ -36,13 +36,14 @@ interface ChartViewContract
 
     /*This *observer listens for new timings of chronometers and has a local caching mechanism to store them TODO viewModel
     *Ith also listens for new activity added or deleted
+    * Its cache methods will be called by the chronometer interface
     */
     interface IChartObserver
     {
         companion object CacheManager
         {
-            //map containing the values of the new data. Int is the Id of an activity
-            val newTimingsCached: HashMap<Int, ArrayList<ActivityTiming>> = HashMap()
+            //map containing the values of the new data. Int is the position of an activity
+            private val newTimingsCached: HashMap<Int, ArrayList<ActivityTiming>> = HashMap()
 
             fun cacheNewTiming(chronometerActivityId: Int?, activityTiming: ActivityTiming?)
             {
@@ -61,7 +62,17 @@ interface ChartViewContract
                 newTimingsCached[chronometerActivityId]?.filterNot { it -> it.id == activityTiming.id }
             }
 
+            //If the user cache an activity and after if deletes it
             fun deleteCachedActivity(chronometerActivityId: Int) = newTimingsCached.remove(chronometerActivityId)
+
+            fun clearCache() = newTimingsCached.clear()
+
+            fun getNewTimings(): HashMap<Int, ArrayList<ActivityTiming>>? =
+                if (newTimingsCached.size > 0)
+                    newTimingsCached
+                else
+                    null
+
         }
 
         fun notifyNewActivity()

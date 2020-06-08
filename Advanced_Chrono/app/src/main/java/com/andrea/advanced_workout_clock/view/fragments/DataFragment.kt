@@ -10,11 +10,10 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.andrea.advanced_workout_clock.R
 import com.andrea.advanced_workout_clock.contract.ChartViewContract
+import com.andrea.advanced_workout_clock.model.ActivityTiming
 import com.andrea.advanced_workout_clock.model.ChronometerActivity
 import com.andrea.advanced_workout_clock.presenter.ChartPresenter
 import com.andrea.advanced_workout_clock.view.custom_adapters.ChartListAdapter
-import com.github.mikephil.charting.charts.LineChart
-import com.github.mikephil.charting.data.LineDataSet
 import kotlinx.android.synthetic.main.fragment_data_.*
 
 /**
@@ -30,7 +29,7 @@ class DataFragment: Fragment(), ChartViewContract.IChartView {
 
     companion object
     {
-        private const val TAG = "DATA FRAGMENT CICLE"
+        private const val TAG = "DATA FRAGMENT"
     }
 
     override fun onCreateView(
@@ -41,7 +40,6 @@ class DataFragment: Fragment(), ChartViewContract.IChartView {
         return inflater.inflate(R.layout.fragment_data_, container, false)
     }
 
-    //This method shows when a new fragment is created
     override fun onCreate(savedInstanceState: Bundle?)
     {
         super.onCreate(savedInstanceState)
@@ -58,25 +56,38 @@ class DataFragment: Fragment(), ChartViewContract.IChartView {
         super.onResume()
         if (this.context != null)
             activity?.window?.navigationBarColor = ContextCompat.getColor(this.requireContext(), R.color.white)
+
+        //I can call notifyDataSetChanged but i will repaint the graphs every time (not efficient). So i have created a caching method (contract package)
+        //chartListAdapter.notifyDataSetChanged()
+        //              ↓
+        presenter.getCachedData()
     }
 
     override fun setUpView(activities: ArrayList<ChronometerActivity>)
     {
         //setting the recycler view adapter
         _chartList = chartList
-        chartListAdapter = ChartListAdapter(activities)
+        chartListAdapter = ChartListAdapter(_chartList)
         _chartList.layoutManager = LinearLayoutManager(this.context)
         _chartList.adapter = chartListAdapter
         _chartList.setHasFixedSize(true)
     }
 
+    //Int key = position (converted by the presenter)
+    override fun paintCachedTimings(cachedTimings: HashMap<Int, ArrayList<ActivityTiming>>) =
+        chartListAdapter.paintNewData(cachedTimings)
+
+    override fun repaintChart(position: Int)
+    {
+        chartListAdapter.notifyItemChanged(position)
+    }
+
     override fun addChartView(position: Int) {
-       //TODo
+       //TODO
     }
 
     override fun deleteChartView(position: Int) {
         //TODO
     }
-
 
 }

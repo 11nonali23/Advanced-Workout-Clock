@@ -79,6 +79,6 @@ class CustomDialog(private val parent: ChronometerFragment) : Dialog(parent.requ
 
     fun notifyAdapterItemRemoved(itemPosition: Int) { viewAdapter.notifyItemRemoved(itemPosition)}
 
-    fun removeTiming(timingPosition: Int) {parent.deleteTiming(timingPosition)}
+    fun removeTiming(timingPosition: Int) = parent.deleteTiming(timingPosition)
 }
 

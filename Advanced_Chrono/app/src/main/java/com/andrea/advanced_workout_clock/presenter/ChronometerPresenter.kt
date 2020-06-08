@@ -86,7 +86,7 @@ class ChronometerPresenter(val view: ChronometerContract.IChronometerView) : Chr
 
         if (model!!.deleteActivity(activityName))
         {
-            activities.removeAll { it.name == activityName }
+            activities.removeAll { it.name == activityName }    //I can use removeAll because every activity has a different name
             view.displayResult(viewContext.getString(R.string.DEL_ACTIVITY_SUCCESS))
             view.updateActivitiesView()
         }

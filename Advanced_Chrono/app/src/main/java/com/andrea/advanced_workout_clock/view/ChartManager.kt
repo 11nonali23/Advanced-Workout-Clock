@@ -1,11 +1,11 @@
 package com.andrea.advanced_workout_clock.view
 
 import android.content.Context
-import android.graphics.Color
 import android.graphics.DashPathEffect
 import androidx.core.content.ContextCompat
 import com.andrea.advanced_workout_clock.R
 import com.andrea.advanced_workout_clock.model.ActivityTiming
+import com.andrea.advanced_workout_clock.view.custom_adapters.ChartListAdapter
 import com.github.mikephil.charting.charts.LineChart
 import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.data.LineData
@@ -14,25 +14,22 @@ import com.github.mikephil.charting.interfaces.datasets.ILineDataSet
 
 object ChartManager
 {
-    private var chartList: ArrayList<LineChart> = ArrayList()
-    private var dataSetList: ArrayList<LineDataSet> = ArrayList()
-
     //return the chart initialized, or null if there are no timings
     fun initChart(
         timings: ArrayList<ActivityTiming>?,
-        chart: LineChart,
+        viewHolder: ChartListAdapter.ChartHolder,
         viewContext: Context
     )
     {
         if (timings == null || timings.size == 0) return
 
-        chart.setTouchEnabled(true)
-        chart.setPinchZoom(true)
+        viewHolder.chart.setTouchEnabled(true)
+        viewHolder.chart.setPinchZoom(true)
 
         val entries = createEntries(timings)
-        val data = initDataset(entries, viewContext)
-        setChartStyle(chart)
-        chart.data = data
+        val data = initDataSet(viewHolder, entries, viewContext)
+        setChartStyle(viewHolder.chart)
+        viewHolder.chart.data = data
     }
 
     //Create the entries for the chart given the timings
@@ -45,28 +42,29 @@ object ChartManager
     }
 
     //Initialize the line data set and return the data the chart needs
-    private fun initDataset(entries: ArrayList<Entry>, viewContext: Context): LineData
+    private fun initDataSet(
+        viewHolder: ChartListAdapter.ChartHolder,
+        entries: ArrayList<Entry>,
+        viewContext: Context
+    ): LineData
     {
-        val lineDataSet =  LineDataSet(entries, null)
-        lineDataSet.setDrawIcons(false)
+        viewHolder.dataSet = LineDataSet(entries, null)
+        viewHolder.dataSet!!.setDrawIcons(false)
         //TODO set a proper color
-        lineDataSet.color = ContextCompat.getColor(viewContext, R.color.colorPrimary)
-        lineDataSet.setCircleColor(ContextCompat.getColor(viewContext, R.color.colorSecondary))
-        lineDataSet.fillColor = ContextCompat.getColor(viewContext, R.color.white)
-        lineDataSet.lineWidth = 1f
-        lineDataSet.circleRadius = 3f
-        lineDataSet.setDrawCircleHole(false)
-        lineDataSet.valueTextSize = 9f
-        lineDataSet.setDrawFilled(true)
-        lineDataSet.formLineWidth = 1f
-        lineDataSet.formLineDashEffect = DashPathEffect(floatArrayOf(10f, 5f), 0f)
-        lineDataSet.formSize = 15f
-
-
-        dataSetList.add(lineDataSet)
+        viewHolder.dataSet!!.color = ContextCompat.getColor(viewContext, R.color.colorPrimary)
+        viewHolder.dataSet!!.setCircleColor(ContextCompat.getColor(viewContext, R.color.colorSecondary))
+        viewHolder.dataSet!!.fillColor = ContextCompat.getColor(viewContext, R.color.white)
+        viewHolder.dataSet!!.lineWidth = 1f
+        viewHolder.dataSet!!.circleRadius = 3f
+        viewHolder.dataSet!!.setDrawCircleHole(false)
+        viewHolder.dataSet!!.valueTextSize = 9f
+        viewHolder.dataSet!!.setDrawFilled(true)
+        viewHolder.dataSet!!.formLineWidth = 1f
+        viewHolder.dataSet!!.formLineDashEffect = DashPathEffect(floatArrayOf(10f, 5f), 0f)
+        viewHolder.dataSet!!.formSize = 15f
 
         val dataSets: ArrayList<ILineDataSet> = ArrayList()
-        dataSets.add(lineDataSet)
+        dataSets.add(viewHolder.dataSet!!)
         return LineData(dataSets)
     }
 
@@ -88,8 +86,17 @@ object ChartManager
         chart.axisRight.setDrawAxisLine(false)
     }
 
-    fun addValue(activityPosition: Int, timing: Long )
+    fun paintNewTiming(holder: ChartListAdapter.ChartHolder, timing: Long)
     {
-        dataSetList[activityPosition].addEntry(Entry((dataSetList[activityPosition].entryCount + 1).toFloat(),timing.toFloat()))
+        holder.dataSet!!.addEntry(
+            Entry(
+                (holder.dataSet!!.entryCount + 1).toFloat(),
+                timing.toFloat()
+            )
+        )
+        holder.chart.data.notifyDataChanged()
+        holder.chart.notifyDataSetChanged()
+        holder.chart.invalidate()
     }
+
 }
