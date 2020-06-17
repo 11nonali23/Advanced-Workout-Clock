@@ -98,4 +98,21 @@ object ChartManager
         holder.chart.invalidate()
     }
 
+/*
+    fun convertToMinutes(f: Float){
+        val s = f.toString()
+        var d = ""; var n = ""
+
+        var index = 0
+        while(index < s.length && s[index] != '.')
+            n += s[index++]
+        index++
+        while(index < s.length)
+            d += s[index++]
+
+        var minutes = n.toFloat();
+
+        print("${(minutes/60).toInt()}${(minutes%60).toInt()}'")
+ }*/
+
 }

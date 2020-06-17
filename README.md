@@ -15,17 +15,20 @@ The app is offically on the app store [Link to app](https://play.google.com/stor
 * The app support 4 languages: English (default), France, Spanish, Italian.
 
 * The app supports different screen size: normal, large, x-large
-## Front-End
+  
+  ## Front-End
 
-The front-end is made by following **material design guidelines** for Android.
+The front-end is made by following [material design guidelines](https://material.io/develop/android/) for Android.
 
 You can check a front-end presentation here: https://www.youtube.com/watch?v=GXI3JSY52rQ
 
 * The application supports [ViewPager 2](https://developer.android.com/jetpack/androidx/releases/viewpager2) to show the fragments.
 
-* The item list of the timer supports **swipe and drag callbacks** with RecyclerView and it has a customized NestedScrollView in the timer acivities tab to optimize the space taken.
+* The item list of the timer supports **swipe and drag callbacks** with RecyclerView and it has a customized [NestedScrollView](https://developer.android.com/reference/androidx/core/widget/NestedScrollView) in the timer acivities tab to optimize the space taken.
 
-* The timer and the chronometer uses [Material Progress Bar](https://github.com/zhanghai/MaterialProgressBar)
+* The timer and the chronometer are made using [Material Progress Bar library](https://github.com/zhanghai/MaterialProgressBar)
+
+* The charts are made using [MPChart library](https://github.com/PhilJay/MPAndroidChart)
 
 ![chronometer front end](images/chrono_front_end.png) ![timer front end](images/timer_front_end.png)
 
@@ -35,7 +38,7 @@ You can check a front-end presentation here: https://www.youtube.com/watch?v=GXI
 
 The interval timer uses the **Shared Preferences** of the phone in order not to lose the timings already done. 
 
-Every part of the application uses **MVP pattern** in order the seprate the development. This make every part testable and highly flexible: a programmer can implement the database ingoring the other components.
+Every part of the application uses **MVP pattern** in order the separate the development. This make every part testable and highly flexible: a programmer can implement the database ingoring the other components.
 Every component of the pattern implements the interface defined in the contract package.
 
 Since I attach a presenter to a fragment, the **presenter need to be almost stateless** beacuse they are on different layers of architecture and lifecycle.
