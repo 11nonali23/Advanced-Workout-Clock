@@ -2,7 +2,7 @@
 
 This Android Application is meant to generate a clock with features to make any work-out related activity more efficent.
 
-The app is offically on the app store [Link to app](https://play.google.com/store/apps/details?id=com.andrea.advanced_workout_clock)
+The app is offically on the play store [Link to app](https://play.google.com/store/apps/details?id=com.andrea.advanced_workout_clock)
 
 ## Basic features of the app
 
