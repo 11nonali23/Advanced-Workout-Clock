@@ -1,7 +1,6 @@
 # Advanced Workout Clock
 
-This Android Application is meant to generate a clock with features to make any work-out related activity more efficent.
-
+This applications was developed during Covid19 pandemic to encourage people triying HIIT workouts at home. This app features an interval timer with high personalization and a chronometer with charts to track performances.
 The app is offically on the play store [Link to app](https://play.google.com/store/apps/details?id=com.andrea.advanced_workout_clock)
 
 ## Basic features of the app
